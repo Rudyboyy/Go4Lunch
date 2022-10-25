@@ -8,4 +8,6 @@
     <string name="error_no_internet">Network unavailable</string>
     <string name="connection_succeed">Login successful!</string>
     <string name="error_authentication_canceled">Login aborted</string>
+    <string name="facebook_application_id">1189461841954135</string>
+    <string name="fb_login_protocol_scheme">fb1189461841954135</string>
 </resources>

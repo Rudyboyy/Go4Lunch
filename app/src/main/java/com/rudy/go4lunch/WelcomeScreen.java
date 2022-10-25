@@ -1,5 +1,6 @@
 package com.rudy.go4lunch;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.snackbar.Snackbar;
 import com.rudy.go4lunch.databinding.ActivityWelcomeScreenBinding;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -42,19 +44,45 @@ public class WelcomeScreen extends AppCompatActivity {
         binding.googleButton.setOnClickListener(view -> {
             startSignInActivity();
         });
+        binding.fcbButton.setOnClickListener(view -> {
+            signWithFcb();
+        });
     }
 
-    private void startSignInActivity() {
-        List<AuthUI.IdpConfig> providers =
-                Collections.singletonList(new AuthUI.IdpConfig.GoogleBuilder().build());
+    private void getInstanceAuthUI(List<AuthUI.IdpConfig> provider) {
+        AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setAvailableProviders(provider)
+                .build();
+    }
+
+    //todo besoin d'etre optimisé
+    private void signWithFcb() {
+        List<AuthUI.IdpConfig> fcbProvider =
+                Collections.singletonList(new AuthUI.IdpConfig.FacebookBuilder().build());
 
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
-                        .setTheme(R.style.LoginTheme)
-                        .setAvailableProviders(providers)
+                        .setAvailableProviders(fcbProvider)
+                        .build(),
+                RC_SIGN_IN);
+    }
+
+    //todo besoin d'etre optimisé
+    private void startSignInActivity() {
+        List<AuthUI.IdpConfig> googleProvider =
+                Collections.singletonList(new AuthUI.IdpConfig.GoogleBuilder().build());
+        // todo                     ou
+//        List<AuthUI.IdpConfig> providers = Arrays.asList(
+//                new AuthUI.IdpConfig.GoogleBuilder().build(),
+//                new AuthUI.IdpConfig.FacebookBuilder().build());
+
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(googleProvider)
                         .setIsSmartLockEnabled(true, false)
-                        .setLogo(R.drawable.ic_baseline_lunch_dining_24)
                         .build(),
                 RC_SIGN_IN);
     }
