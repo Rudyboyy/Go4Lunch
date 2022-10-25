@@ -1,11 +1,8 @@
-package com.rudy.go4lunch;
+package com.rudy.go4lunch.ui;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentActivity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,9 +13,9 @@ import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.snackbar.Snackbar;
+import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.databinding.ActivityWelcomeScreenBinding;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
