@@ -15,7 +15,7 @@ import com.rudy.go4lunch.model.Workmate;
 
 import java.util.ArrayList;
 
-public class WorkmatesAdapter  extends RecyclerView.Adapter<WorkmatesAdapter.ViewHolder> {
+public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.ViewHolder> {
 
     private ArrayList<Workmate> mWorkmates;
 
