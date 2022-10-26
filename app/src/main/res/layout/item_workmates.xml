@@ -11,9 +11,9 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_margin="10dp"
+        android:src="@drawable/ic_baseline_supervisor_account_24"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/ic_baseline_supervisor_account_24"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/workmate_text_view"
@@ -22,18 +22,18 @@
         android:layout_marginStart="10dp"
         android:paddingEnd="10dp"
         android:text="Scarlett is eating french (Le zinc)"
-        android:textStyle="bold"
         android:textSize="16sp"
-        app:layout_constraintTop_toTopOf="@id/item_list_avatar"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/item_list_avatar"
-        app:layout_constraintStart_toEndOf="@id/item_list_avatar" />
+        app:layout_constraintStart_toEndOf="@id/item_list_avatar"
+        app:layout_constraintTop_toTopOf="@id/item_list_avatar" />
 
     <View
         android:id="@+id/border"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="25dp"
         android:layout_marginStart="70dp"
+        android:layout_marginTop="25dp"
         android:background="@color/background_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

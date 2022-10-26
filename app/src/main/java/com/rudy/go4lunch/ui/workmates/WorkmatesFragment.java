@@ -39,15 +39,9 @@ public class WorkmatesFragment extends Fragment {
 
     private void initRecyclerView(View root) {
         mRecyclerView = root.findViewById(R.id.recyclerview);
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(layoutManager);
-
         WorkmatesAdapter mAdapter = new WorkmatesAdapter(workmates);
-
-//        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
-//                layoutManager.getOrientation());
-//        mRecyclerView.addItemDecoration(dividerItemDecoration);
         mRecyclerView.setAdapter(mAdapter);
     }
 }

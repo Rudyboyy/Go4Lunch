@@ -29,7 +29,7 @@ public class Workmate {
             new Workmate("Nana", R.drawable.circle, Restaurant.DUMMY_RESTAURANTS.get(2), true),
             new Workmate("Godfrey", R.drawable.circle, Restaurant.DUMMY_RESTAURANTS.get(3), false));
 
-    public static List<Workmate> getWorkmates(){
+    public static List<Workmate> getWorkmates() {
         return new ArrayList<>(DUMMY_WORKMATES);
     }
 

@@ -57,7 +57,7 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
         public void displayWorkmates(Workmate workmates) {
             avatar.setImageResource(workmates.getAvatar());
             if (workmates.isChoose()) {
-                workmate.setText(workmates.getName() + " is eating " + workmates.getRestaurant().getFoodStyle() + " (" + workmates.getRestaurant().getName() +")");
+                workmate.setText(workmates.getName() + " is eating " + workmates.getRestaurant().getFoodStyle() + " (" + workmates.getRestaurant().getName() + ")");
             } else {
                 workmate.setText(workmates.getName() + " hasn't decided yet");
             }
