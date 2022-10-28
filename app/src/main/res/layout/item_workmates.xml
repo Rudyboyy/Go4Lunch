@@ -31,7 +31,7 @@
     <View
         android:id="@+id/border"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2dp"
         android:layout_marginStart="70dp"
         android:layout_marginTop="25dp"
         android:background="@color/background_color"

@@ -14,7 +14,9 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@color/black" />
+        tools:srcCompat="@color/grey"
+        android:background="@color/grey"/>
+<!--    todo retirer le background a l'image-->
 
     <ImageView
         android:id="@+id/logo"

@@ -2,6 +2,7 @@ package com.rudy.go4lunch.model;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NavigableMap;
 
-public class Restaurant {
+public class Restaurant implements Serializable {
 
     String name;
     String foodStyle;
@@ -41,7 +42,6 @@ public class Restaurant {
             new Restaurant("Casa Nostra", "italian", "78 Napolistreet", 789, 2),// Arrays.asList(Workmate.DUMMY_WORKMATES.get(2))),
             new Restaurant("Le Zinc", "French", "12 rue Faugbourd poissonière", 615, 1),// Arrays.asList(Workmate.DUMMY_WORKMATES.get(2))),
             new Restaurant("Le Seoul", "Korean", "18 rue du Paradis", 675, 0),// Arrays.asList(Workmate.DUMMY_WORKMATES.get(2))),
-            new Restaurant("Le Seoul", "Korean", "18 rue du Paradis", 368, 3),// Arrays.asList(Workmate.DUMMY_WORKMATES.get(2))),
             new Restaurant("Tokyomaki", "japanese", "24 rue des Petites Ecoles", 789, 2));//, Arrays.asList(Workmate.DUMMY_WORKMATES.get(2))));
 
     public static List<Restaurant> getRestaurants() {

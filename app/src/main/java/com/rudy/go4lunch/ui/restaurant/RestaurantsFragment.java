@@ -19,6 +19,7 @@ public class RestaurantsFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private ArrayList<Restaurant> mRestaurants;
+    public static final String RESTAURANT_INFO = "restaurantInfo";
 
     private void initData() {
         mRestaurants = new ArrayList<>(Restaurant.getRestaurants());
@@ -42,7 +43,7 @@ public class RestaurantsFragment extends Fragment {
         mRecyclerView = root.findViewById(R.id.recyclerview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(layoutManager);
-        RestaurantsAdapter mAdapter = new RestaurantsAdapter(mRestaurants);
+        RestaurantsAdapter mAdapter = new RestaurantsAdapter(mRestaurants, getActivity());
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
                 layoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);

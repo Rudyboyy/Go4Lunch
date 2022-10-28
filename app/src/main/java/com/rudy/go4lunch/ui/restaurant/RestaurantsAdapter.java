@@ -1,6 +1,11 @@
 package com.rudy.go4lunch.ui.restaurant;
 
+import static com.rudy.go4lunch.ui.restaurant.RestaurantsFragment.RESTAURANT_INFO;
+
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +18,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.model.Restaurant;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.ViewHolder> {
 
     private ArrayList<Restaurant> mRestaurants;
+    private final Context mContext;
 
-    public RestaurantsAdapter(ArrayList<Restaurant> restaurants) {
+    public RestaurantsAdapter(ArrayList<Restaurant> restaurants, Context context) {
         this.mRestaurants = restaurants;
+        this.mContext = context;
     }
 
     @NonNull
@@ -35,6 +43,12 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
     public void onBindViewHolder(@NonNull RestaurantsAdapter.ViewHolder holder, int position) {
         Restaurant restaurant = mRestaurants.get(position);
         holder.displayRestaurants(restaurant);
+
+        holder.itemView.setOnClickListener(view -> {
+            Intent detailRestaurantActivityIntent = new Intent(mContext, DetailRestaurantActivity.class);
+            detailRestaurantActivityIntent.putExtra(RESTAURANT_INFO, restaurant); //todo marche pas ?
+            mContext.startActivity(detailRestaurantActivityIntent);
+        });
     }
 
     @Override

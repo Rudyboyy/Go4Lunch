@@ -53,13 +53,18 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
             this.workmate = itemView.findViewById(R.id.workmate_text_view);
         }
 
-        @SuppressLint("SetTextI18n")
+        @SuppressLint({"SetTextI18n", "ResourceAsColor"})
         public void displayWorkmates(Workmate workmates) {
             avatar.setImageResource(workmates.getAvatar());
             if (workmates.isChoose()) {
                 workmate.setText(workmates.getName() + " is eating " + workmates.getRestaurant().getFoodStyle() + " (" + workmates.getRestaurant().getName() + ")");
             } else {
                 workmate.setText(workmates.getName() + " hasn't decided yet");
+
+//                todo marche pas
+//                 workmate.setTextColor(R.color.grey);
+
+                //todo metre en italic
             }
         }
     }

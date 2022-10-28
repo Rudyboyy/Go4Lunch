@@ -18,6 +18,7 @@ import com.rudy.go4lunch.databinding.ActivityWelcomeScreenBinding;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class WelcomeScreen extends AppCompatActivity {
 
@@ -27,6 +28,8 @@ public class WelcomeScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.LoginTheme);
+//        Objects.requireNonNull(getSupportActionBar()).hide();
         initUi();
     }
 
