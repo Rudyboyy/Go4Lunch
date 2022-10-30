@@ -11,4 +11,9 @@
     <color name="red">#ce0a24</color>
     <color name="background_color">#EBEFF0</color>
     <color name="google_red">#DB4437</color>
+    <color name="orange">#fc3f1b</color>
+    <color name="orange_dark">#b50504</color>
+    <color name="green">#5cf19e</color>
+    <color name="grey">#B7B7B7</color>
+    <color name="transparent">#7F000000</color>
 </resources>

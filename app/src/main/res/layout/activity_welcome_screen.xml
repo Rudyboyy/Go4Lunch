@@ -4,27 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WelcomeScreen">
+    tools:context=".ui.WelcomeScreen">
 
     <ImageView
         android:id="@+id/wallPaper"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        tools:srcCompat="@color/black"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/table_with_food_friends_clinking_2160284"/>
+<!--    todo retirer le background a l'image-->
 
     <ImageView
         android:id="@+id/logo"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="2"
-        app:srcCompat="@drawable/ic_baseline_lunch_dining_24"
         app:layout_constraintBottom_toTopOf="@id/appName"
+        app:layout_constraintDimensionRatio="2"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@drawable/ic_baseline_lunch_dining_24" />
 
     <TextView
         android:id="@+id/appName"
@@ -33,8 +35,8 @@
         android:layout_marginBottom="0dp"
         android:text="@string/app_name"
         android:textColor="@color/white"
-        android:textStyle="bold"
         android:textSize="72sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/slogan"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
@@ -46,26 +48,26 @@
         android:text="@string/slogan"
         android:textColor="@color/white"
         android:textSize="12sp"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/fcbButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
         android:layout_marginStart="40dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="40dp"
+        android:backgroundTint="@color/fcb_blue"
         android:padding="15dp"
         android:text="Sign in with Facebook   "
         android:textAllCaps="false"
         app:icon="@drawable/ic_baseline_lunch_dining_24"
-        android:backgroundTint="@color/fcb_blue"
-        app:layout_constraintTop_toBottomOf="@id/slogan"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/slogan" />
 
     <!--todo    arrondir les angles des boutons +text en stringRessource(et centrer le text dans le bouton sans l'espace?) -->
     <!--    + rapprocher entre eux les 2 text view et les logo + trouver une image de fond-->
@@ -74,16 +76,16 @@
         android:id="@+id/googleButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="40dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="40dp"
+        android:backgroundTint="@color/google_red"
         android:padding="15dp"
         android:text="Sign in with Google    "
         android:textAllCaps="false"
         app:icon="@drawable/ic_baseline_lunch_dining_24"
-        android:backgroundTint="@color/google_red"
-        app:layout_constraintTop_toBottomOf="@id/fcbButton"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fcbButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,4 +13,27 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/orange</item>
+        <item name="colorPrimaryDark">@color/orange</item>
+        <item name="colorPrimaryVariant">@color/orange_dark</item>
+        <item name="android:statusBarColor">@color/orange_dark</item>
+        <item name="toolbarStyle">@color/orange</item>
+<!--        <item name="selected">@color/green</item>-->
+<!--        <item name="iconApp">@color/white</item>-->
+<!--        <item name="titleTextColor">@color/white</item>-->
+    </style>
+
+    <style name="LoginTheme" parent="Theme.MaterialComponents.DayNight">
+        <item name="colorPrimary">@color/orange</item>
+        <item name="colorPrimaryDark">@color/orange</item>
+        <item name="colorPrimaryVariant">@android:color/darker_gray</item>
+        <item name="android:statusBarColor">@android:color/darker_gray</item>
+        <item name="windowNoTitle">true</item>
+<!--        <item name="toolbarStyle">@color/orange</item>-->
+<!--        <item name="selected">@color/green</item>-->
+<!--        <item name="iconApp">@color/white</item>-->
+<!--        <item name="titleTextColor">@color/white</item>-->
+    </style>
 </resources>
