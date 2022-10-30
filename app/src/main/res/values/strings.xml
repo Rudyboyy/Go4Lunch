@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Go4Lunch</string>
+    <string name="map">Map</string>
+    <string name="restaurant">Restaurant</string>
+    <string name="workmates">Workmates</string>
+    <string name="slogan">find a nice restaurant and invite your co-workers for lunch!</string>
+    <string name="error_unknown_error">An unknown error occurred</string>
+    <string name="error_no_internet">Network unavailable</string>
+    <string name="connection_succeed">Login successful!</string>
+    <string name="error_authentication_canceled">Login aborted</string>
+    <string name="facebook_application_id">1189461841954135</string>
+    <string name="fb_login_protocol_scheme">fb1189461841954135</string>
 </resources>
