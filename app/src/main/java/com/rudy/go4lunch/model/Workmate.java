@@ -24,10 +24,10 @@ public class Workmate {
     }
 
     public static List<Workmate> DUMMY_WORKMATES = Arrays.asList(
-            new Workmate("Scarlett", R.drawable.circle, Restaurant.DUMMY_RESTAURANTS.get(0), true),
-            new Workmate("Hugh", R.drawable.circle, Restaurant.DUMMY_RESTAURANTS.get(1), true),
-            new Workmate("Nana", R.drawable.circle, Restaurant.DUMMY_RESTAURANTS.get(2), true),
-            new Workmate("Godfrey", R.drawable.circle, Restaurant.DUMMY_RESTAURANTS.get(3), false));
+            new Workmate("Scarlett", R.drawable.user_profile, Restaurant.DUMMY_RESTAURANTS.get(0), true),
+            new Workmate("Hugh", R.drawable.user_profile, Restaurant.DUMMY_RESTAURANTS.get(1), true),
+            new Workmate("Nana", R.drawable.user_profile, Restaurant.DUMMY_RESTAURANTS.get(2), true),
+            new Workmate("Godfrey", R.drawable.user_profile, Restaurant.DUMMY_RESTAURANTS.get(3), false));
 
     public static List<Workmate> getWorkmates() {
         return new ArrayList<>(DUMMY_WORKMATES);

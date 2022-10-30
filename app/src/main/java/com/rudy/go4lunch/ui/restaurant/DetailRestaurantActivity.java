@@ -2,6 +2,7 @@ package com.rudy.go4lunch.ui.restaurant;
 
 import static com.rudy.go4lunch.ui.restaurant.RestaurantsFragment.RESTAURANT_INFO;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -23,9 +24,9 @@ import java.util.ArrayList;
 public class DetailRestaurantActivity extends AppCompatActivity {
 
     ActivityDetailRestaurantBinding binding;
+    Restaurant mRestaurant;
     private RecyclerView mRecyclerView;
     private ArrayList<Workmate> workmates;
-    Restaurant mRestaurant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +56,10 @@ public class DetailRestaurantActivity extends AppCompatActivity {
         workmates = new ArrayList<>(Workmate.getWorkmates());
     }
 
+    @SuppressLint("SetTextI18n")
     public void setRestaurant() {
         mRestaurant = (Restaurant) getIntent().getSerializableExtra(RESTAURANT_INFO);
         binding.restaurantName.setText(mRestaurant.getName());
-        // todo finir // marche pas
+        binding.address.setText(mRestaurant.getFoodStyle() + " restaurant - " + mRestaurant.getAddress());
     }
 }
