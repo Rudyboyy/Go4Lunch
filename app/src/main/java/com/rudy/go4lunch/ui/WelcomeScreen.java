@@ -28,7 +28,6 @@ public class WelcomeScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.LoginTheme);
 //        Objects.requireNonNull(getSupportActionBar()).hide();
         initUi();
     }

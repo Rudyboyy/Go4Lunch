@@ -16,7 +16,6 @@
         app:layout_constraintTop_toTopOf="parent"
         android:scaleType="centerCrop"
         android:src="@drawable/table_with_food_friends_clinking_2160284"/>
-<!--    todo retirer le background a l'image-->
 
     <ImageView
         android:id="@+id/logo"
@@ -68,9 +67,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/slogan" />
-
-    <!--todo    arrondir les angles des boutons +text en stringRessource(et centrer le text dans le bouton sans l'espace?) -->
-    <!--    + rapprocher entre eux les 2 text view et les logo + trouver une image de fond-->
 
     <Button
         android:id="@+id/googleButton"
