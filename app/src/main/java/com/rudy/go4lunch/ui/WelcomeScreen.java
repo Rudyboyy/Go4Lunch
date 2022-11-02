@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.databinding.ActivityWelcomeScreenBinding;
+import com.rudy.go4lunch.manager.UserManager;
 
 import java.util.Collections;
 import java.util.List;
@@ -27,6 +28,7 @@ import java.util.List;
 public class WelcomeScreen extends AppCompatActivity {
 
     ActivityWelcomeScreenBinding binding;
+    private UserManager userManager = UserManager.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +82,8 @@ public class WelcomeScreen extends AppCompatActivity {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             // ...
             showSnackBar(getString(R.string.connection_succeed));
+            Intent mainActivityIntent = new Intent(this, MainActivity.class);
+            this.startActivity(mainActivityIntent);
             finish();
         } else {
             if (response == null) {
