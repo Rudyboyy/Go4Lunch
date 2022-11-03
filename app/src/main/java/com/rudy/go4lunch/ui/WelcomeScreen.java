@@ -5,30 +5,34 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.annotation.Nullable;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.IdpResponse;
+import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.databinding.ActivityWelcomeScreenBinding;
+import com.rudy.go4lunch.manager.UserManager;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 public class WelcomeScreen extends AppCompatActivity {
 
     ActivityWelcomeScreenBinding binding;
-    private static final int RC_SIGN_IN = 123;
+    private UserManager userManager = UserManager.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        Objects.requireNonNull(getSupportActionBar()).hide();
         initUi();
     }
 
@@ -40,81 +44,58 @@ public class WelcomeScreen extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        binding.googleButton.setOnClickListener(view -> {
-            startSignInActivity();
+        startSignWithActivity(binding.googleButton);
+        startSignWithActivity(binding.fcbButton);
+    }
+
+    private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
+            new FirebaseAuthUIActivityResultContract(),
+            this::onSignInResult
+    );
+
+
+    private void startSignWithActivity(View view) {
+        view.setOnClickListener(view1 -> {
+            List<AuthUI.IdpConfig> providers = null;
+            if (view == binding.googleButton) {
+                providers = Collections.singletonList(
+                        new AuthUI.IdpConfig.GoogleBuilder().build());
+            } else if (view == binding.fcbButton) {
+                providers = Collections.singletonList(
+                        new AuthUI.IdpConfig.FacebookBuilder().build());
+            }
+
+            assert providers != null;
+            Intent signInIntent = AuthUI.getInstance()
+                    .createSignInIntentBuilder()
+                    .setAvailableProviders(providers)
+                    .build();
+            signInLauncher.launch(signInIntent);
         });
-        binding.fcbButton.setOnClickListener(view -> {
-            signWithFcb();
-        });
     }
 
-    private void getInstanceAuthUI(List<AuthUI.IdpConfig> provider) {
-        AuthUI.getInstance()
-                .createSignInIntentBuilder()
-                .setAvailableProviders(provider)
-                .build();
-    }
-
-    //todo besoin d'etre optimisé
-    private void signWithFcb() {
-        List<AuthUI.IdpConfig> fcbProvider =
-                Collections.singletonList(new AuthUI.IdpConfig.FacebookBuilder().build());
-
-        startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(fcbProvider)
-                        .build(),
-                RC_SIGN_IN);
-    }
-
-    //todo besoin d'etre optimisé
-    private void startSignInActivity() {
-        List<AuthUI.IdpConfig> googleProvider =
-                Collections.singletonList(new AuthUI.IdpConfig.GoogleBuilder().build());
-        // todo                     ou
-//        List<AuthUI.IdpConfig> providers = Arrays.asList(
-//                new AuthUI.IdpConfig.GoogleBuilder().build(),
-//                new AuthUI.IdpConfig.FacebookBuilder().build());
-
-        startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(googleProvider)
-                        .setIsSmartLockEnabled(true, false)
-                        .build(),
-                RC_SIGN_IN);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        this.handleResponseAfterSignIn(requestCode, resultCode, data);
+    private void onSignInResult(@NonNull FirebaseAuthUIAuthenticationResult result) {
+        IdpResponse response = result.getIdpResponse();
+        if (result.getResultCode() == RESULT_OK) {
+            showSnackBar(getString(R.string.connection_succeed));
+            Intent mainActivityIntent = new Intent(this, MainActivity.class);
+            this.startActivity(mainActivityIntent);
+            finish();
+        } else {
+            if (response == null) {
+                showSnackBar(getString(R.string.error_authentication_canceled));
+            } else if (response.getError() != null) {
+                if (response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
+                    showSnackBar(getString(R.string.error_no_internet));
+                } else if (response.getError().getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
+                    showSnackBar(getString(R.string.error_unknown_error));
+                }
+            }
+        }
     }
 
     private void showSnackBar(String message) {
         Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_SHORT).show();
-    }
-
-    private void handleResponseAfterSignIn(int requestCode, int resultCode, Intent data) {
-        IdpResponse response = IdpResponse.fromResultIntent(data);
-        if (requestCode == RC_SIGN_IN) {
-            if (resultCode == RESULT_OK) {
-//                userManager.createUser();
-                showSnackBar(getString(R.string.connection_succeed));
-                finish();
-            } else {
-                if (response == null) {
-                    showSnackBar(getString(R.string.error_authentication_canceled));
-                } else if (response.getError() != null) {
-                    if (response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
-                        showSnackBar(getString(R.string.error_no_internet));
-                    } else if (response.getError().getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
-                        showSnackBar(getString(R.string.error_unknown_error));
-                    }
-                }
-            }
-        }
     }
 
     public static void navigate(Activity activity) {

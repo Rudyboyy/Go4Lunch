@@ -1,11 +1,15 @@
 package com.rudy.go4lunch.ui;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -18,10 +22,16 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseUser;
 import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.databinding.ActivityMainBinding;
+import com.rudy.go4lunch.databinding.NavHeaderBinding;
+import com.rudy.go4lunch.manager.UserManager;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -29,12 +39,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+    private UserManager userManager = UserManager.getInstance();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initUi();
         setUpLogin();
+        initUi();
     }
 
     @Override
@@ -54,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initBottomNavigationView();
         initDrawerLayout();
         initMenuNavigationView();
+        updateUIWithUserData();
     }
 
     private void initBottomNavigationView() {
@@ -62,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 R.id.navigation_map, R.id.navigation_restaurant, R.id.navigation_workmate)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);//todo enleve le drawer quand on swipe
         NavigationUI.setupWithNavController(navView, navController);
     }
 
@@ -74,7 +87,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void setUpLogin() {
-        WelcomeScreen.navigate(MainActivity.this);
+        if (!userManager.isCurrentUserLogged()) {
+            WelcomeScreen.navigate(MainActivity.this);
+            finish();
+        }
     }
 
     private void initToolbar() {
@@ -101,15 +117,64 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (id) {
             case R.id.activity_main_drawer_lunch:
+                showLunch();
                 break;
             case R.id.activity_main_drawer_settings:
+                showSettings();
                 break;
             case R.id.activity_main_drawer_logout:
+                logOut();
                 break;
             default:
                 break;
         }
         this.drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void showLunch() {
+        Snackbar.make(binding.getRoot(), "You didn't choose a restaurant yet!", Snackbar.LENGTH_SHORT).show();
+    }
+
+    private void showSettings() {
+        Intent settingsActivityIntent = new Intent(MainActivity.this, SettingsActivity.class);
+        this.startActivity(settingsActivityIntent);
+    }
+
+    private void  logOut() {
+        userManager.signOut(this).addOnSuccessListener(Avoid -> {
+           WelcomeScreen.navigate(this);
+           finish();
+        });
+    }
+
+    private void updateUIWithUserData() {
+        if(userManager.isCurrentUserLogged()){
+            FirebaseUser user = userManager.getCurrentUser();
+
+            if(user.getPhotoUrl() != null){
+                setProfilePicture(user.getPhotoUrl());
+            }
+            setTextUserData(user);
+        }
+    }
+
+    private void setProfilePicture(Uri profilePictureUrl) {
+        View headerView = binding.navigationView.getHeaderView(0);
+        NavHeaderBinding headerBinding = NavHeaderBinding.bind(headerView);
+        ImageView profilePicture = headerBinding.avatar;
+        Glide.with(this)
+                .load(profilePictureUrl)
+                .apply(RequestOptions.circleCropTransform())
+                .into(profilePicture);
+    }
+
+    private void setTextUserData(FirebaseUser user) {
+        View headerView = binding.navigationView.getHeaderView(0);
+        NavHeaderBinding headerBinding = NavHeaderBinding.bind(headerView);
+        String email = TextUtils.isEmpty(user.getEmail()) ? getString(R.string.info_no_email_found) : user.getEmail();
+        String username = TextUtils.isEmpty(user.getDisplayName()) ? getString(R.string.info_no_username_found) : user.getDisplayName();
+        headerBinding.name.setText(username);
+        headerBinding.email.setText(email);
     }
 }
