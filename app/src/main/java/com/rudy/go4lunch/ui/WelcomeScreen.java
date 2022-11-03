@@ -33,7 +33,6 @@ public class WelcomeScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        Objects.requireNonNull(getSupportActionBar()).hide();
         initUi();
     }
 
@@ -78,9 +77,6 @@ public class WelcomeScreen extends AppCompatActivity {
     private void onSignInResult(@NonNull FirebaseAuthUIAuthenticationResult result) {
         IdpResponse response = result.getIdpResponse();
         if (result.getResultCode() == RESULT_OK) {
-            // Successfully signed in
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            // ...
             showSnackBar(getString(R.string.connection_succeed));
             Intent mainActivityIntent = new Intent(this, MainActivity.class);
             this.startActivity(mainActivityIntent);

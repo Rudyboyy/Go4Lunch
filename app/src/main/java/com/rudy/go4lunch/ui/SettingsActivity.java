@@ -1,11 +1,10 @@
 package com.rudy.go4lunch.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 
-import com.rudy.go4lunch.databinding.ActivityMainBinding;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.rudy.go4lunch.databinding.ActivitySettingsBinding;
 
 public class SettingsActivity extends AppCompatActivity {
