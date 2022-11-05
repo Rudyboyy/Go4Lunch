@@ -69,6 +69,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         updateUIWithUserData();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setUpLogin();
+        getUserData();
+    }
+
     private void initBottomNavigationView() {
         BottomNavigationView navView = binding.navView;
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
@@ -156,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 setProfilePicture(user.getPhotoUrl());
             }
             setTextUserData(user);
+            getUserData();
         }
     }
 
@@ -176,5 +184,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String username = TextUtils.isEmpty(user.getDisplayName()) ? getString(R.string.info_no_username_found) : user.getDisplayName();
         headerBinding.name.setText(username);
         headerBinding.email.setText(email);
+    }
+
+    private void getUserData(){
+        View headerView = binding.navigationView.getHeaderView(0);
+        NavHeaderBinding headerBinding = NavHeaderBinding.bind(headerView);
+        userManager.getUserData().addOnSuccessListener(user -> {
+            String username = TextUtils.isEmpty(user.getUsername()) ? getString(R.string.info_no_username_found) : user.getUsername();
+            headerBinding.name.setText(username);
+        });
     }
 }

@@ -78,6 +78,7 @@ public class WelcomeScreen extends AppCompatActivity {
         IdpResponse response = result.getIdpResponse();
         if (result.getResultCode() == RESULT_OK) {
             showSnackBar(getString(R.string.connection_succeed));
+            userManager.createUser();
             Intent mainActivityIntent = new Intent(this, MainActivity.class);
             this.startActivity(mainActivityIntent);
             finish();

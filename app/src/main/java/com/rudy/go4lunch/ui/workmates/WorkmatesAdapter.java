@@ -56,7 +56,7 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
         @SuppressLint({"SetTextI18n", "ResourceAsColor"})
         public void displayWorkmates(Workmate workmates) {
             avatar.setImageResource(workmates.getAvatar());
-            if (workmates.isChoose()) {
+            if (workmates.isChose()) {
                 workmate.setText(workmates.getName() + " is eating " + workmates.getRestaurant().getFoodStyle() + " (" + workmates.getRestaurant().getName() + ")");
             } else {
                 workmate.setText(workmates.getName() + " hasn't decided yet");
