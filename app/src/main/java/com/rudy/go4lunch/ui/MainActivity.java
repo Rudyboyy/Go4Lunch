@@ -78,11 +78,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void initBottomNavigationView() {
         BottomNavigationView navView = binding.navView;
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_map, R.id.navigation_restaurant, R.id.navigation_workmate)
-                .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);//todo enleve le drawer quand on swipe
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration
+                .Builder(
+                R.id.navigation_map, R.id.navigation_restaurant, R.id.navigation_workmate)
+                .setOpenableLayout(binding.mainDrawerLayout)
+                .build();
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
     }
 
@@ -148,18 +150,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.startActivity(settingsActivityIntent);
     }
 
-    private void  logOut() {
+    private void logOut() {
         userManager.signOut(this).addOnSuccessListener(Avoid -> {
-           WelcomeScreen.navigate(this);
-           finish();
+            WelcomeScreen.navigate(this);
+            finish();
         });
     }
 
     private void updateUIWithUserData() {
-        if(userManager.isCurrentUserLogged()){
+        if (userManager.isCurrentUserLogged()) {
             FirebaseUser user = userManager.getCurrentUser();
 
-            if(user.getPhotoUrl() != null){
+            if (user.getPhotoUrl() != null) {
                 setProfilePicture(user.getPhotoUrl());
             }
             setTextUserData(user);
@@ -186,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         headerBinding.email.setText(email);
     }
 
-    private void getUserData(){
+    private void getUserData() {
         View headerView = binding.navigationView.getHeaderView(0);
         NavHeaderBinding headerBinding = NavHeaderBinding.bind(headerView);
         userManager.getUserData().addOnSuccessListener(user -> {
