@@ -11,7 +11,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_margin="10dp"
-        android:src="@drawable/ic_baseline_supervisor_account_24"
+        android:src="@drawable/com_facebook_profile_picture_blank_portrait"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

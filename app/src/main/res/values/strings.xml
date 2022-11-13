@@ -20,4 +20,8 @@
     <!-- LOGIN ACTIVITY -->
     <string name="info_no_email_found">No email address found</string>
     <string name="info_no_username_found">No username found</string>
+
+    <string name="popup_message_confirmation_delete_account">Are you sure you want to delete your account?</string>
+    <string name="popup_message_choice_yes">Yes</string>
+    <string name="popup_message_choice_no">No</string>
 </resources>
