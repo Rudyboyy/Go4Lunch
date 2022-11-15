@@ -49,6 +49,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
+
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
@@ -60,5 +61,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
                     }
                 });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        onMapReady(mMap);
     }
 }
