@@ -2,6 +2,7 @@ package com.rudy.go4lunch.ui.map;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.databinding.FragmentMapBinding;
+import com.rudy.go4lunch.repository.RestaurantRepository;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
@@ -31,6 +36,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         locationClient = LocationServices.getFusedLocationProviderClient(requireContext());
+        RestaurantRepository restaurantRepository = new RestaurantRepository();
+        restaurantRepository.getGooglePlacesRestaurants()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((restaurantDtos, throwable) -> {
+                    Log.v("restaurant", restaurantDtos.toString());
+                    if (throwable != null) {
+                        Log.v("throwable", throwable.toString());
+                    }
+                });
     }
 
     @Override
