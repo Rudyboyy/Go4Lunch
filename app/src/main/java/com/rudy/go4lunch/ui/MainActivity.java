@@ -1,7 +1,9 @@
 package com.rudy.go4lunch.ui;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -15,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
@@ -32,6 +35,7 @@ import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.databinding.ActivityMainBinding;
 import com.rudy.go4lunch.databinding.NavHeaderBinding;
 import com.rudy.go4lunch.manager.UserManager;
+import com.rudy.go4lunch.ui.dialog.PermissionDialogFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -41,10 +45,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NavigationView navigationView;
     private UserManager userManager = UserManager.getInstance();
 
+    private final static int REQUEST_CODE_UPDATE_LOCATION = 541;
+    private final static String DIALOG = "dialog";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestLocationPermission();
         setUpLogin();
         initUi();
     }
@@ -55,6 +62,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             this.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    private void requestLocationPermission() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                    },
+                    REQUEST_CODE_UPDATE_LOCATION
+            );
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_UPDATE_LOCATION) {
+            if (grantResults.length <= 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                PermissionDialogFragment permissionDialogFragment = new PermissionDialogFragment();
+                permissionDialogFragment.show(getSupportFragmentManager(), DIALOG);
+            }
         }
     }
 
@@ -78,11 +111,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void initBottomNavigationView() {
         BottomNavigationView navView = binding.navView;
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_map, R.id.navigation_restaurant, R.id.navigation_workmate)
-                .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);//todo enleve le drawer quand on swipe
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration
+                .Builder(
+                R.id.navigation_map, R.id.navigation_restaurant, R.id.navigation_workmate)
+                .setOpenableLayout(binding.mainDrawerLayout)
+                .build();
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
     }
 
@@ -148,18 +183,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.startActivity(settingsActivityIntent);
     }
 
-    private void  logOut() {
+    private void logOut() {
         userManager.signOut(this).addOnSuccessListener(Avoid -> {
-           WelcomeScreen.navigate(this);
-           finish();
+            WelcomeScreen.navigate(this);
+            finish();
         });
     }
 
     private void updateUIWithUserData() {
-        if(userManager.isCurrentUserLogged()){
+        if (userManager.isCurrentUserLogged()) {
             FirebaseUser user = userManager.getCurrentUser();
 
-            if(user.getPhotoUrl() != null){
+            if (user.getPhotoUrl() != null) {
                 setProfilePicture(user.getPhotoUrl());
             }
             setTextUserData(user);
@@ -186,7 +221,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         headerBinding.email.setText(email);
     }
 
-    private void getUserData(){
+    private void getUserData() {
         View headerView = binding.navigationView.getHeaderView(0);
         NavHeaderBinding headerBinding = NavHeaderBinding.bind(headerView);
         userManager.getUserData().addOnSuccessListener(user -> {

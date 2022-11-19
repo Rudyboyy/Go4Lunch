@@ -69,6 +69,7 @@ public class WelcomeScreen extends AppCompatActivity {
             Intent signInIntent = AuthUI.getInstance()
                     .createSignInIntentBuilder()
                     .setAvailableProviders(providers)
+                    .setIsSmartLockEnabled(false)
                     .build();
             signInLauncher.launch(signInIntent);
         });
@@ -78,10 +79,14 @@ public class WelcomeScreen extends AppCompatActivity {
         IdpResponse response = result.getIdpResponse();
         if (result.getResultCode() == RESULT_OK) {
             showSnackBar(getString(R.string.connection_succeed));
-            userManager.createUser();
-            Intent mainActivityIntent = new Intent(this, MainActivity.class);
-            this.startActivity(mainActivityIntent);
-            finish();
+            userManager.getUserData().addOnSuccessListener(user -> {
+                if (user == null) {
+                    userManager.createUser();
+                }
+                Intent mainActivityIntent = new Intent(this, MainActivity.class);
+                this.startActivity(mainActivityIntent);
+                finish();
+            });
         } else {
             if (response == null) {
                 showSnackBar(getString(R.string.error_authentication_canceled));
