@@ -1,11 +1,7 @@
 package com.rudy.go4lunch.ui.restaurant;
 
-import static com.rudy.go4lunch.ui.restaurant.RestaurantsFragment.RESTAURANT_INFO;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,17 +13,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.model.Restaurant;
+import com.rudy.go4lunch.model.RestaurantDto;
 
-import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 
 public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.ViewHolder> {
 
-    private ArrayList<Restaurant> mRestaurants;
     private final Context mContext;
+    private final List<RestaurantDto> mRestaurantDtoList;
 
-    public RestaurantsAdapter(ArrayList<Restaurant> restaurants, Context context) {
-        this.mRestaurants = restaurants;
+    public RestaurantsAdapter(List<RestaurantDto> restaurants, Context context) {
+        this.mRestaurantDtoList = restaurants;
         this.mContext = context;
     }
 
@@ -41,19 +37,18 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull RestaurantsAdapter.ViewHolder holder, int position) {
-        Restaurant restaurant = mRestaurants.get(position);
-        holder.displayRestaurants(restaurant);
+        holder.displayRestaurants(mRestaurantDtoList.get(position));
 
-        holder.itemView.setOnClickListener(view -> {
-            Intent detailRestaurantActivityIntent = new Intent(mContext, DetailRestaurantActivity.class);
-            detailRestaurantActivityIntent.putExtra(RESTAURANT_INFO, restaurant);
-            mContext.startActivity(detailRestaurantActivityIntent);
-        });
+//        holder.itemView.setOnClickListener(view -> {
+//            Intent detailRestaurantActivityIntent = new Intent(mContext, DetailRestaurantActivity.class);
+//            detailRestaurantActivityIntent.putExtra(RESTAURANT_INFO, restaurant);
+//            mContext.startActivity(detailRestaurantActivityIntent);
+//        });
     }
 
     @Override
     public int getItemCount() {
-        return mRestaurants.size();
+        return mRestaurantDtoList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -97,6 +92,10 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
                     starRate3.setImageResource(R.drawable.ic_baseline_star_24);
                     break;
             }
+        }
+
+        public void displayRestaurants(RestaurantDto restaurantDto) {
+            name.setText(restaurantDto.getName());
         }
     }
 }

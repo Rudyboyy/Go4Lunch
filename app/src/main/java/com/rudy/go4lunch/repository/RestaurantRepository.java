@@ -1,8 +1,16 @@
 package com.rudy.go4lunch.repository;
 
+import android.location.Location;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.rudy.go4lunch.BuildConfig;
+import com.rudy.go4lunch.model.RestaurantDto;
 import com.rudy.go4lunch.model.dto.RestaurantsWrapperDto;
 import com.rudy.go4lunch.service.GooglePlacesRestaurantsApi;
+
+import java.util.List;
 
 import io.reactivex.Single;
 import okhttp3.OkHttpClient;
@@ -16,14 +24,22 @@ public class RestaurantRepository {
     private Retrofit retrofit;
 
     private GooglePlacesRestaurantsApi RESTAURANTS_SERVICE;
+    private static final String RESTAURANT = "restaurant";
+    private static final int RADIUS = 1500;
+    private static final String PLACES_API_KEY = BuildConfig.PLACES_API_KEY;
+    private final MutableLiveData<List<RestaurantDto>> restaurantListLiveData = new MutableLiveData<>();
 
-    public Single<RestaurantsWrapperDto> getGooglePlacesRestaurants() {
+    public Single<RestaurantsWrapperDto> getGooglePlacesRestaurants(Location location) {
         return RESTAURANTS_SERVICE.getNearbySearch(
-                "47.899100%2C1.909360",
-                "restaurant",
-                BuildConfig.PLACES_API_KEY,
-                1500
+                location.getLatitude() + "," + location.getLongitude(),
+                RESTAURANT,
+                PLACES_API_KEY,
+                RADIUS
         );
+    }
+
+    public LiveData<List<RestaurantDto>> getRestaurants() {
+        return restaurantListLiveData;
     }
 
     public RestaurantRepository() {

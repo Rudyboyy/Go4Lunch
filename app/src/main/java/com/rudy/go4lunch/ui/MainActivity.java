@@ -20,7 +20,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -37,7 +36,6 @@ import com.rudy.go4lunch.databinding.ActivityMainBinding;
 import com.rudy.go4lunch.databinding.NavHeaderBinding;
 import com.rudy.go4lunch.manager.UserManager;
 import com.rudy.go4lunch.ui.dialog.PermissionDialogFragment;
-import com.rudy.go4lunch.viewmodel.MainViewModel;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -46,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private UserManager userManager = UserManager.getInstance();
-    private MainViewModel mMainViewModel;
 
     private final static int REQUEST_CODE_UPDATE_LOCATION = 541;
     private final static String DIALOG = "dialog";
@@ -103,10 +100,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initDrawerLayout();
         initMenuNavigationView();
         updateUIWithUserData();
-    }
-
-    private void initViewModel() {
-        mMainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
     }
 
     @Override
