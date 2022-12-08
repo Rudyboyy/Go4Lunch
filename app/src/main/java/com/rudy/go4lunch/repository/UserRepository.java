@@ -21,7 +21,7 @@ public class UserRepository {
     private static final String USERNAME_FIELD = "username";
     private static final String CHOSE_FIELD = "chose";
 
-    private UserRepository() { }
+    public UserRepository() { }
 
     public static UserRepository getInstance() {
         UserRepository result = instance;
