@@ -19,7 +19,7 @@ public class RestaurantDto {
     String name;
 
     @SerializedName("rating")
-    double ratting;
+    double rating;
 
     @SerializedName("vicinity")
     String address;
@@ -30,11 +30,11 @@ public class RestaurantDto {
     @SerializedName("photos")
     List<PhotoDto> photos;
 
-    public RestaurantDto(GeometryDto geometry, OpeningHoursDto openingHours, String name, double ratting, String address, String placeId, List<PhotoDto> photos) {
+    public RestaurantDto(GeometryDto geometry, OpeningHoursDto openingHours, String name, double rating, String address, String placeId, List<PhotoDto> photos) {
         this.geometry = geometry;
         this.openingHours = openingHours;
         this.name = name;
-        this.ratting = ratting;
+        this.rating = rating;
         this.address = address;
         this.placeId = placeId;
         this.photos = photos;
@@ -64,12 +64,12 @@ public class RestaurantDto {
         this.name = name;
     }
 
-    public double getRatting() {
-        return ratting;
+    public double getRating() {
+        return rating;
     }
 
-    public void setRatting(double ratting) {
-        this.ratting = ratting;
+    public void setRating(double ratting) {
+        this.rating = ratting;
     }
 
     public String getAddress() {
