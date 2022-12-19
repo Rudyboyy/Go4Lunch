@@ -1,6 +1,8 @@
 package com.rudy.go4lunch.ui.workmates;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,17 +12,24 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.firebase.auth.FirebaseUser;
+import com.rudy.go4lunch.BuildConfig;
 import com.rudy.go4lunch.R;
+import com.rudy.go4lunch.manager.UserManager;
+import com.rudy.go4lunch.model.User;
 import com.rudy.go4lunch.model.Workmate;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.ViewHolder> {
 
-    private ArrayList<Workmate> mWorkmates;
+    private List<User> mUsers;
 
-    public WorkmatesAdapter(ArrayList<Workmate> workmates) {
-        this.mWorkmates = workmates;
+    public WorkmatesAdapter(List<User> users) {
+        this.mUsers = users;
     }
 
     @NonNull
@@ -33,19 +42,20 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull WorkmatesAdapter.ViewHolder holder, int position) {
-        Workmate workmates = mWorkmates.get(position);
-        holder.displayWorkmates(workmates);
+        User user = mUsers.get(position);
+        holder.displayWorkmates(user);
     }
 
     @Override
     public int getItemCount() {
-        return mWorkmates.size();
+        return mUsers.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public final ImageView avatar;
         public final TextView workmate;
+        private UserManager userManager = UserManager.getInstance();
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -54,18 +64,22 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
         }
 
         @SuppressLint({"SetTextI18n", "ResourceAsColor"})
-        public void displayWorkmates(Workmate workmates) {
-            avatar.setImageResource(workmates.getAvatar());
-            if (workmates.isChose()) {
-                workmate.setText(workmates.getName() + " is eating " + workmates.getRestaurant().getFoodStyle() + " (" + workmates.getRestaurant().getName() + ")");
+        public void displayWorkmates(User user) {
+            if (user.getChoice()) {
+                workmate.setText(user.getUsername() + " is eating ");// + " (" + user.getRestaurant().getName() + ")");
             } else {
-                workmate.setText(workmates.getName() + " hasn't decided yet");
+                workmate.setText(user.getUsername() + " hasn't decided yet");
 
-//                todo marche pas
-//                 workmate.setTextColor(R.color.grey);
-
-                //todo metre en italic
+                 workmate.setTextColor(Color.GRAY);
+                 workmate.setTypeface(workmate.getTypeface(), Typeface.ITALIC);
             }
-        }
+
+                if (user.getUrlPicture() != null) {
+                    Glide.with(avatar.getContext())
+                            .load(user.getUrlPicture())
+                            .apply(RequestOptions.circleCropTransform())
+                            .into(avatar);
+                }
+            }
     }
 }

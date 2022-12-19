@@ -2,7 +2,9 @@ package com.rudy.go4lunch.model.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-public class LocationDto {
+import java.io.Serializable;
+
+public class LocationDto implements Serializable  {
 
     @SerializedName("lat")
     double latitude;

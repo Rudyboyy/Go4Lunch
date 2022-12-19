@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_restaurant"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingVertical="8dp">
@@ -17,35 +18,40 @@
 
     <TextView
         android:id="@+id/restaurant_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:lines="1"
         android:text="Le Zinc"
         android:textSize="14sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/item_list_picture" />
 
     <TextView
         android:id="@+id/address"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:lines="1"
         android:text="French - 12 rue du Faubourg poissonnière"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/schedule"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/restaurant_name" />
 
     <TextView
         android:id="@+id/schedule"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:text="Open until 2.30pm"
         android:textSize="10sp"
         android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="@id/item_list_picture"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -78,42 +84,25 @@
         app:layout_constraintTop_toBottomOf="@id/distance"
         app:srcCompat="@drawable/ic_baseline_person_24" />
 
-<!--    <ImageView-->
-<!--        android:id="@+id/rate_star_1"-->
-<!--        android:layout_width="18dp"-->
-<!--        android:layout_height="18dp"-->
-<!--        android:layout_marginEnd="5dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="@id/item_list_picture"-->
-<!--        app:layout_constraintEnd_toStartOf="@id/item_list_picture"-->
-<!--        tools:srcCompat="@drawable/ic_baseline_star_24" />-->
-
-<!--    <ImageView-->
-<!--        android:id="@+id/rate_star_2"-->
-<!--        android:layout_width="18dp"-->
-<!--        android:layout_height="18dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="@id/item_list_picture"-->
-<!--        app:layout_constraintEnd_toStartOf="@id/rate_star_1"-->
-<!--        tools:srcCompat="@drawable/ic_baseline_star_24" />-->
-
-<!--    <ImageView-->
-<!--        android:id="@+id/rate_star_3"-->
-<!--        android:layout_width="18dp"-->
-<!--        android:layout_height="18dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="@id/item_list_picture"-->
-<!--        app:layout_constraintEnd_toStartOf="@id/rate_star_2"-->
-<!--        tools:srcCompat="@drawable/ic_baseline_star_24" />-->
-
     <RatingBar
         android:id="@+id/ratingBar"
         style="@style/Widget.AppCompat.RatingBar.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="5dp"
-        android:theme="@style/RatingBar"
-        tools:rating="3"
         android:numStars="3"
+        android:theme="@style/RatingBar"
         app:layout_constraintBottom_toBottomOf="@id/item_list_picture"
-        app:layout_constraintEnd_toStartOf="@id/item_list_picture" />
+        app:layout_constraintEnd_toStartOf="@id/item_list_picture"
+        tools:rating="3" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.66" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

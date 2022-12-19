@@ -5,9 +5,10 @@ import com.rudy.go4lunch.model.dto.GeometryDto;
 import com.rudy.go4lunch.model.dto.OpeningHoursDto;
 import com.rudy.go4lunch.model.dto.PhotoDto;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class RestaurantDto {
+public class RestaurantDto implements Serializable {
 
     @SerializedName("geometry")
     GeometryDto geometry;
@@ -30,7 +31,10 @@ public class RestaurantDto {
     @SerializedName("photos")
     List<PhotoDto> photos;
 
-    public RestaurantDto(GeometryDto geometry, OpeningHoursDto openingHours, String name, double rating, String address, String placeId, List<PhotoDto> photos) {
+    @SerializedName("international_phone_number") //todo marche pas
+    String internationalPhoneNumber;
+
+    public RestaurantDto(GeometryDto geometry, OpeningHoursDto openingHours, String name, double rating, String address, String placeId, List<PhotoDto> photos, String internationalPhoneNumber) {
         this.geometry = geometry;
         this.openingHours = openingHours;
         this.name = name;
@@ -38,6 +42,7 @@ public class RestaurantDto {
         this.address = address;
         this.placeId = placeId;
         this.photos = photos;
+        this.internationalPhoneNumber = internationalPhoneNumber;
     }
 
     public GeometryDto getGeometry() {
@@ -94,5 +99,17 @@ public class RestaurantDto {
 
     public void setPhotos(List<PhotoDto> photos) {
         this.photos = photos;
+    }
+
+    public float getCollapseRating() {
+        return (float) ((rating / 5) * 3);
+    }
+
+    public String getInternationalPhoneNumber() {
+        return internationalPhoneNumber;
+    }
+
+    public void setInternationalPhoneNumber(String internationalPhoneNumber) {
+        this.internationalPhoneNumber = internationalPhoneNumber;
     }
 }

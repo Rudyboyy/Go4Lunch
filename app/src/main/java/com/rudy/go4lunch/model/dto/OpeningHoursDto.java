@@ -2,7 +2,9 @@ package com.rudy.go4lunch.model.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-public class OpeningHoursDto {
+import java.io.Serializable;
+
+public class OpeningHoursDto implements Serializable  {
 
     @SerializedName("open_now")
     boolean openNow;

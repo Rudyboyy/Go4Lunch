@@ -2,7 +2,9 @@ package com.rudy.go4lunch.model.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-public class GeometryDto {
+import java.io.Serializable;
+
+public class GeometryDto implements Serializable {
 
     @SerializedName("location")
     private LocationDto mLocationDto;

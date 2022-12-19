@@ -1,6 +1,7 @@
 package com.rudy.go4lunch.ui.restaurant;
 
 import android.annotation.SuppressLint;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class RestaurantsFragment extends Fragment implements ProcessRestaurantDto {
+public class RestaurantsFragment extends Fragment implements
+        ProcessRestaurantDto {
 
     private RecyclerView mRecyclerView;
     private List<RestaurantDto> mRestaurants = new ArrayList<>();
@@ -44,19 +46,29 @@ public class RestaurantsFragment extends Fragment implements ProcessRestaurantDt
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_restaurants, container, false);
         initList();
-        initRecyclerView(root);
+        getLocation(root);
         return root;
     }
 
-    private void initRecyclerView(View root) {
+    private void initRecyclerView(View root, Location location) {
         mRecyclerView = root.findViewById(R.id.recyclerview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(layoutManager);
-        RestaurantsAdapter mAdapter = new RestaurantsAdapter(mRestaurants, getActivity());
+        RestaurantsAdapter mAdapter = new RestaurantsAdapter(mRestaurants, getActivity(), location);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
                 layoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @SuppressLint({"MissingPermission", "CheckResult"})
+    public void getLocation(View root) { //todo faire une interface pour la location
+        locationClient.getLastLocation()
+                .addOnSuccessListener(requireActivity(), location -> {
+                    if (location != null) {
+                        initRecyclerView(root, location);
+                    }
+                });
     }
 
     @SuppressLint({"MissingPermission", "CheckResult"})
@@ -72,6 +84,7 @@ public class RestaurantsFragment extends Fragment implements ProcessRestaurantDt
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void processRestaurantDto(List<RestaurantDto> restaurantDtoList) {
+        mRestaurants.clear();
         mRestaurants.addAll(restaurantDtoList);
         Objects.requireNonNull(mRecyclerView.getAdapter()).notifyDataSetChanged();
     }
