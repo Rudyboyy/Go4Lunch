@@ -41,25 +41,31 @@ public class UserManager {
         return userRepository.signOut(context);
     }
 
-    public void createUser(){
+    public void createUser() {
         userRepository.createUser();
     }
 
-    public Task<User> getUserData(){
+    public Task<User> getUserData() {
         return userRepository.getUserData().continueWith(task -> task.getResult().toObject(User.class));
     }
 
-    public Task<Void> updateUsername(String username){
+    public Task<Void> updateUsername(String username) {
         return userRepository.updateUsername(username);
     }
 
-    public void updateChoice(Boolean chose){
-        userRepository.updateChoice(chose);
+//    public void updateBooking(Boolean booking) {
+//        userRepository.updateBooking(booking);
+//    }
+
+    public void updateBookedRestaurant(String bookedRestaurant, String placeId) {
+        userRepository.UpdateBookedRestaurant(bookedRestaurant, placeId);
     }
 
-    public Task<Void> deleteUser(Context context){
-        return userRepository.deleteUser(context).addOnCompleteListener(task -> {
-            userRepository.deleteUserFromFirestore();
-        });
+    public void cancelBooking() {
+        userRepository.cancelBooking();
+    }
+
+    public Task<Void> deleteUser(Context context) {
+        return userRepository.deleteUser(context).addOnCompleteListener(task -> userRepository.deleteUserFromFirestore());
     }
 }

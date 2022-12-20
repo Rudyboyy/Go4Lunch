@@ -4,29 +4,29 @@ import static com.rudy.go4lunch.ui.restaurant.RestaurantsFragment.RESTAURANT_INF
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseUser;
 import com.rudy.go4lunch.BuildConfig;
 import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.databinding.ActivityDetailRestaurantBinding;
 import com.rudy.go4lunch.manager.UserManager;
-import com.rudy.go4lunch.model.Restaurant;
 import com.rudy.go4lunch.model.RestaurantDto;
 import com.rudy.go4lunch.model.User;
 import com.rudy.go4lunch.model.Workmate;
 import com.rudy.go4lunch.ui.workmates.WorkmatesAdapter;
+import com.rudy.go4lunch.ui.workmates.WorkmatesBookingAdapter;
 import com.rudy.go4lunch.viewmodel.MainViewModel;
 
 import java.util.ArrayList;
@@ -44,13 +44,14 @@ public class DetailRestaurantActivity extends AppCompatActivity {
     String restaurantId;
     private MainViewModel mViewModel; //todo faire un detail viewmodel??
     private UserManager userManager = UserManager.getInstance();
+    private boolean isBooked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         initUi();
-//        initData();
+        initData();
         initRecyclerView();
         setRestaurant();
         binding.backButton.setOnClickListener(view -> this.finish());
@@ -66,16 +67,20 @@ public class DetailRestaurantActivity extends AppCompatActivity {
         mRecyclerView = binding.recyclerview;
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
-        WorkmatesAdapter mAdapter = new WorkmatesAdapter(users);
+        WorkmatesBookingAdapter mAdapter = new WorkmatesBookingAdapter(users);
         mRecyclerView.setAdapter(mAdapter);
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private void initData() { //todo init users who has booked
+    private void initData() {
         mViewModel.getDataBaseInstanceUser();
         mViewModel.getAllUsers().observe(this, users1 -> {
-            users.clear();
-            users.addAll(users1);
+            for (User user : users1) {
+                if (Objects.equals(user.getBookedRestaurantPlaceId(), mRestaurant.getPlaceId())) {
+                    users.clear();
+                    users.add(user);
+                }
+            }
             Objects.requireNonNull(mRecyclerView.getAdapter()).notifyDataSetChanged();
         });
     }
@@ -104,8 +109,20 @@ public class DetailRestaurantActivity extends AppCompatActivity {
 
 //        binding.likeButton.setOnClickListener();
 
-//        binding.floatingActionButton.setOnClickListener(view -> updateUserChoice());
-
+//        BOOKING BUTTON
+        binding.floatingActionButton.setOnClickListener(view -> {
+            if (userManager.isCurrentUserLogged()) {
+                userManager.getUserData().addOnSuccessListener(user -> {
+                    if (Objects.equals(user.getBookedRestaurantPlaceId(), mRestaurant.getPlaceId())) {
+                        binding.floatingActionButton.setBackgroundColor(Color.WHITE);
+                        userManager.cancelBooking();
+                    } else {
+                        binding.floatingActionButton.setBackgroundColor(Color.BLACK); //todo color doesn't change
+                        userManager.updateBookedRestaurant(mRestaurant.getName(), mRestaurant.getPlaceId());
+                    }
+                });
+            }
+        });
 
 
         binding.ratingBar.setRating(mRestaurant.getCollapseRating());
@@ -123,10 +140,17 @@ public class DetailRestaurantActivity extends AppCompatActivity {
 
     boolean choice;// = Boolean.parseBoolean(null);
 
-    private void updateUserChoice(){
-        if(userManager.isCurrentUserLogged()){
-//            userManager.getUserData().addOnSuccessListener(user -> user.setChoice(true));
-            userManager.updateChoice(!choice);
-        }
+    private void updateUIWithUserData() {
+//        userManager.updateBooking();
+    }
+
+    private void setBookingUserData(FirebaseUser user) {
+//        user.
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setRestaurant();
     }
 }

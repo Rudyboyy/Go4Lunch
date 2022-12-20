@@ -1,6 +1,5 @@
 package com.rudy.go4lunch.ui.workmates;
 
-import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -20,24 +19,25 @@ import com.rudy.go4lunch.model.User;
 
 import java.util.List;
 
-public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.ViewHolder> {
+public class WorkmatesBookingAdapter extends RecyclerView.Adapter<WorkmatesBookingAdapter.ViewHolder>{
 
     private List<User> mUsers;
 
-    public WorkmatesAdapter(List<User> users) {
+    public WorkmatesBookingAdapter(List<User> users) {
         this.mUsers = users;
     }
 
+
     @NonNull
     @Override
-    public WorkmatesAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public WorkmatesBookingAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_workmates, parent, false);
-        return new ViewHolder(view);
+        return new WorkmatesBookingAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull WorkmatesAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull WorkmatesBookingAdapter.ViewHolder holder, int position) {
         User user = mUsers.get(position);
         holder.displayWorkmates(user);
     }
@@ -46,34 +46,26 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
     public int getItemCount() {
         return mUsers.size();
     }
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public final ImageView avatar;
         public final TextView workmate;
+        private UserManager userManager = UserManager.getInstance();
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.avatar = itemView.findViewById(R.id.item_list_avatar);
             this.workmate = itemView.findViewById(R.id.workmate_text_view);
         }
-
-        @SuppressLint({"SetTextI18n", "ResourceAsColor"})
         public void displayWorkmates(User user) {
-            if (user.getBookedRestaurant() != null) {
-                workmate.setText(user.getUsername() + " is eating " + " (" + user.getBookedRestaurant() + ")");
-            } else {
-                workmate.setText(user.getUsername() + " hasn't decided yet");
-                workmate.setTextColor(Color.GRAY);
-                workmate.setTypeface(workmate.getTypeface(), Typeface.ITALIC);
-            }
+                workmate.setText(user.getUsername());
 
-                if (user.getUrlPicture() != null) {
-                    Glide.with(avatar.getContext())
-                            .load(user.getUrlPicture())
-                            .apply(RequestOptions.circleCropTransform())
-                            .into(avatar);
-                }
+            if (user.getUrlPicture() != null) {
+                Glide.with(avatar.getContext())
+                        .load(user.getUrlPicture())
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(avatar);
             }
+        }
     }
 }

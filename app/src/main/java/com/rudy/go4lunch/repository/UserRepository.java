@@ -1,9 +1,6 @@
 package com.rudy.go4lunch.repository;
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -14,9 +11,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.rudy.go4lunch.model.User;
@@ -30,7 +25,9 @@ public class UserRepository {
 
     private static final String COLLECTION_NAME = "users";
     private static final String USERNAME_FIELD = "username";
-    private static final String CHOSE_FIELD = "chose";
+//    private static final String BOOKING_FIELD = "booking";
+    private static final String BOOKED_RESTAURANT = "bookedRestaurant";
+    private static final String BOOKED_RESTAURANT_PLACE_ID = "bookedRestaurantPlaceId";
 
     private FirebaseFirestore database;
     private final MutableLiveData<List<User>> allUsers = new MutableLiveData<>();
@@ -84,8 +81,10 @@ public class UserRepository {
                 Task<DocumentSnapshot> userData = getUserData();
 
                 userData.addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.contains(CHOSE_FIELD)){
-                        userToCreate.setChoice((Boolean) documentSnapshot.get(CHOSE_FIELD));
+                    if (documentSnapshot.contains(BOOKED_RESTAURANT)) {
+                        userToCreate.setBookedRestaurant((String) documentSnapshot.get(BOOKED_RESTAURANT));
+                    } else if (documentSnapshot.contains(BOOKED_RESTAURANT_PLACE_ID)) {
+                        userToCreate.setBookedRestaurantPlaceId((String) documentSnapshot.get(BOOKED_RESTAURANT_PLACE_ID));
                     }
                     this.getUsersCollection().document(uid).set(userToCreate);
                 });
@@ -109,11 +108,27 @@ public class UserRepository {
                 return null;
             }
         }
+//
+//        public void updateBooking(Boolean booking) {
+//            String uid = this.getCurrentUserUID();
+//            if(uid != null){
+//                this.getUsersCollection().document(uid).update(BOOKING_FIELD, booking);
+//            }
+//        }
 
-        public void updateChoice(Boolean chose) {
+        public void UpdateBookedRestaurant(String bookedRestaurant, String placeId) {
             String uid = this.getCurrentUserUID();
             if(uid != null){
-                this.getUsersCollection().document(uid).update(CHOSE_FIELD, chose);
+                this.getUsersCollection().document(uid).update(BOOKED_RESTAURANT, bookedRestaurant);
+                this.getUsersCollection().document(uid).update(BOOKED_RESTAURANT_PLACE_ID, placeId);
+            }
+        }
+
+        public void cancelBooking() {
+            String uid = this.getCurrentUserUID();
+            if(uid != null){
+                this.getUsersCollection().document(uid).update(BOOKED_RESTAURANT, null);
+                this.getUsersCollection().document(uid).update(BOOKED_RESTAURANT_PLACE_ID, null);
             }
         }
 
