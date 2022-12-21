@@ -5,6 +5,8 @@ import static com.rudy.go4lunch.ui.restaurant.RestaurantsFragment.RESTAURANT_INF
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,7 +46,6 @@ public class DetailRestaurantActivity extends AppCompatActivity {
     String restaurantId;
     private MainViewModel mViewModel; //todo faire un detail viewmodel??
     private UserManager userManager = UserManager.getInstance();
-    private boolean isBooked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,19 +111,7 @@ public class DetailRestaurantActivity extends AppCompatActivity {
 //        binding.likeButton.setOnClickListener();
 
 //        BOOKING BUTTON
-        binding.floatingActionButton.setOnClickListener(view -> {
-            if (userManager.isCurrentUserLogged()) {
-                userManager.getUserData().addOnSuccessListener(user -> {
-                    if (Objects.equals(user.getBookedRestaurantPlaceId(), mRestaurant.getPlaceId())) {
-                        binding.floatingActionButton.setBackgroundColor(Color.WHITE);
-                        userManager.cancelBooking();
-                    } else {
-                        binding.floatingActionButton.setBackgroundColor(Color.BLACK); //todo color doesn't change
-                        userManager.updateBookedRestaurant(mRestaurant.getName(), mRestaurant.getPlaceId());
-                    }
-                });
-            }
-        });
+        binding.floatingActionButton.setOnClickListener(view -> setBooking());
 
 
         binding.ratingBar.setRating(mRestaurant.getCollapseRating());
@@ -148,9 +137,42 @@ public class DetailRestaurantActivity extends AppCompatActivity {
 //        user.
     }
 
+    public void setBooking() {
+        @SuppressLint("UseCompatLoadingForDrawables") Drawable myFabSrc = getResources().getDrawable(R.drawable.ic_baseline_check_circle_24);
+        Drawable isBooked = myFabSrc.getConstantState().newDrawable();
+        isBooked.mutate().setColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY);
+        if (userManager.isCurrentUserLogged()) {
+            userManager.getUserData().addOnSuccessListener(user -> {
+                if (Objects.equals(user.getBookedRestaurantPlaceId(), mRestaurant.getPlaceId())) {
+                    setFab();
+                    userManager.cancelBooking();
+                } else {
+                    setFab();
+                    userManager.updateBookedRestaurant(mRestaurant.getName(), mRestaurant.getPlaceId());
+                }
+            });
+        }
+    }
+
+    public void setFab() {
+        @SuppressLint("UseCompatLoadingForDrawables") Drawable myFabSrc = getResources().getDrawable(R.drawable.ic_baseline_check_circle_24);
+        Drawable isBooked = myFabSrc.getConstantState().newDrawable();
+        isBooked.mutate().setColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY);
+        if (userManager.isCurrentUserLogged()) {
+            userManager.getUserData().addOnSuccessListener(user -> {
+                if (Objects.equals(user.getBookedRestaurantPlaceId(), mRestaurant.getPlaceId())) {
+                    binding.floatingActionButton.setImageDrawable(isBooked);
+                } else {
+                    binding.floatingActionButton.setImageResource(R.drawable.ic_baseline_check_circle_24);
+                }
+            });
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         setRestaurant();
+        setFab();
     }
 }
