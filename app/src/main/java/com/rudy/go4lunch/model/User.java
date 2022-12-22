@@ -2,6 +2,8 @@ package com.rudy.go4lunch.model;
 
 import androidx.annotation.Nullable;
 
+import java.util.List;
+
 public class User {
 
     private String uid;
@@ -10,6 +12,7 @@ public class User {
     private String urlPicture;
     private String bookedRestaurant;
     private String bookedRestaurantPlaceId;
+    private List<String> favoriteRestaurants;
 
     public User() { }
 
@@ -19,6 +22,7 @@ public class User {
         this.urlPicture = urlPicture;
         this.bookedRestaurant = null;
         this.bookedRestaurantPlaceId = null;
+        this.favoriteRestaurants = null;
     }
 
     public String getUid() { return uid; }
@@ -31,8 +35,9 @@ public class User {
     public String getBookedRestaurantPlaceId() {
         return bookedRestaurantPlaceId;
     }
-
-
+    public List<String> getFavoriteRestaurants() {
+        return favoriteRestaurants;
+    }
     public void setUsername(String username) { this.username = username; }
     public void setUid(String uid) { this.uid = uid; }
     public void setUrlPicture(@Nullable String urlPicture) { this.urlPicture = urlPicture; }
@@ -41,5 +46,8 @@ public class User {
     }
     public void setBookedRestaurantPlaceId(String bookedRestaurantPlaceId) {
         this.bookedRestaurantPlaceId = bookedRestaurantPlaceId;
+    }
+    public void setFavoriteRestaurants(List<String> favoriteRestaurants) {
+        this.favoriteRestaurants = favoriteRestaurants;
     }
 }

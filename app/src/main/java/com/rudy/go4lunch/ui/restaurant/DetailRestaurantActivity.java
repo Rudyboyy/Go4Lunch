@@ -9,7 +9,6 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,16 +17,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseUser;
 import com.rudy.go4lunch.BuildConfig;
 import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.databinding.ActivityDetailRestaurantBinding;
 import com.rudy.go4lunch.manager.UserManager;
 import com.rudy.go4lunch.model.RestaurantDto;
 import com.rudy.go4lunch.model.User;
-import com.rudy.go4lunch.model.Workmate;
-import com.rudy.go4lunch.ui.workmates.WorkmatesAdapter;
 import com.rudy.go4lunch.ui.workmates.WorkmatesBookingAdapter;
 import com.rudy.go4lunch.viewmodel.MainViewModel;
 
@@ -40,11 +35,8 @@ public class DetailRestaurantActivity extends AppCompatActivity {
     ActivityDetailRestaurantBinding binding;
     RestaurantDto mRestaurant;
     private RecyclerView mRecyclerView;
-    private ArrayList<Workmate> workmates;
     private List<User> users = new ArrayList<>();
-    private UserManager mUserManager;
-    String restaurantId;
-    private MainViewModel mViewModel; //todo faire un detail viewmodel??
+    private MainViewModel mViewModel;
     private UserManager userManager = UserManager.getInstance();
 
     @Override
@@ -90,29 +82,39 @@ public class DetailRestaurantActivity extends AppCompatActivity {
     public void setRestaurant() {
         mRestaurant = (RestaurantDto) getIntent().getSerializableExtra(RESTAURANT_INFO);
 
-        binding.call.setVisibility(View.INVISIBLE);
+        binding.call.setVisibility(View.INVISIBLE);//todo metre invisible par default
         binding.callButton.setVisibility(View.INVISIBLE);
         binding.website.setVisibility(View.INVISIBLE);
         binding.websiteButton.setVisibility(View.INVISIBLE);
 
-        String phoneNumber = mRestaurant.getInternationalPhoneNumber();//todo
+        String phoneNumber = mRestaurant.getFormattedPhoneNumber();
+        String website = mRestaurant.getWebsite();
 
         binding.restaurantName.setText(mRestaurant.getName());
         binding.address.setText(mRestaurant.getAddress());
 
-        if (phoneNumber != null) {                           //todo marche pas
+        if (website != null) {
+            binding.website.setVisibility(View.VISIBLE);
+            binding.websiteButton.setVisibility(View.VISIBLE);
+            binding.websiteButton.setOnClickListener(view -> {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mRestaurant.getWebsite()));
+                startActivity(browserIntent);
+            });
+        }
+
+        if (phoneNumber != null) {
+            binding.call.setVisibility(View.VISIBLE);
+            binding.callButton.setVisibility(View.VISIBLE);
             binding.callButton.setOnClickListener(view -> {
-                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                Intent callIntent = new Intent(Intent.ACTION_DIAL);
                 callIntent.setData(Uri.parse("tel:%s" + phoneNumber));
                 startActivity(callIntent);
             });
         }
 
-//        binding.likeButton.setOnClickListener();
+        binding.likeButton.setOnClickListener(view -> toggleRestaurantIsFavorite());
 
-//        BOOKING BUTTON
         binding.floatingActionButton.setOnClickListener(view -> setBooking());
-
 
         binding.ratingBar.setRating(mRestaurant.getCollapseRating());
 
@@ -127,20 +129,7 @@ public class DetailRestaurantActivity extends AppCompatActivity {
         }
     }
 
-    boolean choice;// = Boolean.parseBoolean(null);
-
-    private void updateUIWithUserData() {
-//        userManager.updateBooking();
-    }
-
-    private void setBookingUserData(FirebaseUser user) {
-//        user.
-    }
-
-    public void setBooking() {
-        @SuppressLint("UseCompatLoadingForDrawables") Drawable myFabSrc = getResources().getDrawable(R.drawable.ic_baseline_check_circle_24);
-        Drawable isBooked = myFabSrc.getConstantState().newDrawable();
-        isBooked.mutate().setColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY);
+    public void setBooking() { //todo need optimization
         if (userManager.isCurrentUserLogged()) {
             userManager.getUserData().addOnSuccessListener(user -> {
                 if (Objects.equals(user.getBookedRestaurantPlaceId(), mRestaurant.getPlaceId())) {
@@ -169,10 +158,36 @@ public class DetailRestaurantActivity extends AppCompatActivity {
         }
     }
 
+    public void toggleRestaurantIsFavorite() {
+        if (userManager.isCurrentUserLogged()) {
+            userManager.getUserData().addOnSuccessListener(user -> {
+                if (user.getFavoriteRestaurants() != null && user.getFavoriteRestaurants().contains(mRestaurant.getPlaceId())) {
+                    userManager.removeFavoriteRestaurant(user.getUid(), mRestaurant.getPlaceId(), mRestaurant.getName());
+                } else {
+                    userManager.addFavorite(user.getUid(), mRestaurant.getPlaceId(), mRestaurant.getName());
+                }
+                setLikeButton();
+            });
+        }
+    }
+
+    public void setLikeButton() {
+        if (userManager.isCurrentUserLogged()) {
+            userManager.getUserData().addOnSuccessListener(user -> {
+                if (user.getFavoriteRestaurants() != null && user.getFavoriteRestaurants().contains(mRestaurant.getPlaceId())) {
+                    binding.like.setText(R.string.unlike);
+                } else {
+                    binding.like.setText(R.string.like);
+                }
+            });
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         setRestaurant();
         setFab();
+        setLikeButton();
     }
 }

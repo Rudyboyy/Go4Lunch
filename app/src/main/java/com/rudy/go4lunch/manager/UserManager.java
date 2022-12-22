@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
+import com.rudy.go4lunch.model.RestaurantDto;
 import com.rudy.go4lunch.model.User;
 import com.rudy.go4lunch.repository.UserRepository;
 
@@ -63,6 +64,14 @@ public class UserManager {
 
     public void cancelBooking() {
         userRepository.cancelBooking();
+    }
+
+    public void addFavorite(String userID, String restaurantID, String restaurantName) {
+        userRepository.addFavorite(userID, restaurantID, restaurantName);
+    }
+
+    public void removeFavoriteRestaurant(String userID, String restaurantID, String restaurantName) {
+        userRepository.removeFavouriteRestaurant(userID, restaurantID);
     }
 
     public Task<Void> deleteUser(Context context) {
