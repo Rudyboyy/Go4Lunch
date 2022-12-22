@@ -2,7 +2,9 @@ package com.rudy.go4lunch.model.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-public class PhotoDto {
+import java.io.Serializable;
+
+public class PhotoDto implements Serializable  {
 
     @SerializedName("height")
     int height;

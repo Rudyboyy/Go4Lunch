@@ -25,9 +25,16 @@
         android:background="@color/orange"
         app:layout_constraintTop_toBottomOf="@id/restaurantPicture"/>
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.67" />
+
     <TextView
         android:id="@+id/restaurantName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"
@@ -37,7 +44,8 @@
         android:textSize="20sp"
         app:layout_constraintTop_toTopOf="@id/view"
         app:layout_constraintStart_toStartOf="@id/view"
-        app:layout_constraintBottom_toTopOf="@id/address"/>
+        app:layout_constraintBottom_toTopOf="@id/address"
+        app:layout_constraintEnd_toStartOf="@id/guideline"/>
 
     <TextView
         android:id="@+id/address"
@@ -52,34 +60,16 @@
         app:layout_constraintTop_toBottomOf="@id/restaurantName"
         app:layout_constraintStart_toStartOf="@id/view" />
 
-    <ImageView
-        android:id="@+id/rate_star_1"
+    <RatingBar
+        android:id="@+id/ratingBar"
+        style="@style/Widget.AppCompat.RatingBar.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:src="@drawable/ic_baseline_star_24"
-        android:layout_marginStart="10dp"
-        app:layout_constraintBottom_toBottomOf="@id/restaurantName"
+        android:numStars="3"
+        android:theme="@style/RatingBar"
         app:layout_constraintStart_toEndOf="@id/restaurantName"
-        app:layout_constraintTop_toTopOf="@id/restaurantName"/>
-
-    <ImageView
-        android:id="@+id/rate_star_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:src="@drawable/ic_baseline_star_24"
-        app:layout_constraintBottom_toBottomOf="@id/rate_star_1"
-        app:layout_constraintStart_toEndOf="@id/rate_star_1"
-        app:layout_constraintTop_toTopOf="@id/rate_star_1" />
-
-
-    <ImageView
-        android:id="@+id/rate_star_3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:src="@drawable/ic_baseline_star_24"
-        app:layout_constraintBottom_toBottomOf="@id/rate_star_2"
-        app:layout_constraintStart_toEndOf="@id/rate_star_2"
-        app:layout_constraintTop_toTopOf="@id/rate_star_2" />
+        app:layout_constraintTop_toTopOf="@id/restaurantName"
+        tools:rating="3" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
@@ -92,7 +82,8 @@
         android:tint="@color/green"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/restaurantPicture"
-        app:layout_constraintBottom_toTopOf="@id/view"/>
+        app:layout_constraintBottom_toTopOf="@id/view"
+        android:focusable="true" />
 
     <ImageButton
         android:id="@+id/callButton"

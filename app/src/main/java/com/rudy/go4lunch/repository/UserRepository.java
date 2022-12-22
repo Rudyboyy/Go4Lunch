@@ -1,17 +1,28 @@
 package com.rudy.go4lunch.repository;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.rudy.go4lunch.model.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserRepository {
 
@@ -20,6 +31,10 @@ public class UserRepository {
     private static final String COLLECTION_NAME = "users";
     private static final String USERNAME_FIELD = "username";
     private static final String CHOSE_FIELD = "chose";
+
+    private FirebaseFirestore database;
+    private final MutableLiveData<List<User>> allUsers = new MutableLiveData<>();
+    private final MutableLiveData<User> user = new MutableLiveData<>();
 
     public UserRepository() { }
 
@@ -108,4 +123,22 @@ public class UserRepository {
                 this.getUsersCollection().document(uid).delete();
             }
         }
+
+    public void getDataBaseInstance() {
+        database = FirebaseFirestore.getInstance();
+    }
+
+    public LiveData<List<User>> getAllUsers() {
+        database.collection(COLLECTION_NAME)
+                .whereNotEqualTo("uid", getCurrentUserUID())
+                .get()
+                .addOnCompleteListener(task -> {
+                    List<User> users = new ArrayList<>();
+                    for (QueryDocumentSnapshot user : task.getResult()) {
+                        users.add(user.toObject(User.class));
+                        allUsers.setValue(users);
+                    }
+                });
+        return allUsers;
+    }
 }
