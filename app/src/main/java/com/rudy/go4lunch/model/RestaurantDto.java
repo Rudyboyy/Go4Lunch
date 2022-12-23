@@ -31,10 +31,13 @@ public class RestaurantDto implements Serializable {
     @SerializedName("photos")
     List<PhotoDto> photos;
 
-    @SerializedName("international_phone_number") //todo marche pas
-    String internationalPhoneNumber;
+    @SerializedName("website")
+    String website;
 
-    public RestaurantDto(GeometryDto geometry, OpeningHoursDto openingHours, String name, double rating, String address, String placeId, List<PhotoDto> photos, String internationalPhoneNumber) {
+    @SerializedName("formatted_phone_number")
+    String formattedPhoneNumber;
+
+    public RestaurantDto(GeometryDto geometry, OpeningHoursDto openingHours, String name, double rating, String address, String placeId, List<PhotoDto> photos, String formattedPhoneNumber, String website) {
         this.geometry = geometry;
         this.openingHours = openingHours;
         this.name = name;
@@ -42,7 +45,13 @@ public class RestaurantDto implements Serializable {
         this.address = address;
         this.placeId = placeId;
         this.photos = photos;
-        this.internationalPhoneNumber = internationalPhoneNumber;
+        this.formattedPhoneNumber = formattedPhoneNumber;
+        this.website = website;
+    }
+
+    public RestaurantDto() {
+        this.name = null;
+        this.placeId = null;
     }
 
     public GeometryDto getGeometry() {
@@ -105,11 +114,19 @@ public class RestaurantDto implements Serializable {
         return (float) ((rating / 5) * 3);
     }
 
-    public String getInternationalPhoneNumber() {
-        return internationalPhoneNumber;
+    public String getWebsite() {
+        return website;
     }
 
-    public void setInternationalPhoneNumber(String internationalPhoneNumber) {
-        this.internationalPhoneNumber = internationalPhoneNumber;
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getFormattedPhoneNumber() {
+        return formattedPhoneNumber;
+    }
+
+    public void setFormattedPhoneNumber(String formattedPhoneNumber) {
+        this.formattedPhoneNumber = formattedPhoneNumber;
     }
 }

@@ -26,4 +26,6 @@
     <string name="popup_message_choice_no">No</string>
     <string name="permission_denied">La localisation n\'est pas autorisé, l\'application a besoin d\'accéder a vos données de localisation pour pouvoir fonctionner</string>
     <string name="settings">Paramètres</string>
+    <string name="unlike">UNLIKE</string>
+    <string name="like">LIKE</string>
 </resources>

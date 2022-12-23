@@ -1,5 +1,7 @@
 package com.rudy.go4lunch.ui;
 
+import static com.rudy.go4lunch.ui.restaurant.RestaurantsFragment.RESTAURANT_INFO;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -20,6 +22,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -27,6 +30,8 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -35,15 +40,26 @@ import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.databinding.ActivityMainBinding;
 import com.rudy.go4lunch.databinding.NavHeaderBinding;
 import com.rudy.go4lunch.manager.UserManager;
+import com.rudy.go4lunch.model.RestaurantDto;
+import com.rudy.go4lunch.service.ProcessRestaurantDto;
 import com.rudy.go4lunch.ui.dialog.PermissionDialogFragment;
+import com.rudy.go4lunch.ui.restaurant.DetailRestaurantActivity;
+import com.rudy.go4lunch.viewmodel.MainViewModel;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import java.util.List;
+import java.util.Objects;
+
+public class MainActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener,
+        ProcessRestaurantDto {
 
     ActivityMainBinding binding;
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private UserManager userManager = UserManager.getInstance();
+    private MainViewModel mViewModel;
+    private FusedLocationProviderClient locationClient;
 
     private final static int REQUEST_CODE_UPDATE_LOCATION = 541;
     private final static String DIALOG = "dialog";
@@ -51,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        locationClient = LocationServices.getFusedLocationProviderClient(this);
+        mViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         requestLocationPermission();
         setUpLogin();
         initUi();
@@ -174,8 +192,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    @SuppressLint("MissingPermission")
     private void showLunch() {
-        Snackbar.make(binding.getRoot(), "You didn't choose a restaurant yet!", Snackbar.LENGTH_SHORT).show();
+        userManager.getUserData().addOnSuccessListener(user -> {
+            if (user.getBookedRestaurantPlaceId() != null) {
+                locationClient.getLastLocation()
+                        .addOnSuccessListener(this, location -> {
+                            if (location != null) {
+                                mViewModel.getRestaurantLocation(this, location);
+                            }
+                        });
+            } else {
+                Snackbar.make(binding.getRoot(), "You didn't choose a restaurant yet!", Snackbar.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void showSettings() {
@@ -197,8 +227,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (user.getPhotoUrl() != null) {
                 setProfilePicture(user.getPhotoUrl());
             }
-            setTextUserData(user);
             getUserData();
+            setTextUserData(user);
         }
     }
 
@@ -227,6 +257,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         userManager.getUserData().addOnSuccessListener(user -> {
             String username = TextUtils.isEmpty(user.getUsername()) ? getString(R.string.info_no_username_found) : user.getUsername();
             headerBinding.name.setText(username);
+        });
+    }
+
+    @Override
+    public void processRestaurantDto(List<RestaurantDto> restaurantDtoList) {
+        userManager.getUserData().addOnSuccessListener(user -> {
+            for (RestaurantDto restaurantDto : restaurantDtoList) {
+                if (Objects.equals(restaurantDto.getPlaceId(), user.getBookedRestaurantPlaceId())) {
+                    Intent detailRestaurantActivityIntent = new Intent(this, DetailRestaurantActivity.class);
+                    detailRestaurantActivityIntent.putExtra(RESTAURANT_INFO, restaurantDto);
+                    this.startActivity(detailRestaurantActivityIntent);
+                }
+            }
         });
     }
 }

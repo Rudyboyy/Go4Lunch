@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
+import com.rudy.go4lunch.model.RestaurantDto;
 import com.rudy.go4lunch.model.User;
 import com.rudy.go4lunch.repository.UserRepository;
 
@@ -41,25 +42,39 @@ public class UserManager {
         return userRepository.signOut(context);
     }
 
-    public void createUser(){
+    public void createUser() {
         userRepository.createUser();
     }
 
-    public Task<User> getUserData(){
+    public Task<User> getUserData() {
         return userRepository.getUserData().continueWith(task -> task.getResult().toObject(User.class));
     }
 
-    public Task<Void> updateUsername(String username){
+    public Task<Void> updateUsername(String username) {
         return userRepository.updateUsername(username);
     }
 
-    public void updateChoice(Boolean chose){
-        userRepository.updateChoice(chose);
+//    public void updateBooking(Boolean booking) {
+//        userRepository.updateBooking(booking);
+//    }
+
+    public void updateBookedRestaurant(String bookedRestaurant, String placeId) {
+        userRepository.UpdateBookedRestaurant(bookedRestaurant, placeId);
     }
 
-    public Task<Void> deleteUser(Context context){
-        return userRepository.deleteUser(context).addOnCompleteListener(task -> {
-            userRepository.deleteUserFromFirestore();
-        });
+    public void cancelBooking() {
+        userRepository.cancelBooking();
+    }
+
+    public void addFavorite(String userID, String restaurantID, String restaurantName) {
+        userRepository.addFavorite(userID, restaurantID, restaurantName);
+    }
+
+    public void removeFavoriteRestaurant(String userID, String restaurantID, String restaurantName) {
+        userRepository.removeFavouriteRestaurant(userID, restaurantID);
+    }
+
+    public Task<Void> deleteUser(Context context) {
+        return userRepository.deleteUser(context).addOnCompleteListener(task -> userRepository.deleteUserFromFirestore());
     }
 }

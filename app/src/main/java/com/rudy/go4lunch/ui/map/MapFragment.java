@@ -23,10 +23,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.databinding.FragmentMapBinding;
 import com.rudy.go4lunch.model.RestaurantDto;
+import com.rudy.go4lunch.model.User;
 import com.rudy.go4lunch.service.ProcessRestaurantDto;
 import com.rudy.go4lunch.viewmodel.MainViewModel;
 
 import java.util.List;
+import java.util.Objects;
 
 public class MapFragment extends Fragment implements
         OnMapReadyCallback,
@@ -35,7 +37,7 @@ public class MapFragment extends Fragment implements
     private GoogleMap mMap;
     private FragmentMapBinding binding;
     private FusedLocationProviderClient locationClient;
-    MainViewModel mViewModel;
+    private MainViewModel mViewModel;
 
     @SuppressLint("CheckResult")
     @Override
@@ -83,13 +85,26 @@ public class MapFragment extends Fragment implements
 
     @Override
     public void processRestaurantDto(List<RestaurantDto> restaurantDtoList) {
-        for (RestaurantDto result : restaurantDtoList) {
-            mMap.addMarker(
-                    new MarkerOptions()
-                            .position(new LatLng(result.getGeometry().getLocationDto().getLatitude(), result.getGeometry().getLocationDto().getLongitude()))
-                            .title(result.getName())
-                            .alpha(0.8f)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-        }
+        mViewModel.getDataBaseInstanceUser();
+        mViewModel.getAllUsers().observe(getViewLifecycleOwner(), users -> {
+            for (User user : users) {
+                for (RestaurantDto result : restaurantDtoList) {
+                    if (Objects.equals(result.getPlaceId(), user.getBookedRestaurantPlaceId())) {
+                        setMarker(BitmapDescriptorFactory.HUE_GREEN, result);
+                    } else {
+                        setMarker(BitmapDescriptorFactory.HUE_RED, result);
+                    }
+                }
+            }
+        });
+    }
+
+    private void setMarker(float bitmap, RestaurantDto result) {
+        mMap.addMarker(
+                new MarkerOptions()
+                        .position(new LatLng(result.getGeometry().getLocationDto().getLatitude(), result.getGeometry().getLocationDto().getLongitude()))
+                        .title(result.getName())
+                        .alpha(0.8f)
+                        .icon(BitmapDescriptorFactory.defaultMarker(bitmap)));
     }
 }
