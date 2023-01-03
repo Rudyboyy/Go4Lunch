@@ -64,7 +64,7 @@
             android:imeOptions="actionDone"
             android:inputType="textMultiLine"
             android:textSize="14sp"
-            android:textColor="@color/black"
+            android:textColor="?attr/textAppearanceBody1"
             android:hint="composer votre message"/>
 
         <!-- ADD MESSAGE BUTTON -->
