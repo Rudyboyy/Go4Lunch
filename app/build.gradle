@@ -54,12 +54,20 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
 
     //FIREBASE
-    implementation platform('com.google.firebase:firebase-bom:31.0.1')
+    implementation platform('com.google.firebase:firebase-bom:31.1.1')
     implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-database:20.1.0'
+    implementation 'com.google.firebase:firebase-auth:21.1.0'
+    implementation 'com.google.firebase:firebase-core:21.1.1'
+
+
 
     // FIREBASE UI
-    implementation 'com.firebaseui:firebase-ui-auth:8.0.1'
+    implementation 'com.firebaseui:firebase-ui-auth:8.0.2'
     implementation 'com.google.firebase:firebase-firestore'
+    implementation 'com.firebaseui:firebase-ui-firestore:8.0.2'
+    implementation 'com.firebaseui:firebase-ui-database:8.0.2'
+
 
     //FACEBOOK
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
@@ -68,7 +76,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
 
     //GOOGLE PLACES
-    implementation 'com.google.android.libraries.places:places:2.7.0'
+    implementation 'com.google.android.libraries.places:places:3.0.0'
 
     //GOOGLE PLAY SERVICES
     implementation 'com.google.android.gms:play-services-location:21.0.1'
@@ -85,4 +93,7 @@ dependencies {
 
     //OkHttp
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.3"
+
+    //Lifecycle
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
 }

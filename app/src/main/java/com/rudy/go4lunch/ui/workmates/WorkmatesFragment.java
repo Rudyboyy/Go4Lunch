@@ -14,24 +14,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.manager.UserManager;
 import com.rudy.go4lunch.model.User;
-import com.rudy.go4lunch.model.Workmate;
+import com.rudy.go4lunch.ui.chat.ChatActivity;
 import com.rudy.go4lunch.viewmodel.MainViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class WorkmatesFragment extends Fragment {
+public class WorkmatesFragment extends Fragment implements WorkmatesAdapter.WorkmateClickListener {
 
     private RecyclerView mRecyclerView;
     private List<User> users = new ArrayList<>();
-    private UserManager mUserManager;
     private MainViewModel mViewModel;
+    private UserManager userManager = UserManager.getInstance();
 
     @SuppressLint("NotifyDataSetChanged")
     private void initData() {
-//        mUserManager.getDataBaseInstanceUser();
-//        users = mUserManager.getAllUsers().getValue();
         mViewModel.getDataBaseInstanceUser();
         mViewModel.getAllUsers().observe(getViewLifecycleOwner(), users1 -> {
             users.clear();
@@ -59,7 +57,14 @@ public class WorkmatesFragment extends Fragment {
         mRecyclerView = root.findViewById(R.id.recyclerview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(layoutManager);
-        WorkmatesAdapter mAdapter = new WorkmatesAdapter(users);
+        WorkmatesAdapter mAdapter = new WorkmatesAdapter(users, requireActivity(), this);
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onWorkmateClick(String workmateId, String workmateName) {
+        String currentUid = userManager.getCurrentUser().getUid();
+
+        ChatActivity.navigate(requireActivity(), currentUid, workmateId, workmateName);
     }
 }

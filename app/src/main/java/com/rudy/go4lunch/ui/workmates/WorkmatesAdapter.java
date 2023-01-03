@@ -1,6 +1,7 @@
 package com.rudy.go4lunch.ui.workmates;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -15,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.rudy.go4lunch.R;
-import com.rudy.go4lunch.manager.UserManager;
 import com.rudy.go4lunch.model.User;
 
 import java.util.List;
@@ -23,9 +23,13 @@ import java.util.List;
 public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.ViewHolder> {
 
     private List<User> mUsers;
+    private Context mContext;
+    private WorkmateClickListener mWorkmateClickListener;
 
-    public WorkmatesAdapter(List<User> users) {
+    public WorkmatesAdapter(List<User> users, Context context, WorkmateClickListener listener) {
         this.mUsers = users;
+        this.mContext = context;
+        this.mWorkmateClickListener = listener;
     }
 
     @NonNull
@@ -40,6 +44,7 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
     public void onBindViewHolder(@NonNull WorkmatesAdapter.ViewHolder holder, int position) {
         User user = mUsers.get(position);
         holder.displayWorkmates(user);
+        holder.itemView.setOnClickListener(v -> mWorkmateClickListener.onWorkmateClick(user.getUid(), user.getUsername()));
     }
 
     @Override
@@ -68,12 +73,16 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
                 workmate.setTypeface(workmate.getTypeface(), Typeface.ITALIC);
             }
 
-                if (user.getUrlPicture() != null) {
-                    Glide.with(avatar.getContext())
-                            .load(user.getUrlPicture())
-                            .apply(RequestOptions.circleCropTransform())
-                            .into(avatar);
-                }
+            if (user.getUrlPicture() != null) {
+                Glide.with(avatar.getContext())
+                        .load(user.getUrlPicture())
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(avatar);
             }
+        }
+    }
+
+    interface WorkmateClickListener {
+        void onWorkmateClick(String workmateId, String workmateName);
     }
 }
