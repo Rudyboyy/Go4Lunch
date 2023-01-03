@@ -47,7 +47,7 @@ public class DetailRestaurantActivity extends AppCompatActivity {
         initData();
         initRecyclerView();
         setRestaurant();
-        binding.backButton.setOnClickListener(view -> this.finish());
+        binding.backButton.setOnClickListener(view -> finish());
     }
 
     private void initUi() {

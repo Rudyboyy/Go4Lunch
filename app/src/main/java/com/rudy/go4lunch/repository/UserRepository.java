@@ -1,6 +1,7 @@
 package com.rudy.go4lunch.repository;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -15,6 +16,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.Source;
 import com.rudy.go4lunch.model.User;
 
 import java.util.ArrayList;
@@ -58,6 +60,13 @@ public class UserRepository {
     public String getCurrentUserUID() {
         FirebaseUser user = getCurrentUser();
         return (user != null) ? user.getUid() : null;
+    }
+
+    public String getUserUIDOnfocus(String UserUID) {
+        for (int i = 0; i > getUsersCollection().count().hashCode(); i++) {
+
+        }
+        return null;
     }
 
     public Task<Void> signOut(Context context) {
@@ -146,7 +155,7 @@ public class UserRepository {
     }
 
     public LiveData<List<User>> getAllUsers() {
-        database.collection(COLLECTION_NAME)
+        getUsersCollection()
                 .whereNotEqualTo("uid", getCurrentUserUID())
                 .get()
                 .addOnCompleteListener(task -> {
@@ -173,5 +182,28 @@ public class UserRepository {
             getUsersCollection().document(userId)
                     .update(FAVORITE_RESTAURANTS, FieldValue.arrayRemove(placeId));
         }
+    }
+
+    public void fetchAllUsersDocuments() {
+        this.getUsersCollection().get().addOnSuccessListener(queryDocumentSnapshots -> {
+
+            if (queryDocumentSnapshots == null) {
+                Log.w(UserRepository.class.getSimpleName(), "No users found in FireStore.");
+                return;
+            }
+
+            List<User> users = new ArrayList<>();
+
+            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+
+                users.add(document.toObject(User.class));
+            }
+
+            allUsers.setValue(users);
+        });
+    }
+
+    public LiveData<List<User>> getAllUserLiveData(){
+        return allUsers;
     }
 }

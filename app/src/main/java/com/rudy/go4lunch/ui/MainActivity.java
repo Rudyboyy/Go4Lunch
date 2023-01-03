@@ -267,6 +267,7 @@ public class MainActivity extends AppCompatActivity implements
                 if (Objects.equals(restaurantDto.getPlaceId(), user.getBookedRestaurantPlaceId())) {
                     Intent detailRestaurantActivityIntent = new Intent(this, DetailRestaurantActivity.class);
                     detailRestaurantActivityIntent.putExtra(RESTAURANT_INFO, restaurantDto);
+                    detailRestaurantActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     this.startActivity(detailRestaurantActivityIntent);
                 }
             }
