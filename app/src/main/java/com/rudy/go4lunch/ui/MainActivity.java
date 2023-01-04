@@ -9,15 +9,20 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
@@ -27,6 +32,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -44,6 +51,7 @@ import com.rudy.go4lunch.model.RestaurantDto;
 import com.rudy.go4lunch.service.ProcessRestaurantDto;
 import com.rudy.go4lunch.ui.dialog.PermissionDialogFragment;
 import com.rudy.go4lunch.ui.restaurant.DetailRestaurantActivity;
+import com.rudy.go4lunch.ui.workmates.SuggestionAdapter;
 import com.rudy.go4lunch.viewmodel.MainViewModel;
 
 import java.util.List;
@@ -60,9 +68,12 @@ public class MainActivity extends AppCompatActivity implements
     private UserManager userManager = UserManager.getInstance();
     private MainViewModel mViewModel;
     private FusedLocationProviderClient locationClient;
+    private FrameLayout container;;
+    private SuggestionAdapter adapter;
 
     private final static int REQUEST_CODE_UPDATE_LOCATION = 541;
     private final static String DIALOG = "dialog";
+    private final String search = "search";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,11 +150,64 @@ public class MainActivity extends AppCompatActivity implements
         NavigationUI.setupWithNavController(navView, navController);
     }
 
+    private final ActivityResultLauncher<Intent> searchLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    Intent returnedIntent = result.getData();
+                    //todo get string extra
+                    if (returnedIntent != null) {
+//                        String selectedRestaurantID = returnedIntent.getStringExtra(KEY_SELECTED_RESTAURANT_ID);
+//                        String selectedRestaurantName = returnedIntent.getStringExtra(KEY_SELECTED_RESTAURANT_NAME);
+                    }
+                    }
+            }
+    );
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
-        return true;
+        MenuItem searchItem = menu.findItem(R.id.menu_search);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
+        container = binding.recyclerViewContainer;
+
+        return super.onCreateOptionsMenu(menu);
+//        searchView.setBackgroundColor(getResources().getColor(R.color.black));
+//        searchView.setGravity(Gravity.START);
+//        searchView.setIconifiedByDefault(false);
+//        searchView.setQueryHint("search");
+//        searchView.getOverlay();
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                // Effectuez une action lorsque l'utilisateur soumet sa recherche
+//                searchItem.collapseActionView();
+//                return false;
+//            }
+//
+//            //todo ajouter la SearchView a la toolbar et l'enlever du menu (ou pas)
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                if (newText.isEmpty()) {
+//                    container.removeAllViews();
+//                } else {
+//                    if (container.getChildCount() == 0) {
+//                        initPredictionRecyclerView();
+//                    }
+//                }
+//                return true;
+//            }
+//        });
+//        return true;
+    }
+
+    private void initPredictionRecyclerView() {
+        adapter = new SuggestionAdapter();
+        RecyclerView recyclerView = new RecyclerView(this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+        container.addView(recyclerView);
     }
 
     private void setUpLogin() {
