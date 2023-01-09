@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Go4Lunch</string>
+    <string name="map">Carte</string>
+    <string name="restaurant">Restaurant</string>
+    <string name="workmates">Collègues</string>
+    <string name="slogan">trouvez un bon restaurant et invitez vos collègues à déjeuner!</string>
+    <string name="error_unknown_error">Une erreur inconnue s\'est produite</string>
+    <string name="error_no_internet">Réseau non disponible</string>
+    <string name="connection_succeed">Connexion réussie!</string>
+    <string name="error_authentication_canceled">Connexion abandonnée</string>
+    <string name="facebook_application_id">1189461841954135</string>
+    <string name="fb_login_protocol_scheme">fb1189461841954135</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Used in NavigationDrawer -->
+    <string name="navigation_drawer_open">Ouvrir le menu de navigation</string>
+    <string name="navigation_drawer_close">Fermer le menu de navigation</string>
+
+    <!-- LOGIN ACTIVITY -->
+    <string name="info_no_email_found">Aucune adresse e-mail trouvée</string>
+    <string name="info_no_username_found">Aucun nom d\'utilisateur trouvé</string>
+
+    <string name="popup_message_confirmation_delete_account">Êtes-vous sûr de vouloir supprimer votre compte?</string>
+    <string name="popup_message_choice_yes">Oui</string>
+    <string name="popup_message_choice_no">Non</string>
+    <string name="permission_denied">La localisation n\'est pas autorisé, l\'application a besoin d\'accéder a vos données de localisation pour pouvoir fonctionner</string>
+    <string name="settings">Parramètre</string>
+    <string name="unlike">NE PAS AIMER</string>
+    <string name="like">AIMER</string>
+</resources>
