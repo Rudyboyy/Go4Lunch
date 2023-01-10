@@ -8,12 +8,15 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.rudy.go4lunch.BuildConfig;
+import com.rudy.go4lunch.model.PredictionsDto;
 import com.rudy.go4lunch.model.RestaurantDto;
 import com.rudy.go4lunch.model.dto.RestaurantWrapperDto;
 import com.rudy.go4lunch.model.dto.RestaurantsWrapperDto;
+import com.rudy.go4lunch.model.dto.predictions.AutoCompleteDto;
 import com.rudy.go4lunch.service.GooglePlacesRestaurantsApi;
 import com.rudy.go4lunch.service.ProcessRestaurantDto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Single;
@@ -75,6 +78,16 @@ public class RestaurantRepository {
         RESTAURANTS_SERVICE = retrofit.create(GooglePlacesRestaurantsApi.class);
     }
 
+    public Single<AutoCompleteDto> getAutoComplete(Location location, String newText) {//todo test
+        return RESTAURANTS_SERVICE.getAutocomplete(
+                newText,
+                PLACES_API_KEY,
+                location.getLatitude() + "," + location.getLongitude(),
+                RADIUS,
+                RESTAURANT
+        );
+    }
+
     @SuppressLint("CheckResult")
     public void getRestaurantLocation(Location location, ProcessRestaurantDto processRestaurantDto) {
         getGooglePlacesRestaurants(location)
@@ -90,6 +103,34 @@ public class RestaurantRepository {
                                     restaurantDto.setWebsite(restaurantWrapperDto.getResult().getWebsite());
                                     processRestaurantDto.processRestaurantDto(restaurantDtos.getResults());
                                     Log.v("details", restaurantWrapperDto.getResult().toString());
+//                                    if (newText != null) {
+//                                        getAutoComplete(location, newText)//todo test
+//                                                .subscribeOn(Schedulers.io())
+//                                                .observeOn(AndroidSchedulers.mainThread())
+//                                                .subscribe((autoCompleteDto) -> {
+//                                                    Log.v("autoComplete", autoCompleteDto.getPredictions().toString());
+//                                                    List<RestaurantDto> predictionsRestaurants = new ArrayList<>();
+//                                                    for (PredictionsDto predictionsDto : autoCompleteDto.getPredictions()) {
+//                                                        String suggestion = predictionsDto.getStructuredFormatting().getMainText().toLowerCase().trim();
+//                                                        String restaurantName = restaurantDto.getName().toLowerCase().trim();
+//                                                        String restaurantString = restaurantDto.toString().toLowerCase().trim();
+//                                                        if (restaurantName.contains(suggestion)) {
+//                                                            predictionsRestaurants.add(restaurantDto);
+//                                                            processRestaurantDto.processRestaurantDto(predictionsRestaurants);
+//                                                        }
+////                                                        List<RestaurantDto> filteredRestaurants = new ArrayList<>();
+////                                                        for (RestaurantDto restaurant : restaurantDtos.getResults()) {
+////                                                            if (restaurant.getName().contains(newText)) {
+////                                                                filteredRestaurants.add(restaurant);
+////                                                            }
+////                                                        }
+////                                                        processRestaurantDto.processRestaurantDto(filteredRestaurants);
+//                                                    }
+//                                                    if (throwable != null) {
+//                                                        Log.v("throwable", throwable.toString());
+//                                                    }
+//                                                });
+//                                    }
                                 });
                     }
                     if (throwable != null) {

@@ -25,7 +25,7 @@ public interface GooglePlacesRestaurantsApi {
     @GET("autocomplete/json")
     Single<AutoCompleteDto> getAutocomplete(@Query("input") String input,
                                             @Query("key") String key,
-                                            @Query("location") String location,
-                                            @Query("radius") int radius);
-//                                                  @Query("types") String types);
+                                            @Query(value = "location", encoded = true) String location,
+                                            @Query("radius") int radius,
+                                            @Query("types") String types);
 }

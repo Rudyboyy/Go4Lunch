@@ -1,12 +1,14 @@
 package com.rudy.go4lunch.ui.restaurant;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -17,7 +19,10 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.model.RestaurantDto;
+import com.rudy.go4lunch.service.OnSearchListener;
+import com.rudy.go4lunch.service.ProcessPredictionsDto;
 import com.rudy.go4lunch.service.ProcessRestaurantDto;
+import com.rudy.go4lunch.ui.MainActivity;
 import com.rudy.go4lunch.viewmodel.MainViewModel;
 
 import java.util.ArrayList;
@@ -25,7 +30,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class RestaurantsFragment extends Fragment implements
-        ProcessRestaurantDto {
+        ProcessRestaurantDto,
+        OnSearchListener,
+        ProcessPredictionsDto {
 
     private RecyclerView mRecyclerView;
     private List<RestaurantDto> mRestaurants = new ArrayList<>();
@@ -47,6 +54,7 @@ public class RestaurantsFragment extends Fragment implements
         View root = inflater.inflate(R.layout.fragment_restaurants, container, false);
         initList();
         getLocation(root);
+        ((MainActivity) requireContext()).fragmentSelected = R.layout.fragment_restaurants;
         return root;
     }
 
@@ -87,5 +95,38 @@ public class RestaurantsFragment extends Fragment implements
         mRestaurants.clear();
         mRestaurants.addAll(restaurantDtoList);
         Objects.requireNonNull(mRecyclerView.getAdapter()).notifyDataSetChanged();
+    }
+
+    @SuppressLint("MissingPermission")
+    @Override
+    public void onSearch(String query) {
+        locationClient.getLastLocation()
+                .addOnSuccessListener(requireActivity(), location -> {
+                    if (location != null) {
+                        mViewModel.getPredictionLocation(this, location, query);
+                    }
+                });
+    }
+
+    @Override
+    public List<RestaurantDto> onRequestList() {
+        return mRestaurants;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        MainActivity mainActivity = (MainActivity) requireActivity();
+        mainActivity.setOnSearchListener(this);
+    }
+
+    @Override
+    public void processPredictionsDto(String placeId) {
+        for (RestaurantDto restaurantDto : mRestaurants) {
+            if (restaurantDto.getPlaceId().contains(placeId)) {
+                mRestaurants.clear();
+                mRestaurants.add(restaurantDto);
+            }
+        }
     }
 }

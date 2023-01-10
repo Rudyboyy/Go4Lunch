@@ -11,6 +11,10 @@ import com.rudy.go4lunch.BuildConfig;
 import com.rudy.go4lunch.model.PredictionsDto;
 import com.rudy.go4lunch.model.dto.predictions.AutoCompleteDto;
 import com.rudy.go4lunch.service.GooglePlacesRestaurantsApi;
+import com.rudy.go4lunch.service.OnSearchListener;
+import com.rudy.go4lunch.service.ProcessPredictionsDto;
+import com.rudy.go4lunch.service.ProcessRestaurantDto;
+import com.rudy.go4lunch.ui.MainActivity;
 
 import java.util.List;
 
@@ -40,7 +44,8 @@ public class PredictionRepository {
                 newText,
                 PLACES_API_KEY,
                 location.getLatitude() + "," + location.getLongitude(),
-                RADIUS
+                RADIUS,
+                "restaurant"
         );
     }
 
@@ -65,13 +70,14 @@ public class PredictionRepository {
     }
 
     @SuppressLint("CheckResult")
-    public void getPredictions(Location location, String newText) {
+    public void getPredictions(Location location, String newText, ProcessPredictionsDto processPredictionsDto) {
         getAutoComplete(location, newText)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((autoCompleteDto, throwable) -> {
-                    predictionsListLiveData.setValue(autoCompleteDto.getPredictions());
-
+                    for (PredictionsDto predictionsDto : autoCompleteDto.getPredictions()) {
+                    processPredictionsDto.processPredictionsDto(predictionsDto.getPlaceId());
+                    }
                     if (throwable != null) {
                         Log.v("throwable", throwable.toString());
                     }

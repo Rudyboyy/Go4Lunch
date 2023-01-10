@@ -17,8 +17,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,6 +46,7 @@ import com.rudy.go4lunch.databinding.ActivityMainBinding;
 import com.rudy.go4lunch.databinding.NavHeaderBinding;
 import com.rudy.go4lunch.manager.UserManager;
 import com.rudy.go4lunch.model.RestaurantDto;
+import com.rudy.go4lunch.service.OnSearchListener;
 import com.rudy.go4lunch.service.ProcessRestaurantDto;
 import com.rudy.go4lunch.ui.dialog.PermissionDialogFragment;
 import com.rudy.go4lunch.ui.restaurant.DetailRestaurantActivity;
@@ -68,8 +67,13 @@ public class MainActivity extends AppCompatActivity implements
     private UserManager userManager = UserManager.getInstance();
     private MainViewModel mViewModel;
     private FusedLocationProviderClient locationClient;
-    private FrameLayout container;;
+    private FrameLayout container;
+    ;
     private SuggestionAdapter adapter;
+    public int fragmentSelected;
+    public MenuItem searchItem;
+    private OnSearchListener listener;
+    private RecyclerView recyclerView;
 
     private final static int REQUEST_CODE_UPDATE_LOCATION = 541;
     private final static String DIALOG = "dialog";
@@ -83,6 +87,10 @@ public class MainActivity extends AppCompatActivity implements
         requestLocationPermission();
         setUpLogin();
         initUi();
+    }
+
+    public void setOnSearchListener(OnSearchListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -150,65 +158,81 @@ public class MainActivity extends AppCompatActivity implements
         NavigationUI.setupWithNavController(navView, navController);
     }
 
-    private final ActivityResultLauncher<Intent> searchLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == RESULT_OK) {
-                    Intent returnedIntent = result.getData();
-                    //todo get string extra
-                    if (returnedIntent != null) {
-//                        String selectedRestaurantID = returnedIntent.getStringExtra(KEY_SELECTED_RESTAURANT_ID);
-//                        String selectedRestaurantName = returnedIntent.getStringExtra(KEY_SELECTED_RESTAURANT_NAME);
-                    }
-                    }
-            }
-    );
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
-        MenuItem searchItem = menu.findItem(R.id.menu_search);
+        searchItem = menu.findItem(R.id.menu_search);
         final SearchView searchView = (SearchView) searchItem.getActionView();
         container = binding.recyclerViewContainer;
-
-        return super.onCreateOptionsMenu(menu);
-//        searchView.setBackgroundColor(getResources().getColor(R.color.black));
-//        searchView.setGravity(Gravity.START);
-//        searchView.setIconifiedByDefault(false);
-//        searchView.setQueryHint("search");
-//        searchView.getOverlay();
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                // Effectuez une action lorsque l'utilisateur soumet sa recherche
+        if (fragmentSelected == R.layout.fragment_workmates) { //todo marche pas essai avec onAttach ou deplace dans onResume
+            searchItem.setVisible(false);
+        }
+//        return super.onCreateOptionsMenu(menu);
+        searchView.setBackgroundColor(getResources().getColor(R.color.black));
+        searchView.setGravity(Gravity.START);
+        searchView.setIconifiedByDefault(false);
+        searchView.setQueryHint("search");
+        searchView.getOverlay();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Effectuez une action lorsque l'utilisateur soumet sa recherche
+                if (listener != null) {
+                    listener.onSearch(query); //todo probleme requete api plus de credit
+                }
 //                searchItem.collapseActionView();
-//                return false;
-//            }
-//
-//            //todo ajouter la SearchView a la toolbar et l'enlever du menu (ou pas)
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                if (newText.isEmpty()) {
-//                    container.removeAllViews();
+                return false;
+            }
+
+            //todo ajouter la SearchView a la toolbar et l'enlever du menu (ou pas)
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public boolean onQueryTextChange(String query) {
+                if (query.isEmpty()) {
+                    container.removeAllViews();
+                } else {
+                    if (container.getChildCount() == 0 && listener != null) {
+                        initPredictionRecyclerView(listener.onRequestList());
+                        Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();//todo modif faite a tester
+                    }
+                }
+
+//                if (!query.isEmpty()) {
+//                newText = query;
 //                } else {
-//                    if (container.getChildCount() == 0) {
-//                        initPredictionRecyclerView();
-//                    }
+//                    newText = null;
 //                }
-//                return true;
-//            }
-//        });
-//        return true;
+
+                if (listener != null) {
+                    listener.onSearch(query);
+                }
+
+//                if (fragmentSelected == R.layout.fragment_workmates) {
+//                    searchItem.setVisible(false);
+//                }
+                return true;
+            }
+        });
+        return true;
     }
 
-    private void initPredictionRecyclerView() {
-        adapter = new SuggestionAdapter();
-        RecyclerView recyclerView = new RecyclerView(this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
-        container.addView(recyclerView);
+    @SuppressLint({"NotifyDataSetChanged", "MissingPermission"})
+    private void initPredictionRecyclerView(List<RestaurantDto> restaurants) {
+        userManager.getUserData().addOnSuccessListener(user -> {
+                locationClient.getLastLocation()
+                        .addOnSuccessListener(this, location -> {
+                            if (location != null) {
+                                adapter = new SuggestionAdapter(restaurants, location);
+                                recyclerView = new RecyclerView(this);
+                                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                                recyclerView.setAdapter(adapter);
+                                container.addView(recyclerView);
+                            }
+                        });
+        });
     }
+
 
     private void setUpLogin() {
         if (!userManager.isCurrentUserLogged()) {
