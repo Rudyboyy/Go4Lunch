@@ -22,19 +22,23 @@ import com.bumptech.glide.Glide;
 import com.rudy.go4lunch.BuildConfig;
 import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.model.RestaurantDto;
+import com.rudy.go4lunch.model.User;
 
 import java.util.List;
+import java.util.Locale;
 
 public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.ViewHolder> {
 
     private final Context mContext;
     private final List<RestaurantDto> mRestaurantDtoList;
     private final Location mLocation;
+    private final List<User> mUsers;
 
-    public RestaurantsAdapter(List<RestaurantDto> restaurants, Context context, Location location) {
+    public RestaurantsAdapter(List<RestaurantDto> restaurants, Context context, Location location, List<User> users) {
         this.mRestaurantDtoList = restaurants;
         this.mContext = context;
         this.mLocation = location;
+        this.mUsers = users;
     }
 
     @NonNull
@@ -48,7 +52,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
     @Override
     public void onBindViewHolder(@NonNull RestaurantsAdapter.ViewHolder holder, int position) {
         RestaurantDto restaurant = mRestaurantDtoList.get(position);
-        holder.displayRestaurants(restaurant, mLocation);
+        holder.displayRestaurants(restaurant, mLocation, mUsers);
 
         holder.itemView.setOnClickListener(view -> {
             Intent detailRestaurantActivityIntent = new Intent(mContext, DetailRestaurantActivity.class);
@@ -96,7 +100,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
         }
 
         @SuppressLint({"CheckResult", "SetTextI18n"})
-        public void displayRestaurants(RestaurantDto restaurantDto, Location location) {
+        public void displayRestaurants(RestaurantDto restaurantDto, Location location, List<User> users) {
             Location myLoc = new Location("my loc");
             myLoc.setLatitude(location.getLatitude());
             myLoc.setLongitude(location.getLongitude());
@@ -109,9 +113,10 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             address.setText(restaurantDto.getAddress());
             ratingBar.setRating(restaurantDto.getCollapseRating());
             distance.setText(mDistance + "m");
+            attendees.setText(getNumberOfWorkmates(users, restaurantDto.getPlaceId()));//todo récupérer le nombre de workmate qui dejeune a ce restaurant
 
             if (restaurantDto.getOpeningHours() != null) {
-                schedule.setText(getRestaurantStatus(restaurantDto.getOpeningHours().isOpenNow()));
+                schedule.setText(getRestaurantStatus(restaurantDto.getOpeningHours().isOpenNow()));//todo recupérer les horaires avec detailApi
             }
 
             if (restaurantDto.getPhotos() != null) {
@@ -123,6 +128,18 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
                         .placeholder(R.drawable.restaurant)
                         .into(itemListPicture);
             }
+        }
+
+        private String getNumberOfWorkmates(List<User> users, String restaurantPlaceId) {
+            int numberOfBookings = 0;
+            if (users != null && users.size() > 0) {
+                for (User user : users) {
+                    if (user.getBookedRestaurantPlaceId().equals(restaurantPlaceId)) {
+                        numberOfBookings++;
+                    }
+                }
+            }
+            return String.format(Locale.getDefault(), "(%d)", numberOfBookings);
         }
     }
 }

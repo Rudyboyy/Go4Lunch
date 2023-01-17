@@ -16,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.rudy.go4lunch.R;
+import com.rudy.go4lunch.manager.UserManager;
 import com.rudy.go4lunch.model.RestaurantDto;
+import com.rudy.go4lunch.model.User;
 import com.rudy.go4lunch.service.ProcessRestaurantDto;
 import com.rudy.go4lunch.viewmodel.MainViewModel;
 
@@ -32,6 +34,8 @@ public class RestaurantsFragment extends Fragment implements
     public static final String RESTAURANT_INFO = "restaurantInfo";
     MainViewModel mViewModel;
     private FusedLocationProviderClient locationClient;
+    private UserManager userManager = UserManager.getInstance();
+    private List<User> mUsers = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,7 +58,7 @@ public class RestaurantsFragment extends Fragment implements
         mRecyclerView = root.findViewById(R.id.recyclerview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(layoutManager);
-        RestaurantsAdapter mAdapter = new RestaurantsAdapter(mRestaurants, getActivity(), location);
+        RestaurantsAdapter mAdapter = new RestaurantsAdapter(mRestaurants, getActivity(), location, mUsers);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
                 layoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
@@ -79,6 +83,10 @@ public class RestaurantsFragment extends Fragment implements
                         mViewModel.getRestaurantLocation(this, location);
                     }
                 });
+        userManager.getUserData().addOnSuccessListener(user -> {
+            mUsers.clear();
+            mUsers.add(user);
+        });
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -88,4 +96,5 @@ public class RestaurantsFragment extends Fragment implements
         mRestaurants.addAll(restaurantDtoList);
         Objects.requireNonNull(mRecyclerView.getAdapter()).notifyDataSetChanged();
     }
+
 }
