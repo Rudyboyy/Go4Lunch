@@ -13,7 +13,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:background="@color/cardview_shadow_end_color"
-        android:contentDescription="Back_arrow"
+        android:contentDescription="@string/back_arrow"
         android:padding="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -23,7 +23,7 @@
         android:id="@+id/deleteAccountButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Delete account"
+        android:text="@string/delete_account"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="50dp"
@@ -33,24 +33,22 @@
 
     <Button
         android:id="@+id/updateButton"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Update changes"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
-        app:layout_constraintBottom_toTopOf="@id/deleteAccountButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:text="@string/update"
+        app:layout_constraintTop_toTopOf="@id/editTextTextPersonName"
+        app:layout_constraintBottom_toBottomOf="@id/editTextTextPersonName"
+        app:layout_constraintEnd_toEndOf="@id/editTextTextPersonName" />
 
     <EditText
         android:id="@+id/editTextTextPersonName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:layout_marginTop="150dp"
-        android:text="Name"
-        android:textColor="@color/black"
+        android:text="@string/name"
+        android:textColor="?attr/textAppearanceBody1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -64,5 +62,41 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/text_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/activate_notifications"
+        android:textSize="18sp"
+        android:layout_marginTop="50dp"
+        android:gravity="start"
+        android:textColor="?attr/textAppearanceBody1"
+        app:layout_constraintStart_toStartOf="@id/editTextTextPersonName"
+        app:layout_constraintTop_toBottomOf="@id/editTextTextPersonName" />
+
+    <RadioGroup
+        android:id="@+id/view_radio_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:checkedButton="@+id/radio_yes"
+        app:layout_constraintTop_toTopOf="@id/text_settings"
+        app:layout_constraintBottom_toBottomOf="@id/text_settings"
+        app:layout_constraintEnd_toEndOf="@id/updateButton"
+        >
+
+        <RadioButton
+            android:id="@+id/radio_yes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/yes" />
+
+        <RadioButton
+            android:id="@+id/radio_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no" />
+    </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

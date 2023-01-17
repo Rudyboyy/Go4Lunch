@@ -29,4 +29,16 @@
     <string name="settings">Parramètre</string>
     <string name="unlike">NE PAS AIMER</string>
     <string name="like">AIMER</string>
+    <string name="with">avec </string>
+    <string name="channel_id">com.go4lunch</string>
+    <string name="channel_name">Firebase Messaging</string>
+    <string name="receive_notification">notifications activées</string>
+    <string name="not_receive_notification">notifications désactivées</string>
+    <string name="back_arrow">Flèche retour</string>
+    <string name="delete_account">Supprimer le compte</string>
+    <string name="update">Mettre à jour</string>
+    <string name="name">Nom</string>
+    <string name="yes">oui</string>
+    <string name="no">non</string>
+    <string name="activate_notifications">Activer les notifications</string>
 </resources>

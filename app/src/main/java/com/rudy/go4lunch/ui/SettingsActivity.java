@@ -1,8 +1,10 @@
 package com.rudy.go4lunch.ui;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +17,14 @@ import com.rudy.go4lunch.manager.UserManager;
 public class SettingsActivity extends AppCompatActivity {
 
     ActivitySettingsBinding binding;
-    private UserManager userManager = UserManager.getInstance();
+    private final UserManager userManager = UserManager.getInstance();
+
+    public static final String YES = "YES";
+    public static final String NO = "NO";
+    public static final String SHARED_PREF_USER_INFO_NOTIFICATION = "SHARED_PREF_USER_INFO_NOTIFICATION";
+    public static final String SHARED_PREF_USER_INFO = "SHARED_PREF_USER_INFO";
+    String statusNotification = "";
+    private String decision = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +40,7 @@ public class SettingsActivity extends AppCompatActivity {
         setDeleteButton();
         setUpdateButton();
         updateUIWithUserData();
+        setRadioButton();
     }
 
     private void setBackButton() {
@@ -38,28 +48,22 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void setDeleteButton() {
-        binding.deleteAccountButton.setOnClickListener(view -> {
-            new AlertDialog.Builder(this)
-                    .setMessage(R.string.popup_message_confirmation_delete_account)
-                    .setPositiveButton(R.string.popup_message_choice_yes, (dialogInterface, i) ->
-                            userManager.deleteUser(SettingsActivity.this)
-                                    .addOnSuccessListener(aVoid -> {
-                                                finish();
-                                            }
-                                    )
-                    )
-                    .setNegativeButton(R.string.popup_message_choice_no, null)
-                    .show();
-        });
+        binding.deleteAccountButton.setOnClickListener(view -> new AlertDialog.Builder(this)
+                .setMessage(R.string.popup_message_confirmation_delete_account)
+                .setPositiveButton(R.string.popup_message_choice_yes, (dialogInterface, i) ->
+                        userManager.deleteUser(SettingsActivity.this)
+                                .addOnSuccessListener(aVoid -> finish()
+                                )
+                )
+                .setNegativeButton(R.string.popup_message_choice_no, null)
+                .show());
     }
 
     private void setUpdateButton() {
         binding.updateButton.setOnClickListener(view -> {
             binding.progressBar.setVisibility(View.VISIBLE);
             userManager.updateUsername(binding.editTextTextPersonName.getText().toString())
-                    .addOnSuccessListener(aVoid -> {
-                        binding.progressBar.setVisibility(View.INVISIBLE);
-                    });
+                    .addOnSuccessListener(aVoid -> binding.progressBar.setVisibility(View.INVISIBLE));
         });
     }
 
@@ -80,6 +84,41 @@ public class SettingsActivity extends AppCompatActivity {
         userManager.getUserData().addOnSuccessListener(user -> {
             String username = TextUtils.isEmpty(user.getUsername()) ? getString(R.string.info_no_username_found) : user.getUsername();
             binding.editTextTextPersonName.setText(username);
+        });
+    }
+
+    private void setRadioButton() {
+        statusNotification = getSharedPreferences(SHARED_PREF_USER_INFO, MODE_PRIVATE).getString(SHARED_PREF_USER_INFO_NOTIFICATION, YES);
+
+        if (statusNotification.equals(YES)) {
+            binding.radioYes.setChecked(true);
+        }
+        if (statusNotification.equals(NO)) {
+            binding.radioNo.setChecked(true);
+        }
+
+        binding.viewRadioGroup.setOnCheckedChangeListener((radioGroup, idChecked) -> {
+            SharedPreferences preferences = getSharedPreferences(SHARED_PREF_USER_INFO, MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            final int yes = R.id.radio_yes;
+            final int no = R.id.radio_no;
+
+            switch (idChecked) {
+                case yes:
+                    decision = YES;
+                    editor.putString(SHARED_PREF_USER_INFO_NOTIFICATION, decision);
+                    editor.apply();
+                    Toast.makeText(getApplicationContext(),
+                            getString(R.string.receive_notification), Toast.LENGTH_SHORT).show();
+                    break;
+                case no:
+                    decision = NO;
+                    editor.putString(SHARED_PREF_USER_INFO_NOTIFICATION, decision);
+                    editor.apply();
+                    Toast.makeText(getApplicationContext(),
+                            getString(R.string.not_receive_notification), Toast.LENGTH_SHORT).show();
+                    break;
+            }
         });
     }
 }
