@@ -113,10 +113,10 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             address.setText(restaurantDto.getAddress());
             ratingBar.setRating(restaurantDto.getCollapseRating());
             distance.setText(mDistance + "m");
-            attendees.setText(getNumberOfWorkmates(users, restaurantDto.getPlaceId()));//todo récupérer le nombre de workmate qui dejeune a ce restaurant
+            attendees.setText(getNumberOfWorkmates(users, restaurantDto.getPlaceId()));
 
             if (restaurantDto.getOpeningHours() != null) {
-                schedule.setText(getRestaurantStatus(restaurantDto.getOpeningHours().isOpenNow()));//todo recupérer les horaires avec detailApi
+                schedule.setText(getRestaurantStatus(restaurantDto.getOpeningHours().isOpenNow()));//todo recupérer les horaires avec DetailApi
             }
 
             if (restaurantDto.getPhotos() != null) {
