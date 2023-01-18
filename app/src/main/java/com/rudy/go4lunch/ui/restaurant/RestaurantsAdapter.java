@@ -23,7 +23,12 @@ import com.rudy.go4lunch.BuildConfig;
 import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.model.RestaurantDto;
 import com.rudy.go4lunch.model.User;
+import com.rudy.go4lunch.model.dto.PeriodsDto;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -115,8 +120,42 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             distance.setText(mDistance + "m");
             attendees.setText(getNumberOfWorkmates(users, restaurantDto.getPlaceId()));
 
+//            if (restaurantDto.getOpeningHours() != null) {
+//                schedule.setText(getRestaurantStatus(restaurantDto.getOpeningHours().isOpenNow()));//todo recupérer les horaires avec DetailApi !!!
+//                List<PeriodsDto> periodsDtoList = restaurantDto.getOpeningHours().getPeriods();
+//                for (PeriodsDto periods : periodsDtoList) {
+//                    if (periods.getClose().getDay() ==)
+//                }
+//                schedule.setText();
+//            }
             if (restaurantDto.getOpeningHours() != null) {
-                schedule.setText(getRestaurantStatus(restaurantDto.getOpeningHours().isOpenNow()));//todo recupérer les horaires avec DetailApi
+                schedule.setText(getRestaurantStatus(restaurantDto.getOpeningHours().isOpenNow()));
+                List<PeriodsDto> periodsDtoList = restaurantDto.getOpeningHours().getPeriods();
+                Calendar calendar = Calendar.getInstance();
+                int day = calendar.get(Calendar.DAY_OF_WEEK);
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+                for (PeriodsDto period : periodsDtoList) {
+                    if (period.getOpen().getDay() == day) {
+                        try {
+                            Date openTime = timeFormat.parse(period.getOpen().getTime());
+                            Date closeTime = timeFormat.parse(period.getClose().getTime());
+                            assert openTime != null;
+                            assert closeTime != null;
+                            if (restaurantDto.getOpeningHours().isOpenNow()) {
+                                schedule.setText("Ouvert jusqu'a " + timeFormat.format(closeTime));
+                                break;
+                            } else {
+                                schedule.setText("Fermé ouvre a " + timeFormat.format(openTime));
+                            }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    } else if (!restaurantDto.getOpeningHours().isOpenNow()) {
+                        schedule.setText("Fermé");
+                    } else {
+                        schedule.setText("Ouvert");
+                    }
+                }
             }
 
             if (restaurantDto.getPhotos() != null) {
@@ -140,6 +179,53 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
                 }
             }
             return String.format(Locale.getDefault(), "(%d)", numberOfBookings);
+        }
+
+        private String getDayName(int day) {
+            switch (day) {
+                case 1:
+                    return "Lundi";
+                case 2:
+                    return "Mardi";
+                case 3:
+                    return "Mercredi";
+                case 4:
+                    return "Jeudi";
+                case 5:
+                    return "Vendredi";
+                case 6:
+                    return "Samedi";
+                case 7:
+                    return "Dimanche";
+                default:
+                    return "Jour Inconnu";
+            }
+//            Calendar calendar = Calendar.getInstance();
+//            int currentDay = calendar.get(Calendar.DAY_OF_WEEK);
+//            String days = null;
+//            switch (currentDay) {
+//                case 0:
+//                    days = "SUNDAY";
+//                    break;
+//                case 1:
+//                    days = "MONDAY";
+//                    break;
+//                case 2:
+//                    days = "TUESDAY";
+//                    break;
+//                case 3:
+//                    days = "WEDNESDAY";
+//                    break;
+//                case 4:
+//                    days = "THURSDAY";
+//                    break;
+//                case 5:
+//                    days = "FRIDAY";
+//                    break;
+//                case 6:
+//                    days = "SATURDAY";
+//                    break;
+//            }
         }
     }
 }
