@@ -136,7 +136,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
                 @SuppressLint("SimpleDateFormat") SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
                 for (PeriodsDto period : periodsDtoList) {
                     if (period.getOpen().getDay() == day) {
-                        try {
+                        try {//todo mettre dans utils
                             Date openTime = timeFormat.parse(period.getOpen().getTime());
                             Date closeTime = timeFormat.parse(period.getClose().getTime());
                             assert openTime != null;
@@ -169,7 +169,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             }
         }
 
-        private String getNumberOfWorkmates(List<User> users, String restaurantPlaceId) {
+        private String getNumberOfWorkmates(List<User> users, String restaurantPlaceId) { //todo utils
             int numberOfBookings = 0;
             if (users != null && users.size() > 0) {
                 for (User user : users) {

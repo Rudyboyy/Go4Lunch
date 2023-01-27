@@ -255,8 +255,11 @@ public class MainActivity extends AppCompatActivity implements
         View headerView = binding.navigationView.getHeaderView(0);
         NavHeaderBinding headerBinding = NavHeaderBinding.bind(headerView);
         userManager.getUserData().addOnSuccessListener(user -> {
+            if (user != null) {
+
             String username = TextUtils.isEmpty(user.getUsername()) ? getString(R.string.info_no_username_found) : user.getUsername();
             headerBinding.name.setText(username);
+            }
         });
     }
 

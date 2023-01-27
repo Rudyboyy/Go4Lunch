@@ -28,7 +28,7 @@ import java.util.List;
 public class WelcomeScreen extends AppCompatActivity {
 
     ActivityWelcomeScreenBinding binding;
-    private UserManager userManager = UserManager.getInstance();
+    public UserManager userManager = UserManager.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +75,7 @@ public class WelcomeScreen extends AppCompatActivity {
         });
     }
 
-    private void onSignInResult(@NonNull FirebaseAuthUIAuthenticationResult result) {
+    public void onSignInResult(@NonNull FirebaseAuthUIAuthenticationResult result) {
         IdpResponse response = result.getIdpResponse();
         if (result.getResultCode() == RESULT_OK) {
             showSnackBar(getString(R.string.connection_succeed));
