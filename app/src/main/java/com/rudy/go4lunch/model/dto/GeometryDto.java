@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class GeometryDto implements Serializable {
 
     @SerializedName("location")
-    private LocationDto mLocationDto;
+    public LocationDto mLocationDto;
 
     public LocationDto getLocationDto() {
         return mLocationDto;

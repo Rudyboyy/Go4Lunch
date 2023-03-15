@@ -16,6 +16,12 @@ public class OpeningHoursDto implements Serializable  {
     @SerializedName("periods")
     List<PeriodsDto> periods;
 
+    public OpeningHoursDto(boolean openNow, List<String> weekDay,List<PeriodsDto> periods) {
+        this.openNow = openNow;
+        this.weekDay = weekDay;
+        this.periods = periods;
+    }
+
     public List<String> getWeekDay() {
         return weekDay;
     }

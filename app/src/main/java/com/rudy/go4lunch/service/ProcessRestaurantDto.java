@@ -7,5 +7,4 @@ import java.util.List;
 public interface ProcessRestaurantDto {
 
     void processRestaurantDto(List<RestaurantDto> restaurantDtoList);
-
 }

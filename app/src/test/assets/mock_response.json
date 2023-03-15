@@ -1,0 +1,992 @@
+{
+   "html_attributions" : [],
+   "next_page_token" : "AW30NDw7BNZMjPo99tITORQ4OSgj2VLf74Nq4_-eXeIy1Lt96BdmZd2W5VPWBb6gshmI0DoUN8WQdCz2orv9EnseTwO2PDogmszMOG1scMy4dV_MUMBQ95k8hh9hONpD1lFC0rd_zW5WfLJ3YAjOncxKVWL9OGq6Xf_16U7wUWmJNQjyS_LvHLYQpXoP4e65BAoNpYRA7YquzAqtGWaxO7hquk1Y9LfdKhTQV8IpeFiFsPFfOdZTszouCqWk1ax94s8GB9mbEFcm3QDp3eBZVS3HXRDJwVoG25ElFzigoxMJ72bI7HozaDDklouMypcg9Jd6dWnPSEFM4g7EqShFOcOOa8DHGVIr46TPCV9JUoV2OF9r069dbFyj8aOazEVIgtSTSvZNQjgU_sIzxhsyo8P1opfNEJ7E6dMmGuwmgZPXPJ_OfJv5FbZljYjSUUBH",
+   "results" : [
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 47.89823609999999,
+               "lng" : 1.8926583
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 47.8994289802915,
+                  "lng" : 1.893975880291502
+               },
+               "southwest" : {
+                  "lat" : 47.8967310197085,
+                  "lng" : 1.891277919708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png",
+         "icon_background_color" : "#909CE1",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/hotel_pinlet",
+         "name" : "Hotel Escale Oceania Orléans",
+         "opening_hours" : {
+            "open_now" : true
+         },
+         "photos" : [
+            {
+               "height" : 2362,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/105427838689864508660\"\u003eHôtel Escale Oceania Orléans\u003c/a\u003e"
+               ],
+               "photo_reference" : "AW30NDxZj7v8-fKTDJ39IVsNrGSknjaMmEkYWVK0BbFwKxQ381j3w0xhnffKU3qVn5Jz6f-Op5DnYEar64A-c9VRLlLfwJRIgiTKEEpv5xlZz5J5-gXTTtMwPmI5VxY03cyPqxd2PHFSlboy2Eu1A1PxPUnNp0SumqUfet_nrgln6EXe0jwm",
+               "width" : 3543
+            }
+         ],
+         "place_id" : "ChIJ6YHIxSjl5EcROppskGOMxLo",
+         "plus_code" : {
+            "compound_code" : "VVXV+73 Orléans, France",
+            "global_code" : "8FV3VVXV+73"
+         },
+         "rating" : 4.2,
+         "reference" : "ChIJ6YHIxSjl5EcROppskGOMxLo",
+         "scope" : "GOOGLE",
+         "types" : [
+            "lodging",
+            "restaurant",
+            "food",
+            "bar",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 845,
+         "vicinity" : "16 Quai Saint-Laurent, Orléans"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 47.9083778,
+               "lng" : 1.900826
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 47.9097250802915,
+                  "lng" : 1.902291780291502
+               },
+               "southwest" : {
+                  "lat" : 47.9070271197085,
+                  "lng" : 1.899593819708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png",
+         "icon_background_color" : "#909CE1",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/hotel_pinlet",
+         "name" : "Le Bannier hôtel, restaurant",
+         "opening_hours" : {
+            "open_now" : false
+         },
+         "photos" : [
+            {
+               "height" : 3072,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/104026768756698651341\"\u003eLe Bannier hôtel, restaurant\u003c/a\u003e"
+               ],
+               "photo_reference" : "AW30NDyOHRJq15EELG6ahpX_pftrKDz7prcMpsDZSw1i0qLKxlbwBiIPLkg6hcBs1P24640EdEeO9Q6m8ACdZiDED8deSrqqNIh-WNbevzxufproEVWIpXV-a-8hKgO6g-ncegbnCEAeMpCJZpQJqyj4oLj6wmQn9ZRsk8HWmfuCFRu5GjsZ",
+               "width" : 4608
+            }
+         ],
+         "place_id" : "ChIJoyFS9Cr75EcR8LgMQjqHNOk",
+         "plus_code" : {
+            "compound_code" : "WW52+98 Orléans, France",
+            "global_code" : "8FV3WW52+98"
+         },
+         "rating" : 4.3,
+         "reference" : "ChIJoyFS9Cr75EcR8LgMQjqHNOk",
+         "scope" : "GOOGLE",
+         "types" : [ "lodging", "restaurant", "food", "point_of_interest", "establishment" ],
+         "user_ratings_total" : 153,
+         "vicinity" : "13 Rue du Faubourg Bannier, Orléans"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 47.8993315,
+               "lng" : 1.9067659
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 47.90070773029149,
+                  "lng" : 1.907789480291502
+               },
+               "southwest" : {
+                  "lat" : 47.89800976970849,
+                  "lng" : 1.905091519708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "La Parenthèse",
+         "opening_hours" : {
+            "open_now" : false
+         },
+         "photos" : [
+            {
+               "height" : 2048,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/117374083948541431080\"\u003eLa Parenthèse\u003c/a\u003e"
+               ],
+               "photo_reference" : "AW30NDxXaWG3od6JlxSigBSgezhyWE2PCAtvCz8P_ryUaiIwCQCmzGB_JYUzltph2ZxvbOqjIJDyrvez0HPNED2UnLgWqtghAd5i6bW-mP0DjWSbzc2CqHtKnRiqSfpCIORReZDd7HmldxeP6yqmxqZdBjsajG9obXrqjL4bOns5R0PObmi8",
+               "width" : 1536
+            }
+         ],
+         "place_id" : "ChIJ4xXXCNHk5EcRvcGF-zRERwU",
+         "plus_code" : {
+            "compound_code" : "VWX4+PP Orléans, France",
+            "global_code" : "8FV3VWX4+PP"
+         },
+         "price_level" : 2,
+         "rating" : 4.7,
+         "reference" : "ChIJ4xXXCNHk5EcRvcGF-zRERwU",
+         "scope" : "GOOGLE",
+         "types" : [
+            "meal_takeaway",
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 941,
+         "vicinity" : "26 Place du Châtelet, Orléans"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 47.89805760000001,
+               "lng" : 1.9103358
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 47.89937818029151,
+                  "lng" : 1.911701880291502
+               },
+               "southwest" : {
+                  "lat" : 47.89668021970851,
+                  "lng" : 1.909003919708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "Restaurant Le Lievre Gourmand",
+         "opening_hours" : {
+            "open_now" : false
+         },
+         "photos" : [
+            {
+               "height" : 3024,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/109068079129329187166\"\u003eIgnacio A. Monteserin\u003c/a\u003e"
+               ],
+               "photo_reference" : "AW30NDyQAicLP5Q0qpEu2tH5ZZCg71e_Zzs_EGo36WJQwUWcuATyh9zB7RAKjN2hkVvYx2oC_DJ39NtIem_TXgcHQO0Jekyk78ZGrFUVKgP6cDnyhau6uUiQqh3wFG7PTpM0FkIfXsTr8k6BDiOVkstfJv7xsd7unnj485xdiDiv386V1CGY",
+               "width" : 4032
+            }
+         ],
+         "place_id" : "ChIJK1-vz8_k5EcR3UQan8-HJuM",
+         "plus_code" : {
+            "compound_code" : "VWX6+64 Orléans, France",
+            "global_code" : "8FV3VWX6+64"
+         },
+         "price_level" : 3,
+         "rating" : 4.7,
+         "reference" : "ChIJK1-vz8_k5EcR3UQan8-HJuM",
+         "scope" : "GOOGLE",
+         "types" : [ "restaurant", "food", "point_of_interest", "establishment" ],
+         "user_ratings_total" : 528,
+         "vicinity" : "28 Quai du Châtelet, Orléans"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 47.8986717,
+               "lng" : 1.9087082
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 47.8999312802915,
+                  "lng" : 1.910117480291502
+               },
+               "southwest" : {
+                  "lat" : 47.8972333197085,
+                  "lng" : 1.907419519708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/movies-71.png",
+         "icon_background_color" : "#13B5C7",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/movie_pinlet",
+         "name" : "Pathé Orléans",
+         "opening_hours" : {
+            "open_now" : true
+         },
+         "photos" : [
+            {
+               "height" : 3024,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/100373089713851931811\"\u003eRomain Chazal\u003c/a\u003e"
+               ],
+               "photo_reference" : "AW30NDzhcgnYGA7j3t2hbtRHWtJS03XjkZnGVF5aiBExPZhA2Mc_SQeZ05qRMchhEQgiCtii_VQUt1bpOQZYyWQHm6aA5ASwylXN9UJzq2vZWDB1lyezMZFmiMgcvwoYuBjq2T4gFYdNUgGsdwuqS6510513H6r_BKbfvzmkjTK_fye9oAxH",
+               "width" : 4032
+            }
+         ],
+         "place_id" : "ChIJPfII_dDk5EcRGoivw6T3oi8",
+         "plus_code" : {
+            "compound_code" : "VWX5+FF Orléans, France",
+            "global_code" : "8FV3VWX5+FF"
+         },
+         "rating" : 4.1,
+         "reference" : "ChIJPfII_dDk5EcRGoivw6T3oi8",
+         "scope" : "GOOGLE",
+         "types" : [
+            "movie_theater",
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "store",
+            "establishment"
+         ],
+         "user_ratings_total" : 3657,
+         "vicinity" : "2 Rue des Halles, Orléans"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 47.9043815,
+               "lng" : 1.9098513
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 47.9057254302915,
+                  "lng" : 1.911132630291502
+               },
+               "southwest" : {
+                  "lat" : 47.9030274697085,
+                  "lng" : 1.908434669708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "Le Tonnelier",
+         "opening_hours" : {
+            "open_now" : false
+         },
+         "photos" : [
+            {
+               "height" : 3024,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/100620232247487826832\"\u003ePierre Perreault\u003c/a\u003e"
+               ],
+               "photo_reference" : "AW30NDwn2DqcnT1zEfSjX2FkgntN-GpRajqaXPJZ8dt_aqx41GhcIicPEqq3I39PIE_LcsGHUdhE6w0bxhx3QbhLGZwCTjVUaX8QhA5OBVcKBbqLmEJWnjYR0z1czkDAZ3XD9aVeFgRhL7iHZ91fd_lMZFTz4q--Kg7a3aEG1VC2bUSPPxDO",
+               "width" : 4032
+            }
+         ],
+         "place_id" : "ChIJ78u8ntLk5EcRDYWepgMJJmE",
+         "plus_code" : {
+            "compound_code" : "WW35+QW Orléans, France",
+            "global_code" : "8FV3WW35+QW"
+         },
+         "price_level" : 2,
+         "rating" : 4.5,
+         "reference" : "ChIJ78u8ntLk5EcRDYWepgMJJmE",
+         "scope" : "GOOGLE",
+         "types" : [ "restaurant", "food", "point_of_interest", "establishment" ],
+         "user_ratings_total" : 299,
+         "vicinity" : "5 Rue d'Alsace Lorraine, Orléans"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 47.8986733,
+               "lng" : 1.9093066
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 47.8999988802915,
+                  "lng" : 1.910667830291502
+               },
+               "southwest" : {
+                  "lat" : 47.8973009197085,
+                  "lng" : 1.907969869708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "Le Lift",
+         "opening_hours" : {
+            "open_now" : false
+         },
+         "photos" : [
+            {
+               "height" : 3456,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/116249882983700247367\"\u003eLe Lift\u003c/a\u003e"
+               ],
+               "photo_reference" : "AW30NDwh1ohU9IgpUU0LT8meOf1KFl5Wof5qk7E2ricKUGJY16JaNjsbXW2vL5yTFx4LADpgZ3_FvYIz89gAjhUKh6QaNXVXLbaGT44xnaztKjshPb9nPyyjIHB0QgnkwnE5Ia3x2dBsyCkE__zk-O7zV96gm1BS03KhmDj2je6nqA61Lw8w",
+               "width" : 5184
+            }
+         ],
+         "place_id" : "ChIJKfZA19Hk5EcRVPyjR4GjSss",
+         "plus_code" : {
+            "compound_code" : "VWX5+FP Orléans, France",
+            "global_code" : "8FV3VWX5+FP"
+         },
+         "price_level" : 3,
+         "rating" : 4.3,
+         "reference" : "ChIJKfZA19Hk5EcRVPyjR4GjSss",
+         "scope" : "GOOGLE",
+         "types" : [ "restaurant", "food", "point_of_interest", "establishment" ],
+         "user_ratings_total" : 499,
+         "vicinity" : "dans le jardin de la charpenterie avec vue panoramique sur la Loire, 5 Rue de la Poterne, Orléans"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 47.9046487,
+               "lng" : 1.9156839
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 47.9060246302915,
+                  "lng" : 1.916995530291502
+               },
+               "southwest" : {
+                  "lat" : 47.90332666970851,
+                  "lng" : 1.914297569708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/shopping-71.png",
+         "icon_background_color" : "#4B96F3",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/shoppingcart_pinlet",
+         "name" : "Carrefour City Manufacture Orleans",
+         "opening_hours" : {
+            "open_now" : false
+         },
+         "photos" : [
+            {
+               "height" : 2736,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/111329141167225454865\"\u003eCarrefour City\u003c/a\u003e"
+               ],
+               "photo_reference" : "AW30NDw2--V6__trU8YJRTV7qrnyeYYtD-yi2ASeH2VjNQufH3yVRbXxTDnuVotFrT20yHX6WcWL2o8hotKpxs_Rwr2_9uabY9nAYjvL3mVBqE17zexQHnhyZzhFkynEtVVi1scqG80DFu50NGG2oYh7or_dZ10upP2l5epPTQ1DrQZHejuI",
+               "width" : 3648
+            }
+         ],
+         "place_id" : "ChIJizu9YMvk5EcRVVXTsl8Xpg0",
+         "plus_code" : {
+            "compound_code" : "WW38+V7 Orléans, France",
+            "global_code" : "8FV3WW38+V7"
+         },
+         "rating" : 3.8,
+         "reference" : "ChIJizu9YMvk5EcRVVXTsl8Xpg0",
+         "scope" : "GOOGLE",
+         "types" : [
+            "supermarket",
+            "bakery",
+            "grocery_or_supermarket",
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "store",
+            "establishment"
+         ],
+         "user_ratings_total" : 355,
+         "vicinity" : "2 Rue de la Manufacture, Orléans"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 47.89918109999999,
+               "lng" : 1.9093182
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 47.9001090302915,
+                  "lng" : 1.910655130291502
+               },
+               "southwest" : {
+                  "lat" : 47.8974110697085,
+                  "lng" : 1.907957169708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "La Cantine",
+         "opening_hours" : {
+            "open_now" : false
+         },
+         "photos" : [
+            {
+               "height" : 3024,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/108372423415301538780\"\u003eAurélien Cavatz\u003c/a\u003e"
+               ],
+               "photo_reference" : "AW30NDyOFVKxUvCDgkr__3MIZOIZPN3F_4-xGf6nzO9e3K_zd5FRfjOyFdZ4-8EHjiqzn35vylGqLowerP5ziODzOpvjS4qIzUj94MjPVoKxkay_3jt7SZpbWYc5djPLlJBsCXXJEYlTKbWVeLt9yrWqHuPfIG9huRsudznzgVxOimSmjVj_",
+               "width" : 4032
+            }
+         ],
+         "place_id" : "ChIJKfZA19Hk5EcRXFranU5ZHG0",
+         "plus_code" : {
+            "compound_code" : "VWX5+MP Orléans, France",
+            "global_code" : "8FV3VWX5+MP"
+         },
+         "rating" : 3.9,
+         "reference" : "ChIJKfZA19Hk5EcRXFranU5ZHG0",
+         "scope" : "GOOGLE",
+         "types" : [ "restaurant", "food", "point_of_interest", "establishment" ],
+         "user_ratings_total" : 674,
+         "vicinity" : "25 Rue de la Poterne, Orléans"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 47.90041859999999,
+               "lng" : 1.9074861
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 47.9023726302915,
+                  "lng" : 1.908822780291502
+               },
+               "southwest" : {
+                  "lat" : 47.8996746697085,
+                  "lng" : 1.906124819708499
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "Ver Di Vin SARL",
+         "opening_hours" : {
+            "open_now" : true
+         },
+         "photos" : [
+            {
+               "height" : 1192,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/100415400034116853697\"\u003eVer Di Vin SARL\u003c/a\u003e"
+               ],
+               "photo_reference" : "AW30NDwkjo97AdDRzw7T2nXok5fz1zuKwgBZ34Hk-4O8llYrkdKckl6k2qFx_311B3N2mKV4kjyyO2d-JFkEQDw03aJhnYtzo7TT5evaWaH8THPVY_6n7tAJqvzcRSl74t0HITX24G52cAaZ1JBfLwEk7YO3nvS-a5uhmmdAU05eOUf-LHSJ",
+               "width" : 2120
+            }
+         ],
+         "place_id" : "ChIJKy2jmtHk5EcRg7MJbACiRrU",
+         "plus_code" : {
+            "compound_code" : "WW24+5X Orléans, France",
+            "global_code" : "8FV3WW24+5X"
+         },
+         "rating" : 4.5,
+         "reference" : "ChIJKy2jmtHk5EcRg7MJbACiRrU",
+         "scope" : "GOOGLE",
+         "types" : [
+            "restaurant",
+            "liquor_store",
+            "food",
+            "bar",
+            "point_of_interest",
+            "store",
+            "establishment"
+         ],
+         "user_ratings_total" : 192,
+         "vicinity" : "2 Rue des 3 Maries, Orléans"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 47.90158599999999,
+               "lng" : 1.9078557
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 47.9029744802915,
+                  "lng" : 1.909191730291502
+               },
+               "southwest" : {
+                  "lat" : 47.9002765197085,
+                  "lng" : 1.906493769708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "L'Orangerie",
+         "opening_hours" : {
+            "open_now" : false
+         },
+         "photos" : [
+            {
+               "height" : 3096,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/103987081651085997927\"\u003eL&#39;Orangerie\u003c/a\u003e"
+               ],
+               "photo_reference" : "AW30NDz-n6_reECIVc61NQPsuSOfN6Gif0_0CkGdfLhDQlLBXdNeg95BykVHK9Aj63QfiztTEWjGZAcypA3oA3F1F9m0_0QF5nm3BotUaOOGYd1xTwQTB7RfYkMo08itFWWwShN_MK3L6WyncCXZN3tycF7-GaJqmmTnT4DzeVmfTHxcia3J",
+               "width" : 4128
+            }
+         ],
+         "place_id" : "ChIJVXYTJdLk5EcRKXUiRhXOgXM",
+         "plus_code" : {
+            "compound_code" : "WW25+J4 Orléans, France",
+            "global_code" : "8FV3WW25+J4"
+         },
+         "price_level" : 2,
+         "rating" : 4.4,
+         "reference" : "ChIJVXYTJdLk5EcRKXUiRhXOgXM",
+         "scope" : "GOOGLE",
+         "types" : [
+            "restaurant",
+            "meal_takeaway",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 123,
+         "vicinity" : "7 Rue Jeanne d'Arc, Orléans"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 47.909732,
+               "lng" : 1.9005981
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 47.9111013802915,
+                  "lng" : 1.902011580291501
+               },
+               "southwest" : {
+                  "lat" : 47.9084034197085,
+                  "lng" : 1.899313619708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/shopping-71.png",
+         "icon_background_color" : "#4B96F3",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/convenience_pinlet",
+         "name" : "Intermarché EXPRESS Orleans et Drive",
+         "opening_hours" : {
+            "open_now" : false
+         },
+         "photos" : [
+            {
+               "height" : 1192,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/117148224940045916435\"\u003eIntermarché EXPRESS Orleans et Drive\u003c/a\u003e"
+               ],
+               "photo_reference" : "AW30NDzhizkOQCaWFnxtS3paoI15e5qYeUdyem6klJtMmeYqA_W7uqLFPDMDwPbktQIa0PDcDTd7OxA8NMhAFZE3EKtYR16QTqe-08Bgn-9wbWYVzgwX1aWK1gnoY4Yglq5sHh49nlDHruWVF1SeGggMMtclhGeG_PgoqJs4vfNd8SHMUipH",
+               "width" : 2119
+            }
+         ],
+         "place_id" : "ChIJKeEwair75EcRcQ9Ts3FBHN8",
+         "plus_code" : {
+            "compound_code" : "WW52+V6 Orléans, France",
+            "global_code" : "8FV3WW52+V6"
+         },
+         "rating" : 3.5,
+         "reference" : "ChIJKeEwair75EcRcQ9Ts3FBHN8",
+         "scope" : "GOOGLE",
+         "types" : [
+            "convenience_store",
+            "liquor_store",
+            "supermarket",
+            "grocery_or_supermarket",
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "store",
+            "establishment"
+         ],
+         "user_ratings_total" : 544,
+         "vicinity" : "47 Rue du Faubourg Bannier, Orléans"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 47.9044428,
+               "lng" : 1.9048364
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 47.9058732302915,
+                  "lng" : 1.905822080291502
+               },
+               "southwest" : {
+                  "lat" : 47.9031752697085,
+                  "lng" : 1.903124119708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/shopping-71.png",
+         "icon_background_color" : "#4B96F3",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/shopping_pinlet",
+         "name" : "Jeff de Bruges",
+         "opening_hours" : {
+            "open_now" : false
+         },
+         "photos" : [
+            {
+               "height" : 608,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/108346188916262351970\"\u003eJeff de Bruges\u003c/a\u003e"
+               ],
+               "photo_reference" : "AW30NDwDABth7eczwAg0SIu0MBoF6CKeQ1-FEv8KwyVbxfwgEE0bo-AIoG89XHtZ2MeNVzWk59wOT8_bQuIas8jak33qs9H8LMAoFgfT01mF8q_VFzGMJUuiw1jIy4qOcesB-UOxdInuAa_i1Wgt2jXe8EoCFfsrtGshBVhx5V5rFNFqDCF_",
+               "width" : 1080
+            }
+         ],
+         "place_id" : "ChIJHRQ_ntTk5EcRpckPmNKi4fI",
+         "plus_code" : {
+            "compound_code" : "WW33+QW Orléans, France",
+            "global_code" : "8FV3WW33+QW"
+         },
+         "rating" : 4.4,
+         "reference" : "ChIJHRQ_ntTk5EcRpckPmNKi4fI",
+         "scope" : "GOOGLE",
+         "types" : [ "restaurant", "food", "point_of_interest", "store", "establishment" ],
+         "user_ratings_total" : 44,
+         "vicinity" : "16 Rue de la République, Orléans"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 47.9004143,
+               "lng" : 1.9120098
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 47.9017990302915,
+                  "lng" : 1.9141997
+               },
+               "southwest" : {
+                  "lat" : 47.8991010697085,
+                  "lng" : 1.9112781
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "Restaurant Hammamet",
+         "photos" : [
+            {
+               "height" : 4032,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/112851485063126309780\"\u003esaimir djoumoi\u003c/a\u003e"
+               ],
+               "photo_reference" : "AW30NDzzVeCF43kTlfA9L-LDIuGFCArdkcVuekE1X-fnZXPwY_gmJSHUl-P-QMdYvGtHp272oQ_rlE1elAWopdmbYL89OtTV9ESQ1IXpE3D2V5_xrX931BxWAUl7nzjyt0_OMUAUlUkO8qCUfqpuijMmz10eWxwDI1161Qgdi3fjjpPGUE9Z",
+               "width" : 3024
+            }
+         ],
+         "place_id" : "ChIJ0eezZM7k5EcR982b2lKaWqY",
+         "plus_code" : {
+            "compound_code" : "WW26+5R Orléans, France",
+            "global_code" : "8FV3WW26+5R"
+         },
+         "rating" : 4,
+         "reference" : "ChIJ0eezZM7k5EcR982b2lKaWqY",
+         "scope" : "GOOGLE",
+         "types" : [ "restaurant", "food", "bar", "point_of_interest", "establishment" ],
+         "user_ratings_total" : 4,
+         "vicinity" : "158 Rue de Bourgogne, Orléans"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 47.90257150000001,
+               "lng" : 1.8968049
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 47.90389688029151,
+                  "lng" : 1.898136780291502
+               },
+               "southwest" : {
+                  "lat" : 47.90119891970851,
+                  "lng" : 1.895438819708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/cafe-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/cafe_pinlet",
+         "name" : "Latino Cafe",
+         "opening_hours" : {
+            "open_now" : true
+         },
+         "photos" : [
+            {
+               "height" : 2988,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/110382133837649099800\"\u003ehugo sisma\u003c/a\u003e"
+               ],
+               "photo_reference" : "AW30NDxBdu-KtsZWmAxEisPL-7QwuBrpE0Fl0YP8Q4DZs7Ddei0lwFA1ZkPnVAgq8J7uMwrV-xXe9TN2phFS5RwLi-WWsMMG9zynRhjzfQOiEgyYnG5j_ndSz5mJNHpv8K0fwepXmNc3XFwF1FPdCekAikktUDUuLVc1rpAnjyt7AVFAKos3",
+               "width" : 5312
+            }
+         ],
+         "place_id" : "ChIJx_HnSSrl5EcRWmEZGV9Yxx4",
+         "plus_code" : {
+            "compound_code" : "WV3W+2P Orléans, France",
+            "global_code" : "8FV3WV3W+2P"
+         },
+         "price_level" : 1,
+         "rating" : 3.9,
+         "reference" : "ChIJx_HnSSrl5EcRWmEZGV9Yxx4",
+         "scope" : "GOOGLE",
+         "types" : [
+            "cafe",
+            "restaurant",
+            "food",
+            "bar",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 65,
+         "vicinity" : "24 Rue Porte Saint-Jean, Orléans"
+      },
+      {
+         "business_status" : "CLOSED_TEMPORARILY",
+         "geometry" : {
+            "location" : {
+               "lat" : 47.8988488,
+               "lng" : 1.904336
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 47.9001957302915,
+                  "lng" : 1.905621830291502
+               },
+               "southwest" : {
+                  "lat" : 47.8974977697085,
+                  "lng" : 1.902923869708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "Cyranis",
+         "permanently_closed" : true,
+         "place_id" : "ChIJ3_bTKtHk5EcRkhJ79NL5v44",
+         "plus_code" : {
+            "compound_code" : "VWX3+GP Orléans, France",
+            "global_code" : "8FV3VWX3+GP"
+         },
+         "rating" : 5,
+         "reference" : "ChIJ3_bTKtHk5EcRkhJ79NL5v44",
+         "scope" : "GOOGLE",
+         "types" : [ "restaurant", "food", "bar", "point_of_interest", "establishment" ],
+         "user_ratings_total" : 2,
+         "vicinity" : "14 Rue Royale, Orléans"
+      },
+      {
+         "business_status" : "CLOSED_TEMPORARILY",
+         "geometry" : {
+            "location" : {
+               "lat" : 47.9001951,
+               "lng" : 1.9093684
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 47.90207013029149,
+                  "lng" : 1.910553880291502
+               },
+               "southwest" : {
+                  "lat" : 47.8993721697085,
+                  "lng" : 1.907855919708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "Biendipe",
+         "permanently_closed" : true,
+         "place_id" : "ChIJx_zv49Hk5EcRsanElxMr9Yk",
+         "plus_code" : {
+            "compound_code" : "WW25+3P Orléans, France",
+            "global_code" : "8FV3WW25+3P"
+         },
+         "reference" : "ChIJx_zv49Hk5EcRsanElxMr9Yk",
+         "scope" : "GOOGLE",
+         "types" : [ "restaurant", "food", "point_of_interest", "establishment" ],
+         "vicinity" : "224 Rue de Bourgogne, Orléans"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 47.89830140000001,
+               "lng" : 1.9079312
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 47.89965378029149,
+                  "lng" : 1.909294930291502
+               },
+               "southwest" : {
+                  "lat" : 47.8969558197085,
+                  "lng" : 1.906596969708499
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "Le Boloye Chez Khady",
+         "opening_hours" : {
+            "open_now" : true
+         },
+         "photos" : [
+            {
+               "height" : 1024,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/110246426670971089147\"\u003eN G\u003c/a\u003e"
+               ],
+               "photo_reference" : "AW30NDwhVjYovGvRFW9IFkmzTtsHKSgMzG4g77diaLlrXgRHErjC8dCgu2jROylHujZLrrv-IcKPpMsqyRaIhactmLPNXojjdsxz7_vDNwp5bXQWLrySkLa-gOeu6s7iOL6IRr0M-XEk32qQ-ra53cd8h6-PSm21w4kjsy8x23u8LePBG9M",
+               "width" : 768
+            }
+         ],
+         "place_id" : "ChIJv3J0SdDk5EcR5TyF6i5Wb8E",
+         "plus_code" : {
+            "compound_code" : "VWX5+85 Orléans, France",
+            "global_code" : "8FV3VWX5+85"
+         },
+         "rating" : 4.2,
+         "reference" : "ChIJv3J0SdDk5EcR5TyF6i5Wb8E",
+         "scope" : "GOOGLE",
+         "types" : [ "restaurant", "food", "point_of_interest", "establishment" ],
+         "user_ratings_total" : 224,
+         "vicinity" : "5 Rue de l'Empereur, Orléans"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 47.8984,
+               "lng" : 1.908319
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 47.8997940802915,
+                  "lng" : 1.909667480291501
+               },
+               "southwest" : {
+                  "lat" : 47.8970961197085,
+                  "lng" : 1.906969519708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "Oh Terroir version fast good",
+         "opening_hours" : {
+            "open_now" : false
+         },
+         "photos" : [
+            {
+               "height" : 1333,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/113331562067758411112\"\u003eOh Terroir version fast good\u003c/a\u003e"
+               ],
+               "photo_reference" : "AW30NDx8mqDvxBie6bPwMi4_et_GImEzVuECAeYs0bnmaslRTt9NXAuMy3DcphdXzHhG9QpOY7fIb0ccfSMtF-W1nyXUIJwVx_3B3SDWNS9xbss-Yq1M88-r9YvXYgPERZ_UyYEqZfNoIUvHO3UcLb5w12qzbjDU8yXRs3SNao4lguA5_DDr",
+               "width" : 2000
+            }
+         ],
+         "place_id" : "ChIJtRANNdDk5EcReT3psij0db8",
+         "plus_code" : {
+            "compound_code" : "VWX5+98 Orléans, France",
+            "global_code" : "8FV3VWX5+98"
+         },
+         "price_level" : 2,
+         "rating" : 4.5,
+         "reference" : "ChIJtRANNdDk5EcReT3psij0db8",
+         "scope" : "GOOGLE",
+         "types" : [ "restaurant", "food", "point_of_interest", "establishment" ],
+         "user_ratings_total" : 1181,
+         "vicinity" : "3 Rue des Halles, Orléans"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 47.90010789999999,
+               "lng" : 1.9095814
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 47.90204543029149,
+                  "lng" : 1.910657530291502
+               },
+               "southwest" : {
+                  "lat" : 47.8993474697085,
+                  "lng" : 1.907959569708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "Les Fils À Maman Orléans",
+         "opening_hours" : {
+            "open_now" : false
+         },
+         "photos" : [
+            {
+               "height" : 430,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/107763388134974286864\"\u003eLes Fils À Maman Orléans\u003c/a\u003e"
+               ],
+               "photo_reference" : "AW30NDw4kdADk_UXlzvJ0mMaROFvtoVG1cNn9ebBSHpa8cPeplNudr7e-0n5sYobkwnrXMl1nEJ2-a7BihJqQnSTzLaGuq5V-8UDkxAdMVRBcojz05iCRDMYpdgJqs52C9LNfQbTEMRr1lx85d2xfYRwWiqzGuv_B4xMrPCFhJq7a968NFbi",
+               "width" : 1000
+            }
+         ],
+         "place_id" : "ChIJORQDHs7k5EcR3dN7M-oRx8g",
+         "plus_code" : {
+            "compound_code" : "WW25+2R Orléans, France",
+            "global_code" : "8FV3WW25+2R"
+         },
+         "price_level" : 2,
+         "rating" : 4.3,
+         "reference" : "ChIJORQDHs7k5EcR3dN7M-oRx8g",
+         "scope" : "GOOGLE",
+         "types" : [
+            "meal_delivery",
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 1907,
+         "vicinity" : "195 Rue de Bourgogne, Orléans"
+      }
+   ],
+   "status" : "OK"
+}

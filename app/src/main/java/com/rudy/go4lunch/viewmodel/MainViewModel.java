@@ -24,13 +24,14 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MainViewModel extends ViewModel {
 
-    RestaurantRepository restaurantRepository = new RestaurantRepository();
-    private  UserRepository userRepository = new UserRepository();
-//    private LiveData<List<RestaurantDto>> restaurant = restaurantRepository.getNearBySearchRestaurantList();
+    RestaurantRepository restaurantRepository;// = new RestaurantRepository();
+    private UserRepository userRepository = new UserRepository();
+//        private LiveData<List<RestaurantDto>> restaurant = restaurantRepository.getNearBySearchRestaurantList();
 
     @SuppressLint("CheckResult")
-    public void getRestaurantLocation(ProcessRestaurantDto processRestaurantDto, Location location) {
-//        restaurantRepository.getRestaurantLocation(location, processRestaurantDto);
+    public void getRestaurantLocation(ProcessRestaurantDto processRestaurantDto, Location location, Context context) {
+        restaurantRepository = new RestaurantRepository(context);
+        restaurantRepository.getRestaurantLocation(location, processRestaurantDto);
     }
 
 //    public LiveData<List<RestaurantDto>> getRestaurant() {

@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class MapFragment extends Fragment implements
-//        OnMapReadyCallback,
+        OnMapReadyCallback,
         ProcessRestaurantDto {
 
     private GoogleMap mMap;
@@ -57,46 +57,48 @@ public class MapFragment extends Fragment implements
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-//        if (mapFragment != null) {
-//            mapFragment.getMapAsync(this);
-//        }
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
     }
 
 
-//    @SuppressLint({"MissingPermission", "CheckResult"})
-//    @Override
-//    public void onMapReady(@NonNull GoogleMap googleMap) {
-//        mMap = googleMap;
-//        locationClient.getLastLocation()
-//                .addOnSuccessListener(requireActivity(), location -> {
-//                    if (location != null) {
-//                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18));
-//                        mViewModel.getRestaurantLocation(this, location);
-//                    }
-//                });
-//    }
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        onMapReady(mMap);
-//    }
+    @SuppressLint({"MissingPermission", "CheckResult"})
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        mMap = googleMap;
+        locationClient.getLastLocation()
+                .addOnSuccessListener(requireActivity(), location -> {
+                    if (location != null) {
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18));
+                        mViewModel.getRestaurantLocation(this, location, getContext());
+                    }
+                });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        onMapReady(mMap);
+    }
 
     @Override
     public void processRestaurantDto(List<RestaurantDto> restaurantDtoList) {
-        mViewModel.getDataBaseInstanceUser();
-        mViewModel.getAllUsers().observe(getViewLifecycleOwner(), users -> {
-            for (User user : users) {
-                for (RestaurantDto result : restaurantDtoList) {
-                    if (Objects.equals(result.getPlaceId(), user.getBookedRestaurantPlaceId())) {
-                        setMarker(BitmapDescriptorFactory.HUE_GREEN, result);
-                    } else {
-                        setMarker(BitmapDescriptorFactory.HUE_RED, result);
+        if (isAdded()) {
+            mViewModel.getDataBaseInstanceUser();
+            mViewModel.getAllUsers().observe(getViewLifecycleOwner(), users -> { //todo remplacement getViewLifecycleOwner() par requireActivity car pb dans test
+                for (User user : users) {
+                    for (RestaurantDto result : restaurantDtoList) {
+                        if (Objects.equals(result.getPlaceId(), user.getBookedRestaurantPlaceId())) {
+                            setMarker(BitmapDescriptorFactory.HUE_GREEN, result);
+                        } else {
+                            setMarker(BitmapDescriptorFactory.HUE_RED, result);
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 
     private void setMarker(float bitmap, RestaurantDto result) {

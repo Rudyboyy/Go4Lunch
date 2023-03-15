@@ -41,6 +41,7 @@ import com.rudy.go4lunch.databinding.ActivityMainBinding;
 import com.rudy.go4lunch.databinding.NavHeaderBinding;
 import com.rudy.go4lunch.manager.UserManager;
 import com.rudy.go4lunch.model.RestaurantDto;
+import com.rudy.go4lunch.service.GooglePlacesRestaurantsApiMock;
 import com.rudy.go4lunch.service.ProcessRestaurantDto;
 import com.rudy.go4lunch.ui.dialog.PermissionDialogFragment;
 import com.rudy.go4lunch.ui.restaurant.DetailRestaurantActivity;
@@ -199,11 +200,11 @@ public class MainActivity extends AppCompatActivity implements
                 locationClient.getLastLocation()
                         .addOnSuccessListener(this, location -> {
                             if (location != null) {
-                                mViewModel.getRestaurantLocation(this, location);
+                                mViewModel.getRestaurantLocation(this, location, this);
                             }
                         });
             } else {
-                Snackbar.make(binding.getRoot(), "You didn't choose a restaurant yet!", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(binding.getRoot(), "You didn't choose a restaurant yet!", Snackbar.LENGTH_SHORT).show();//todo string fr
             }
         });
     }
@@ -255,8 +256,11 @@ public class MainActivity extends AppCompatActivity implements
         View headerView = binding.navigationView.getHeaderView(0);
         NavHeaderBinding headerBinding = NavHeaderBinding.bind(headerView);
         userManager.getUserData().addOnSuccessListener(user -> {
-            String username = TextUtils.isEmpty(user.getUsername()) ? getString(R.string.info_no_username_found) : user.getUsername();
-            headerBinding.name.setText(username);
+            if (user != null) {
+
+                String username = TextUtils.isEmpty(user.getUsername()) ? getString(R.string.info_no_username_found) : user.getUsername();
+                headerBinding.name.setText(username);
+            }
         });
     }
 
