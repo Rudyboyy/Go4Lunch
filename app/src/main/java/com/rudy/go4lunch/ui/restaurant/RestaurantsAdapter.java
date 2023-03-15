@@ -24,6 +24,7 @@ import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.model.RestaurantDto;
 import com.rudy.go4lunch.model.User;
 import com.rudy.go4lunch.model.dto.PeriodsDto;
+import com.rudy.go4lunch.utils.Utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -51,7 +52,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
     public RestaurantsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_restaurants, parent, false);
-        return new RestaurantsAdapter.ViewHolder(view);
+        return new RestaurantsAdapter.ViewHolder(view, mContext);
     }
 
     @Override
@@ -72,7 +73,6 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
         public final TextView name;
         public final TextView address;
         public final TextView schedule;
@@ -81,8 +81,10 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
         public final ImageView itemListPicture;
         public final RatingBar ratingBar;
         public final ConstraintLayout item;
+        private final Context mContext;
 
-        public ViewHolder(@NonNull View itemView) {
+
+        public ViewHolder(@NonNull View itemView, Context context) {
             super(itemView);
             this.name = itemView.findViewById(R.id.restaurant_name);
             this.address = itemView.findViewById(R.id.address);
@@ -92,16 +94,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             this.distance = itemView.findViewById(R.id.distance);
             this.ratingBar = itemView.findViewById(R.id.ratingBar);
             this.item = itemView.findViewById(R.id.item_restaurant);
-        }
-
-        private String getRestaurantStatus(Boolean isOpenNow) {
-            if (isOpenNow) {
-                schedule.setTextColor(Color.GREEN);
-                return "Open";
-            } else {
-                schedule.setTextColor(Color.RED);
-                return "Closed";
-            }
+            this.mContext = context;
         }
 
         @SuppressLint({"CheckResult", "SetTextI18n"})
@@ -129,33 +122,8 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
 //                schedule.setText();
 //            }
             if (restaurantDto.getOpeningHours() != null) {
-                schedule.setText(getRestaurantStatus(restaurantDto.getOpeningHours().isOpenNow()));
-                List<PeriodsDto> periodsDtoList = restaurantDto.getOpeningHours().getPeriods();
-                Calendar calendar = Calendar.getInstance();
-                int day = calendar.get(Calendar.DAY_OF_WEEK);
-                @SuppressLint("SimpleDateFormat") SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-                for (PeriodsDto period : periodsDtoList) {
-                    if (period.getOpen().getDay() == day) {
-                        try {//todo mettre dans utils
-                            Date openTime = timeFormat.parse(period.getOpen().getTime());
-                            Date closeTime = timeFormat.parse(period.getClose().getTime());
-                            assert openTime != null;
-                            assert closeTime != null;
-                            if (restaurantDto.getOpeningHours().isOpenNow()) {
-                                schedule.setText("Ouvert jusqu'a " + timeFormat.format(closeTime));
-                                break;
-                            } else {
-                                schedule.setText("Fermé ouvre a " + timeFormat.format(openTime));
-                            }
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                    } else if (!restaurantDto.getOpeningHours().isOpenNow()) {
-                        schedule.setText("Fermé");
-                    } else {
-                        schedule.setText("Ouvert");
-                    }
-                }
+//                schedule.setText(Utils.getOpeningHours(restaurantDto));
+//                schedule.setTextColor(Utils.getRestaurantStatus(restaurantDto.getOpeningHours().isOpenNow()));
             }
 
             if (restaurantDto.getPhotos() != null) {
@@ -169,16 +137,8 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             }
         }
 
-        private String getNumberOfWorkmates(List<User> users, String restaurantPlaceId) { //todo utils
-            int numberOfBookings = 0;
-            if (users != null && users.size() > 0) {
-                for (User user : users) {
-                    if (user.getBookedRestaurantPlaceId().equals(restaurantPlaceId)) {
-                        numberOfBookings++;
-                    }
-                }
-            }
-            return String.format(Locale.getDefault(), "(%d)", numberOfBookings);
+        private String getNumberOfWorkmates(List<User> users, String restaurantPlaceId) {
+           return Utils.getNumberOfWorkmates(users, restaurantPlaceId);
         }
 
         private String getDayName(int day) {

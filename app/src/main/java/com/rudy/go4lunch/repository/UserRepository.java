@@ -87,16 +87,16 @@ public class UserRepository {
             String urlPicture = (user.getPhotoUrl() != null) ? user.getPhotoUrl().toString() : null;
             String username = user.getDisplayName();
             String uid = user.getUid();
-
             User userToCreate = new User(uid, username, urlPicture);
 
             Task<DocumentSnapshot> userData = getUserData();
 
+            User finalUserToCreate = userToCreate;
             userData.addOnSuccessListener(documentSnapshot -> {
                 if (documentSnapshot.contains(BOOKED_RESTAURANT)) {
-                    userToCreate.setBookedRestaurant((String) documentSnapshot.get(BOOKED_RESTAURANT));
+                    finalUserToCreate.setBookedRestaurant((String) documentSnapshot.get(BOOKED_RESTAURANT));
                 } else if (documentSnapshot.contains(BOOKED_RESTAURANT_PLACE_ID)) {
-                    userToCreate.setBookedRestaurantPlaceId((String) documentSnapshot.get(BOOKED_RESTAURANT_PLACE_ID));
+                    finalUserToCreate.setBookedRestaurantPlaceId((String) documentSnapshot.get(BOOKED_RESTAURANT_PLACE_ID));
                     //                } else if (documentSnapshot.contains(FAVORITE_RESTAURANTS)) {//todo useless ?
 //                    userToCreate.setFavoriteRestaurants(Collections.singletonList((String) documentSnapshot.get(FAVORITE_RESTAURANTS)));
 //                    restaurantDto.setPlaceId((String) documentSnapshot.get(PLACE_ID));
@@ -104,7 +104,7 @@ public class UserRepository {
 //                    this.getFavoriteCollection().document(uid).set(restaurantDto);
 //                    userToCreate.setFavoriteRestaurants((List<RestaurantDto>) documentSnapshot.get(FAVORITE_RESTAURANTS));
                 }
-                this.getUsersCollection().document(uid).set(userToCreate);
+                this.getUsersCollection().document(uid).set(finalUserToCreate);
             });
         }
     }
@@ -171,8 +171,8 @@ public class UserRepository {
     public void addFavorite(String userId, String placeId, String restaurantName) {
         String uid = this.getCurrentUserUID();
         if (uid != null) {
-        getUsersCollection().document(userId)
-                .update(FAVORITE_RESTAURANTS, FieldValue.arrayUnion(placeId));
+            getUsersCollection().document(userId)
+                    .update(FAVORITE_RESTAURANTS, FieldValue.arrayUnion(placeId));
         }
     }
 
@@ -203,7 +203,7 @@ public class UserRepository {
         });
     }
 
-    public LiveData<List<User>> getAllUserLiveData(){
+    public LiveData<List<User>> getAllUserLiveData() {
         return allUsers;
     }
 }

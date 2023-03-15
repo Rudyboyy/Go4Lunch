@@ -80,7 +80,7 @@ public class RestaurantsFragment extends Fragment implements
         locationClient.getLastLocation()
                 .addOnSuccessListener(requireActivity(), location -> {
                     if (location != null) {
-                        mViewModel.getRestaurantLocation(this, location);
+                        mViewModel.getRestaurantLocation(this, location, getContext());
                     }
                 });
         userManager.getUserData().addOnSuccessListener(user -> {

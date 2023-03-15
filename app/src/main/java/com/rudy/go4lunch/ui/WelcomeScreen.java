@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.databinding.ActivityWelcomeScreenBinding;
 import com.rudy.go4lunch.manager.UserManager;
+import com.rudy.go4lunch.repository.UserRepository;
 
 import java.util.Collections;
 import java.util.List;

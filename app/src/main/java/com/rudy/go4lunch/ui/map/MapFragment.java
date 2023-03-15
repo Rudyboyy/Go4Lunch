@@ -72,7 +72,7 @@ public class MapFragment extends Fragment implements
                 .addOnSuccessListener(requireActivity(), location -> {
                     if (location != null) {
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18));
-                        mViewModel.getRestaurantLocation(this, location);
+                        mViewModel.getRestaurantLocation(this, location, getContext());
                     }
                 });
     }
@@ -85,18 +85,20 @@ public class MapFragment extends Fragment implements
 
     @Override
     public void processRestaurantDto(List<RestaurantDto> restaurantDtoList) {
-        mViewModel.getDataBaseInstanceUser();
-        mViewModel.getAllUsers().observe(getViewLifecycleOwner(), users -> {
-            for (User user : users) {
-                for (RestaurantDto result : restaurantDtoList) {
-                    if (Objects.equals(result.getPlaceId(), user.getBookedRestaurantPlaceId())) {
-                        setMarker(BitmapDescriptorFactory.HUE_GREEN, result);
-                    } else {
-                        setMarker(BitmapDescriptorFactory.HUE_RED, result);
+        if (isAdded()) {
+            mViewModel.getDataBaseInstanceUser();
+            mViewModel.getAllUsers().observe(getViewLifecycleOwner(), users -> { //todo remplacement getViewLifecycleOwner() par requireActivity car pb dans test
+                for (User user : users) {
+                    for (RestaurantDto result : restaurantDtoList) {
+                        if (Objects.equals(result.getPlaceId(), user.getBookedRestaurantPlaceId())) {
+                            setMarker(BitmapDescriptorFactory.HUE_GREEN, result);
+                        } else {
+                            setMarker(BitmapDescriptorFactory.HUE_RED, result);
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 
     private void setMarker(float bitmap, RestaurantDto result) {
