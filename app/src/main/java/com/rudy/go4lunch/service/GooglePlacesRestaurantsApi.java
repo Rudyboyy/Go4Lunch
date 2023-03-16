@@ -2,6 +2,7 @@ package com.rudy.go4lunch.service;
 
 import com.rudy.go4lunch.model.dto.RestaurantWrapperDto;
 import com.rudy.go4lunch.model.dto.RestaurantsWrapperDto;
+import com.rudy.go4lunch.model.dto.predictions.AutoCompleteDto;
 
 import io.reactivex.Single;
 import retrofit2.http.GET;
@@ -20,4 +21,11 @@ public interface GooglePlacesRestaurantsApi {
     Single<RestaurantWrapperDto> getDetails(@Query("place_id") String placeId,
                                             @Query(value = "fields", encoded = true) String fields,
                                             @Query("key") String key);
+
+    @GET("autocomplete/json")
+    Single<AutoCompleteDto> getAutocomplete(@Query("input") String input,
+                                            @Query("key") String key,
+                                            @Query(value = "location", encoded = true) String location,
+                                            @Query("radius") int radius,
+                                            @Query("types") String types);
 }

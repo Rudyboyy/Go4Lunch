@@ -33,6 +33,13 @@
         </service>
 
         <activity
+            android:name=".ui.SearchActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".ui.chat.ChatActivity"
             android:exported="false">
             <meta-data
@@ -58,9 +65,7 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-        </activity>
-
-        <!--todo restaurantAdapter ??-->
+        </activity> <!-- todo restaurantAdapter ?? -->
         <activity
             android:name=".ui.restaurant.RestaurantsAdapter"
             android:exported="false">
