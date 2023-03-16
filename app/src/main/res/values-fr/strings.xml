@@ -43,6 +43,6 @@
     <string name="activate_notifications">Activer les notifications</string>
     <string name="open">Ouvert</string>
     <string name="close">Fermé</string>
-    <string name="open_until">Ouvert jusqu\'a </string>
-    <string name="close_open_at">Fermé ouvre a </string>
+    <string name="open_until">Ouvert jusqu\'a\ </string>
+    <string name="close_open_at">Fermé ouvre a\ </string>
 </resources>

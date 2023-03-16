@@ -91,9 +91,10 @@ public class RestaurantsFragment extends Fragment implements
                         mViewModel.getRestaurantLocation(this, location, getContext());
                     }
                 });
-        userManager.getUserData().addOnSuccessListener(user -> {
+        mViewModel.getDataBaseInstanceUser();
+        mViewModel.getAllUsers().observe(requireActivity(), users1 -> {
             mUsers.clear();
-            mUsers.add(user);
+            mUsers.addAll(users1);
         });
     }
 

@@ -42,6 +42,6 @@
     <string name="activate_notifications">Activate notifications</string>
     <string name="open">Close</string>
     <string name="close">Open</string>
-    <string name="open_until">Open until </string>
-    <string name="close_open_at">Close open at </string>
+    <string name="open_until">Open until\ </string>
+    <string name="close_open_at">Close open at\ </string>
 </resources>

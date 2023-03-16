@@ -113,17 +113,9 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             distance.setText(mDistance + "m");
             attendees.setText(getNumberOfWorkmates(users, restaurantDto.getPlaceId()));
 
-//            if (restaurantDto.getOpeningHours() != null) {
-//                schedule.setText(getRestaurantStatus(restaurantDto.getOpeningHours().isOpenNow()));//todo recupérer les horaires avec DetailApi !!!
-//                List<PeriodsDto> periodsDtoList = restaurantDto.getOpeningHours().getPeriods();
-//                for (PeriodsDto periods : periodsDtoList) {
-//                    if (periods.getClose().getDay() ==)
-//                }
-//                schedule.setText();
-//            }
             if (restaurantDto.getOpeningHours() != null) {
-//                schedule.setText(Utils.getOpeningHours(restaurantDto));
-//                schedule.setTextColor(Utils.getRestaurantStatus(restaurantDto.getOpeningHours().isOpenNow()));
+                schedule.setText(Utils.getOpeningHours(restaurantDto, mContext));
+                schedule.setTextColor(Utils.getRestaurantStatus(restaurantDto.getOpeningHours().isOpenNow()));
             }
 
             if (restaurantDto.getPhotos() != null) {

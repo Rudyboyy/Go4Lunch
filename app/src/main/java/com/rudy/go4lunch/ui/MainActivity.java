@@ -1,5 +1,6 @@
 package com.rudy.go4lunch.ui;
 
+import static android.content.ContentValues.TAG;
 import static com.rudy.go4lunch.ui.restaurant.RestaurantsFragment.RESTAURANT_INFO;
 
 import android.Manifest;
@@ -9,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,8 +37,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -53,6 +59,7 @@ import com.rudy.go4lunch.ui.restaurant.DetailRestaurantActivity;
 import com.rudy.go4lunch.ui.workmates.SuggestionAdapter;
 import com.rudy.go4lunch.viewmodel.MainViewModel;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -78,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements
     private final static int REQUEST_CODE_UPDATE_LOCATION = 541;
     private final static String DIALOG = "dialog";
     private final String search = "search";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -194,7 +202,8 @@ public class MainActivity extends AppCompatActivity implements
                 } else {
                     if (container.getChildCount() == 0 && listener != null) {
                         initPredictionRecyclerView(listener.onRequestList());
-                        Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();//todo modif faite a tester
+//                        recyclerView = new RecyclerView(getApplicationContext());
+//                        Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();//todo modif faite a tester
                     }
                 }
 
@@ -228,6 +237,7 @@ public class MainActivity extends AppCompatActivity implements
                                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
                                 recyclerView.setAdapter(adapter);
                                 container.addView(recyclerView);
+                                Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
                             }
                         });
         });

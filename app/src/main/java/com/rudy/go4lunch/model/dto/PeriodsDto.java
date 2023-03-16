@@ -2,7 +2,9 @@ package com.rudy.go4lunch.model.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-public class PeriodsDto {
+import java.io.Serializable;
+
+public class PeriodsDto implements Serializable {
 
     @SerializedName("close")
     CloseDto close;

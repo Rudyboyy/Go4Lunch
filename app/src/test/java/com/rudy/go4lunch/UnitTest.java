@@ -80,7 +80,7 @@ public class UnitTest {
         openingHoursDto.setPeriods(periods);
         RestaurantDto fakeRestaurantDto = new RestaurantDto(null, openingHoursDto, "My Restaurant", 4.5, "Paris, France", "12345", null, "123-456-7890", "https://www.example.com");
 
-        String stringExpected = Utils.getOpeningHours(fakeRestaurantDto);
+        String stringExpected = Utils.getOpeningHours(fakeRestaurantDto, context);
 
         if (fakeRestaurantDto.getOpeningHours().isOpenNow()) {
             assertEquals(R.string.open_until + "23:59", stringExpected);

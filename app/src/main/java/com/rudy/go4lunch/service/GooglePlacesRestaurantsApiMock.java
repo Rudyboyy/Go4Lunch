@@ -6,6 +6,7 @@ import android.content.res.AssetManager;
 import com.google.gson.Gson;
 import com.rudy.go4lunch.model.dto.RestaurantWrapperDto;
 import com.rudy.go4lunch.model.dto.RestaurantsWrapperDto;
+import com.rudy.go4lunch.model.dto.predictions.AutoCompleteDto;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -54,5 +55,10 @@ public class GooglePlacesRestaurantsApiMock implements GooglePlacesRestaurantsAp
             Gson gson = new Gson();
             return gson.fromJson(stringBuilder.toString(), RestaurantWrapperDto.class);
         });
+    }
+
+    @Override
+    public Single<AutoCompleteDto> getAutocomplete(String input, String key, String location, int radius, String types) {
+        return null;
     }
 }

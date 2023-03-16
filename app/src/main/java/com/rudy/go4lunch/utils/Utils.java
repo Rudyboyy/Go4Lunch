@@ -9,6 +9,7 @@ import androidx.test.core.app.ApplicationProvider;
 import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.model.RestaurantDto;
 import com.rudy.go4lunch.model.User;
+import com.rudy.go4lunch.model.dto.OpeningHoursDto;
 import com.rudy.go4lunch.model.dto.PeriodsDto;
 
 import java.text.ParseException;
@@ -20,52 +21,48 @@ import java.util.Locale;
 
 public class Utils {
 
-//    static Context context = ApplicationProvider.getApplicationContext();
-    public static String openUntil = String.valueOf(R.string.open_until);
-    public static String closedOpenAt = String.valueOf(R.string.close_open_at);
-
     public static String getNumberOfWorkmates(List<User> users, String restaurantPlaceId) {
         int numberOfBookings = 0;
-//        if (users != null && users.size() > 0) { todo ne marche pas
-//            for (User user : users) {
-//                if (user.getBookedRestaurantPlaceId().equals(restaurantPlaceId)) {
-//                    numberOfBookings++;
-//                }
-//            }
-//        }
-//        return String.format(Locale.getDefault(), "(%d)", numberOfBookings);
+        if (users != null && users.size() > 0) {
+            for (User user : users) {
+                if (user.getBookedRestaurantPlaceId() != null && user.getBookedRestaurantPlaceId().equals(restaurantPlaceId)) {
+                    numberOfBookings++;
+                }
+            }
+        }
         return String.format(Locale.getDefault(), "(%d)", numberOfBookings);
     }
 
-    public static String getOpeningHours(RestaurantDto restaurantDto) {
+    public static String getOpeningHours(RestaurantDto restaurantDto, Context context) {
         String status = "";
-        List<PeriodsDto> periodsDtoList = restaurantDto.getOpeningHours().getPeriods();
-        Calendar calendar = Calendar.getInstance();
-        int day = calendar.get(Calendar.DAY_OF_WEEK);
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-        for (PeriodsDto period : periodsDtoList) {
-            if (period.getOpen().getDay() == day) {
-                try {
-                    Date openTime = timeFormat.parse(period.getOpen().getTime());
-                    Date closeTime = timeFormat.parse(period.getClose().getTime());
-                    assert openTime != null;
-                    assert closeTime != null;
-                    if (restaurantDto.getOpeningHours().isOpenNow()) {
-//                        status = openUntil + timeFormat.format(closeTime);
-                        status = R.string.open_until + timeFormat.format(closeTime);
-                    } else {
-//                        status = closedOpenAt + timeFormat.format(openTime);
-//                        status = context.getResources().getString(R.string.close_open_at) + timeFormat.format(openTime);
-                        status = R.string.close_open_at + timeFormat.format(openTime);
+        OpeningHoursDto openingHoursDto = restaurantDto.getOpeningHours();
+        if (openingHoursDto.getPeriods() != null) {
+            List<PeriodsDto> periodsDtoList = openingHoursDto.getPeriods();
+            Calendar calendar = Calendar.getInstance();
+            int day = calendar.get(Calendar.DAY_OF_WEEK);
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat inputFormat  = new SimpleDateFormat("HHmm");
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat outputFormat  = new SimpleDateFormat("HH:mm");
+            for (PeriodsDto period : periodsDtoList) {
+                if (period.getOpen().getDay() == day) {
+                    try {
+                        Date openTime = inputFormat.parse(period.getOpen().getTime());
+                        Date closeTime = inputFormat.parse(period.getClose().getTime());
+                        assert openTime != null;
+                        assert closeTime != null;
+                        if (restaurantDto.getOpeningHours().isOpenNow()) {
+                            status = context.getString(R.string.open_until) + outputFormat.format(closeTime);
+                        } else {
+                            status = context.getString(R.string.close_open_at) + outputFormat.format(openTime);
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
-                } catch (ParseException e) {
-                    e.printStackTrace();
                 }
-            } else if (!restaurantDto.getOpeningHours().isOpenNow()) {
-                status = String.valueOf(R.string.close);
-            } else {
-                status = String.valueOf(R.string.open);
             }
+        } else if (restaurantDto.getOpeningHours().isOpenNow()) {
+            status = context.getString(R.string.open);
+        } else {
+            status = context.getString(R.string.close);
         }
         return status;
     }
