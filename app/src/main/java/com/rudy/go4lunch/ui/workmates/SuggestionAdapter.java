@@ -30,6 +30,7 @@ public class SuggestionAdapter extends RecyclerView.Adapter<SuggestionAdapter.Vi
         notifyDataSetChanged();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setData(List<String> data) {
         this.data = data;
         notifyDataSetChanged();

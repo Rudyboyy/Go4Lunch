@@ -3,8 +3,7 @@ package com.rudy.go4lunch.utils;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
-
-import androidx.test.core.app.ApplicationProvider;
+import android.util.Log;
 
 import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.model.RestaurantDto;
@@ -18,6 +17,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class Utils {
 
@@ -34,38 +34,135 @@ public class Utils {
     }
 
     public static String getOpeningHours(RestaurantDto restaurantDto, Context context) {
-        String status = "";
+        String status;
+        String openCloseStatus = "";
+        String time = "";
+        Calendar calendar = Calendar.getInstance();
+        Calendar closeCalendar = Calendar.getInstance();
+        Calendar openCalendar = Calendar.getInstance();
+        TimeZone timeZone = TimeZone.getTimeZone("Europe/Paris");
+        calendar.setTimeZone(timeZone);
+        int today = calendar.get(Calendar.DAY_OF_WEEK);
+        int tomorrow = today + 1;
+        if (tomorrow > 7) {
+            tomorrow = 1;
+        }
+        int loopCount = 0;
+        int tryCatch = 0;
+        boolean isOpen = restaurantDto.getOpeningHours().isOpenNow();
+        boolean periodFound = false;
+        boolean firstLoopExecuted = false;
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat inputFormat = new SimpleDateFormat("HHmm");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm");
         OpeningHoursDto openingHoursDto = restaurantDto.getOpeningHours();
-        if (openingHoursDto.getPeriods() != null) {
+
+        if (openingHoursDto.getPeriods() != null && !openingHoursDto.getPeriods().isEmpty()) {
             List<PeriodsDto> periodsDtoList = openingHoursDto.getPeriods();
-            Calendar calendar = Calendar.getInstance();
-            int day = calendar.get(Calendar.DAY_OF_WEEK);
-            @SuppressLint("SimpleDateFormat") SimpleDateFormat inputFormat  = new SimpleDateFormat("HHmm");
-            @SuppressLint("SimpleDateFormat") SimpleDateFormat outputFormat  = new SimpleDateFormat("HH:mm");
-            for (PeriodsDto period : periodsDtoList) {
-                if (period.getOpen().getDay() == day) {
+            while (loopCount < 2) {
+                for (PeriodsDto period : periodsDtoList) {
                     try {
+                        int openDay = period.getOpen().getDay();
                         Date openTime = inputFormat.parse(period.getOpen().getTime());
                         Date closeTime = inputFormat.parse(period.getClose().getTime());
                         assert openTime != null;
                         assert closeTime != null;
-                        if (restaurantDto.getOpeningHours().isOpenNow()) {
-                            status = context.getString(R.string.open_until) + outputFormat.format(closeTime);
-                        } else {
-                            status = context.getString(R.string.close_open_at) + outputFormat.format(openTime);
+                        closeCalendar.setTime(closeTime);
+                        openCalendar.setTime(openTime);
+                        closeCalendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR));
+                        openCalendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR));
+                        closeCalendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
+                        openCalendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
+                        closeCalendar.set(openDay, calendar.get(Calendar.DAY_OF_WEEK));
+                        openCalendar.set(openDay, calendar.get(Calendar.DAY_OF_WEEK));
+                        closeCalendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH));
+                        openCalendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH));
+                        Log.d("Debug", "closeTime: " + closeCalendar.getTime());
+                        Log.d("Debug", "openTime: " + openCalendar.getTime());
+                        Log.d("Debug", "calendar.getTime(): " + calendar.getTime());
+                        periodFound = true;
+
+                        if (openDay == today && !firstLoopExecuted) {
+                            if (isOpen && closeCalendar.getTime().after(calendar.getTime())) {
+                                openCloseStatus = context.getString(R.string.open_until);
+                                time = outputFormat.format(closeTime);
+                                loopCount++;
+                                break;
+                            } else if (!isOpen && openCalendar.getTime().after(calendar.getTime())) {
+                                if (closeCalendar.getTime().after(calendar.getTime()) || openCalendar.getTime().after(calendar.getTime())) {
+                                    openCloseStatus = context.getString(R.string.closed_open_at);
+                                    time = outputFormat.format(openTime);
+                                    loopCount++;
+                                    break;
+                                }
+                            }
+                        } else if (firstLoopExecuted) {
+                            for (int i = 1; i <= 7; i++) {
+                                if (openDay == today + 1 || i == openDay) {
+                                    if (isOpen) {
+                                        openCloseStatus = context.getString(R.string.open_until) + getDayOfWeek(context, openDay);
+                                        time = outputFormat.format(closeTime);
+                                        if (openDay == tomorrow) {
+                                            openCloseStatus = context.getString(R.string.open_until) + context.getString(R.string.tomorrow);
+                                        }
+                                    } else {
+                                        openCloseStatus = context.getString(R.string.closed_open) + getDayOfWeek(context, openDay);
+                                        time = outputFormat.format(openTime);
+                                        if (openDay == tomorrow) {
+                                            openCloseStatus = context.getString(R.string.closed_open) + context.getString(R.string.tomorrow_at);
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                            loopCount++;
+                            break;
+                        }
+                        if (periodsDtoList.indexOf(period) + 1 == periodsDtoList.size()) {
+                            firstLoopExecuted = true;
+                            loopCount++;
                         }
                     } catch (ParseException e) {
                         e.printStackTrace();
+                        tryCatch++;
+                        if (tryCatch >= 7) {
+                            loopCount++;
+                        }
                     }
                 }
             }
-        } else if (restaurantDto.getOpeningHours().isOpenNow()) {
-            status = context.getString(R.string.open);
+        }
+        if (!periodFound || time.isEmpty() || openCloseStatus.isEmpty()) {
+            if (openingHoursDto.isOpenNow()) {
+                status = context.getString(R.string.open);
+            } else {
+                status = context.getString(R.string.close);
+            }
         } else {
-            status = context.getString(R.string.close);
+            status = openCloseStatus + time;
         }
         return status;
     }
+
+    private static String getDayOfWeek(Context context, int day) {
+        switch (day) {
+            case Calendar.MONDAY:
+                return context.getString(R.string.monday);
+            case Calendar.TUESDAY:
+                return context.getString(R.string.tuesday);
+            case Calendar.WEDNESDAY:
+                return context.getString(R.string.wednesday);
+            case Calendar.THURSDAY:
+                return context.getString(R.string.thursday);
+            case Calendar.FRIDAY:
+                return context.getString(R.string.friday);
+            case Calendar.SATURDAY:
+                return context.getString(R.string.saturday);
+            case Calendar.SUNDAY:
+                return context.getString(R.string.sunday);
+        }
+        return "";
+    }
+
 
     public static int getRestaurantStatus(Boolean isOpenNow) {
         if (isOpenNow) {

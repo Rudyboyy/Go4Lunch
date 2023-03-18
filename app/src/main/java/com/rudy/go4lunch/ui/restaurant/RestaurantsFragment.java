@@ -38,6 +38,7 @@ public class RestaurantsFragment extends Fragment implements
 
     private RecyclerView mRecyclerView;
     private List<RestaurantDto> mRestaurants = new ArrayList<>();
+    private List<RestaurantDto> mPredictionRestaurants = new ArrayList<>();
     public static final String RESTAURANT_INFO = "restaurantInfo";
     MainViewModel mViewModel;
     private FusedLocationProviderClient locationClient;
@@ -114,6 +115,9 @@ public class RestaurantsFragment extends Fragment implements
                     if (location != null) {
                         mViewModel.getPredictionLocation(this, location, query);
                     }
+//                    if (query.isEmpty()) {
+//                        mRecyclerView.setVisibility(View.VISIBLE);
+//                    }
                 });
     }
 
@@ -129,13 +133,16 @@ public class RestaurantsFragment extends Fragment implements
         mainActivity.setOnSearchListener(this);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void processPredictionsDto(String placeId) {
         for (RestaurantDto restaurantDto : mRestaurants) {
             if (restaurantDto.getPlaceId().contains(placeId)) {
                 mRestaurants.clear();
                 mRestaurants.add(restaurantDto);
+                Objects.requireNonNull(mRecyclerView.getAdapter()).notifyDataSetChanged();
             }
+//            mRecyclerView.setVisibility(View.INVISIBLE);
         }
     }
 }

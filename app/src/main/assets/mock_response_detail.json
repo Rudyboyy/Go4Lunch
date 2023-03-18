@@ -27,6 +27,14 @@
             {
                "close": { "day": 5, "time": "1700" },
                "open": { "day": 5, "time": "0900" }
+            },
+            {
+               "close": { "day": 6, "time": "1340" },
+               "open": { "day": 6, "time": "1600" }
+            },
+            {
+               "close": { "day": 7, "time": "1840" },
+               "open": { "day": 7, "time": "1230" }
             }
          ],
          "weekday_text":
