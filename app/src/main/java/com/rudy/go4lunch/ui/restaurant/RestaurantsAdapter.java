@@ -113,17 +113,9 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             distance.setText(mDistance + "m");
             attendees.setText(getNumberOfWorkmates(users, restaurantDto.getPlaceId()));
 
-//            if (restaurantDto.getOpeningHours() != null) {
-//                schedule.setText(getRestaurantStatus(restaurantDto.getOpeningHours().isOpenNow()));//todo recupérer les horaires avec DetailApi !!!
-//                List<PeriodsDto> periodsDtoList = restaurantDto.getOpeningHours().getPeriods();
-//                for (PeriodsDto periods : periodsDtoList) {
-//                    if (periods.getClose().getDay() ==)
-//                }
-//                schedule.setText();
-//            }
             if (restaurantDto.getOpeningHours() != null) {
-//                schedule.setText(Utils.getOpeningHours(restaurantDto));
-//                schedule.setTextColor(Utils.getRestaurantStatus(restaurantDto.getOpeningHours().isOpenNow()));
+                schedule.setText(Utils.getOpeningHours(restaurantDto, mContext));
+                schedule.setTextColor(Utils.getRestaurantStatus(restaurantDto.getOpeningHours().isOpenNow()));
             }
 
             if (restaurantDto.getPhotos() != null) {
@@ -139,53 +131,6 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
 
         private String getNumberOfWorkmates(List<User> users, String restaurantPlaceId) {
            return Utils.getNumberOfWorkmates(users, restaurantPlaceId);
-        }
-
-        private String getDayName(int day) {
-            switch (day) {
-                case 1:
-                    return "Lundi";
-                case 2:
-                    return "Mardi";
-                case 3:
-                    return "Mercredi";
-                case 4:
-                    return "Jeudi";
-                case 5:
-                    return "Vendredi";
-                case 6:
-                    return "Samedi";
-                case 7:
-                    return "Dimanche";
-                default:
-                    return "Jour Inconnu";
-            }
-//            Calendar calendar = Calendar.getInstance();
-//            int currentDay = calendar.get(Calendar.DAY_OF_WEEK);
-//            String days = null;
-//            switch (currentDay) {
-//                case 0:
-//                    days = "SUNDAY";
-//                    break;
-//                case 1:
-//                    days = "MONDAY";
-//                    break;
-//                case 2:
-//                    days = "TUESDAY";
-//                    break;
-//                case 3:
-//                    days = "WEDNESDAY";
-//                    break;
-//                case 4:
-//                    days = "THURSDAY";
-//                    break;
-//                case 5:
-//                    days = "FRIDAY";
-//                    break;
-//                case 6:
-//                    days = "SATURDAY";
-//                    break;
-//            }
         }
     }
 }

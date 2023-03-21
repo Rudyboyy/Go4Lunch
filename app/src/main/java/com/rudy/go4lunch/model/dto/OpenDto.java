@@ -2,7 +2,9 @@ package com.rudy.go4lunch.model.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-public class OpenDto {
+import java.io.Serializable;
+
+public class OpenDto implements Serializable {
 
     @SerializedName("day")
     int day;

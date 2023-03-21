@@ -68,6 +68,7 @@ public class LogUserTest {
         if (!userManager.isCurrentUserLogged()) { //todo PB si not logged lance le onCreate avant la methode signWithTestUserAccount() et detruit la mainActivity
             signWithTestUserAccount();
         }
+
     }
 
     @Test

@@ -58,9 +58,7 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-        </activity>
-
-        <!--todo restaurantAdapter ??-->
+        </activity> <!-- todo restaurantAdapter ?? -->
         <activity
             android:name=".ui.restaurant.RestaurantsAdapter"
             android:exported="false">

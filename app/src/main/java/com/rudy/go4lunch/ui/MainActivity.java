@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
@@ -41,7 +43,7 @@ import com.rudy.go4lunch.databinding.ActivityMainBinding;
 import com.rudy.go4lunch.databinding.NavHeaderBinding;
 import com.rudy.go4lunch.manager.UserManager;
 import com.rudy.go4lunch.model.RestaurantDto;
-import com.rudy.go4lunch.service.GooglePlacesRestaurantsApiMock;
+import com.rudy.go4lunch.service.OnSearchListener;
 import com.rudy.go4lunch.service.ProcessRestaurantDto;
 import com.rudy.go4lunch.ui.dialog.PermissionDialogFragment;
 import com.rudy.go4lunch.ui.restaurant.DetailRestaurantActivity;
@@ -54,16 +56,18 @@ public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         ProcessRestaurantDto {
 
-    ActivityMainBinding binding;
+    private ActivityMainBinding binding;
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
-    private UserManager userManager = UserManager.getInstance();
+    private final UserManager userManager = UserManager.getInstance();
     private MainViewModel mViewModel;
     private FusedLocationProviderClient locationClient;
-
+    public int fragmentSelected;
+    public MenuItem searchItem;
+    private OnSearchListener listener;
     private final static int REQUEST_CODE_UPDATE_LOCATION = 541;
     private final static String DIALOG = "dialog";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +77,10 @@ public class MainActivity extends AppCompatActivity implements
         requestLocationPermission();
         setUpLogin();
         initUi();
+    }
+
+    public void setOnSearchListener(OnSearchListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -144,6 +152,34 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
+        searchItem = menu.findItem(R.id.menu_search);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
+        if (fragmentSelected == R.layout.fragment_workmates) {
+            searchItem.setVisible(false);
+        }
+        searchView.setBackgroundColor(getResources().getColor(R.color.black));
+        searchView.setGravity(Gravity.START);
+        searchView.setIconifiedByDefault(false);
+        searchView.setQueryHint("search");
+        searchView.getOverlay();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (listener != null) {
+                    listener.onSearch(query);
+                }
+                return false;
+            }
+
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public boolean onQueryTextChange(String query) {
+                if (listener != null) {
+                    listener.onSearch(query);
+                }
+                return true;
+            }
+        });
         return true;
     }
 
@@ -167,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void initMenuNavigationView() {
-        this.navigationView = binding.navigationView;
+        NavigationView navigationView = binding.navigationView;
         navigationView.setNavigationItemSelectedListener(this);
     }
 

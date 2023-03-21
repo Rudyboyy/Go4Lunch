@@ -40,8 +40,19 @@
     <string name="yes">yes</string>
     <string name="no">no</string>
     <string name="activate_notifications">Activate notifications</string>
-    <string name="open">Close</string>
-    <string name="close">Open</string>
-    <string name="open_until">Open until </string>
-    <string name="close_open_at">Close open at </string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="open_until">Open until\ </string>
+    <string name="closed_open_at">Closed open at\ </string>
+    <string name="closed_open">Closed open\ </string>
+    <string name="monday">monday at\ </string>
+    <string name="tuesday">tuesday at\ </string>
+    <string name="wednesday">wednesday at\ </string>
+    <string name="thursday">thursday at\ </string>
+    <string name="friday">friday at\ </string>
+    <string name="saturday">saturday at\ </string>
+    <string name="sunday">sunday at\ </string>
+    <string name="tomorrow_at">"tomorrow at\ "</string>
+    <string name="tomorrow">"tomorrow\ "</string>
+    at\
 </resources>

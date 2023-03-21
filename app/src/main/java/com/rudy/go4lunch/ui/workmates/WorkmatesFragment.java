@@ -1,11 +1,13 @@
 package com.rudy.go4lunch.ui.workmates;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.manager.UserManager;
 import com.rudy.go4lunch.model.User;
+import com.rudy.go4lunch.ui.MainActivity;
 import com.rudy.go4lunch.ui.chat.ChatActivity;
 import com.rudy.go4lunch.viewmodel.MainViewModel;
 
@@ -21,7 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class WorkmatesFragment extends Fragment implements WorkmatesAdapter.WorkmateClickListener {
+public class WorkmatesFragment extends Fragment implements
+        WorkmatesAdapter.WorkmateClickListener {
 
     private RecyclerView mRecyclerView;
     private List<User> users = new ArrayList<>();
@@ -48,6 +52,7 @@ public class WorkmatesFragment extends Fragment implements WorkmatesAdapter.Work
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_workmates, container, false);
+        ((MainActivity) requireContext()).searchItem.setVisible(false);//todo fonctionne que depuis la vue map
         initData();
         initRecyclerView(root);
         return root;
@@ -64,7 +69,13 @@ public class WorkmatesFragment extends Fragment implements WorkmatesAdapter.Work
     @Override
     public void onWorkmateClick(String workmateId, String workmateName) {
         String currentUid = userManager.getCurrentUser().getUid();
-
         ChatActivity.navigate(requireActivity(), currentUid, workmateId, workmateName);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        MainActivity mainActivity = (MainActivity) requireActivity();
+        mainActivity.searchItem.setVisible(false);//todo a tester
     }
 }

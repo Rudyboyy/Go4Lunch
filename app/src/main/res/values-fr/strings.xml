@@ -43,6 +43,16 @@
     <string name="activate_notifications">Activer les notifications</string>
     <string name="open">Ouvert</string>
     <string name="close">Fermé</string>
-    <string name="open_until">Ouvert jusqu\'a </string>
-    <string name="close_open_at">Fermé ouvre a </string>
+    <string name="open_until">Ouvert jusqu\'à\ </string>
+    <string name="closed_open_at">Fermé ouvre à\ </string>
+    <string name="closed_open">Fermé ouvre\ </string>
+    <string name="monday">lundi à\ </string>
+    <string name="tuesday">mardi à\ </string>
+    <string name="wednesday">mercredi à\ </string>
+    <string name="thursday">jeudi à\ </string>
+    <string name="friday">vendredi à\ </string>
+    <string name="saturday">samedi à\ </string>
+    <string name="sunday">dimanche à\ </string>
+    <string name="tomorrow_at">"demain à\ "</string>
+    <string name="tomorrow">"demain\ "</string>
 </resources>
