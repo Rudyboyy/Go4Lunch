@@ -27,5 +27,6 @@ public interface GooglePlacesRestaurantsApi {
                                             @Query("key") String key,
                                             @Query(value = "location", encoded = true) String location,
                                             @Query("radius") int radius,
-                                            @Query("types") String types);
+                                            @Query("types") String types,
+                                            @Query("components") String components);
 }

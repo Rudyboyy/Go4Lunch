@@ -58,7 +58,7 @@ public class GooglePlacesRestaurantsApiMock implements GooglePlacesRestaurantsAp
     }
 
     @Override
-    public Single<AutoCompleteDto> getAutocomplete(String input, String key, String location, int radius, String types) {
+    public Single<AutoCompleteDto> getAutocomplete(String input, String key, String location, int radius, String types, String components) {
         return null;
     }
 }

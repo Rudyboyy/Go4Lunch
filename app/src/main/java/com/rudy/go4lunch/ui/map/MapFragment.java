@@ -23,10 +23,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.databinding.FragmentMapBinding;
+import com.rudy.go4lunch.model.PredictionsDto;
 import com.rudy.go4lunch.model.RestaurantDto;
 import com.rudy.go4lunch.model.User;
 import com.rudy.go4lunch.model.dto.LocationDto;
 import com.rudy.go4lunch.service.OnSearchListener;
+import com.rudy.go4lunch.service.ProcessDetailsRestaurant;
 import com.rudy.go4lunch.service.ProcessPredictionsDto;
 import com.rudy.go4lunch.service.ProcessRestaurantDto;
 import com.rudy.go4lunch.ui.MainActivity;
@@ -40,13 +42,16 @@ public class MapFragment extends Fragment implements
         OnMapReadyCallback,
         ProcessRestaurantDto,
         OnSearchListener,
-        ProcessPredictionsDto {
+        ProcessPredictionsDto,
+        ProcessDetailsRestaurant {
 
     private GoogleMap mMap;
     private FragmentMapBinding binding;
     private FusedLocationProviderClient locationClient;
     private MainViewModel mViewModel;
-    private List<RestaurantDto> mRestaurants = new ArrayList<>();
+    private final List<RestaurantDto> mRestaurants = new ArrayList<>();
+    private final List<String> predictionsPlaceId = new ArrayList<>();
+    private boolean onSearch = false;
 
     @SuppressLint("CheckResult")
     @Override
@@ -77,43 +82,51 @@ public class MapFragment extends Fragment implements
     @SuppressLint({"MissingPermission", "CheckResult"})
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-        mMap = googleMap;
-        locationClient.getLastLocation()
-                .addOnSuccessListener(requireActivity(), location -> {
-                    if (location != null) {
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18));
-                        mViewModel.getRestaurantLocation(this, location, getContext());
-                    }
-                });
+        if (isAdded()) {
+            mMap = googleMap;
+            locationClient.getLastLocation()
+                    .addOnSuccessListener(requireActivity(), location -> {
+                        if (location != null) {
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18));
+                            mViewModel.getRestaurantLocation(this, location, getContext());
+                        }
+                    });
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        onMapReady(mMap);
+//        onMapReady(mMap);
     }
 
     @Override
     public void processRestaurantDto(List<RestaurantDto> restaurantDtoList) {
-        if (isAdded()) {
-            mRestaurants.clear();
-            mRestaurants.addAll(restaurantDtoList);
-            mViewModel.getDataBaseInstanceUser();
-            mViewModel.getAllUsers().observe(getViewLifecycleOwner(), users -> { //todo remplacement getViewLifecycleOwner() par requireActivity car pb dans test
-                for (User user : users) {
-                    for (RestaurantDto result : restaurantDtoList) {
-                        if (Objects.equals(result.getPlaceId(), user.getBookedRestaurantPlaceId())) {
-                            setMarker(BitmapDescriptorFactory.HUE_GREEN, result);
-                        } else {
-                            setMarker(BitmapDescriptorFactory.HUE_RED, result);
-                        }
+        mRestaurants.clear();
+        mRestaurants.addAll(restaurantDtoList);
+        mViewModel.getDataBaseInstanceUser();
+        mViewModel.getAllUsers().observe(getViewLifecycleOwner(), users -> { //todo remplacement getViewLifecycleOwner() par requireActivity car pb dans test
+            for (User user : users) {
+                for (RestaurantDto result : mRestaurants) {
+                    if (result.getPlaceId().equals(user.getBookedRestaurantPlaceId())) {
+                        setMarker(BitmapDescriptorFactory.HUE_GREEN, result);// todo pb couleur marker
+                    } else {
+                        setMarker(BitmapDescriptorFactory.HUE_RED, result);
                     }
                 }
-            });
-        }
+            }
+            if (onSearch) {
+                for (RestaurantDto result : mRestaurants) {
+                    setMarker(BitmapDescriptorFactory.HUE_YELLOW, result);
+                }
+                LocationDto firstLocation = mRestaurants.get(0).getGeometry().getLocationDto();
+                mMap.moveCamera(CameraUpdateFactory
+                        .newLatLngZoom(new LatLng(firstLocation.getLatitude(), firstLocation.getLongitude()), 18));
+            }
+        });
     }
 
-    private void setMarker(float bitmap, RestaurantDto result) {
+    private void setMarker(float bitmap, RestaurantDto result) { //todo fait une navigation vers details depuis le marker ?
         mMap.addMarker(
                 new MarkerOptions()
                         .position(new LatLng(result.getGeometry().getLocationDto().getLatitude(), result.getGeometry().getLocationDto().getLongitude()))
@@ -127,8 +140,13 @@ public class MapFragment extends Fragment implements
     public void onSearch(String query) {
         locationClient.getLastLocation()
                 .addOnSuccessListener(requireActivity(), location -> {
-                    if (location != null) {
+                    if (location != null && !query.isEmpty()) {
                         mViewModel.getPredictionLocation(this, location, query);
+                        onSearch = true;
+                    }
+                    if (query.isEmpty()) {
+                        onSearch = false;
+                        onMapReady(mMap);
                     }
                 });
     }
@@ -146,14 +164,16 @@ public class MapFragment extends Fragment implements
     }
 
     @Override
-    public void processPredictionsDto(String placeId) {
-        for (RestaurantDto restaurantDto : mRestaurants) {
-            if (restaurantDto.getPlaceId().contains(placeId)) {//todo contains or equal
-                mRestaurants.clear();
-                mRestaurants.add(restaurantDto);
-                LocationDto firstLocation = mRestaurants.get(0).getGeometry().getLocationDto();
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(firstLocation.getLatitude(), firstLocation.getLongitude()), 18));
-            }
+    public void processPredictionsDto(List<PredictionsDto> predictionsDtoList) {
+        predictionsPlaceId.clear();
+        for (PredictionsDto predictionsDto : predictionsDtoList) {
+            predictionsPlaceId.add(predictionsDto.getPlaceId());
         }
+        mViewModel.getPrediction(this, this);
+    }
+
+    @Override
+    public List<String> processDetailsRestaurant() {
+        return predictionsPlaceId;
     }
 }

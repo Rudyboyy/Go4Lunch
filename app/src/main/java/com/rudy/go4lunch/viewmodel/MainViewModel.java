@@ -15,6 +15,7 @@ import com.rudy.go4lunch.repository.PredictionRepository;
 import com.rudy.go4lunch.repository.RestaurantRepository;
 import com.rudy.go4lunch.repository.UserRepository;
 import com.rudy.go4lunch.service.OnSearchListener;
+import com.rudy.go4lunch.service.ProcessDetailsRestaurant;
 import com.rudy.go4lunch.service.ProcessPredictionsDto;
 import com.rudy.go4lunch.service.ProcessRestaurantDto;
 
@@ -59,8 +60,12 @@ public class MainViewModel extends ViewModel {
         predictionRepository.getPredictions(location, newText, processPredictionsDto);
     }
 
-    public LiveData<List<PredictionsDto>> getPredictionList(Location location, String newText) {
-        return predictionRepository.getPredictionsList(location, newText);
+    public  void getPrediction(ProcessDetailsRestaurant processDetailsRestaurant, ProcessRestaurantDto processRestaurantDto) {
+        predictionRepository.getDetailsPrediction(processDetailsRestaurant, processRestaurantDto);
     }
+
+//    public LiveData<List<PredictionsDto>> getPredictionList(Location location, String newText) {
+//        return predictionRepository.getPredictionsList(location, newText);
+//    }
 }
 

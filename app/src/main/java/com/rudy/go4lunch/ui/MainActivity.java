@@ -1,6 +1,5 @@
 package com.rudy.go4lunch.ui;
 
-import static android.content.ContentValues.TAG;
 import static com.rudy.go4lunch.ui.restaurant.RestaurantsFragment.RESTAURANT_INFO;
 
 import android.Manifest;
@@ -10,13 +9,11 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -32,17 +29,11 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -56,10 +47,8 @@ import com.rudy.go4lunch.service.OnSearchListener;
 import com.rudy.go4lunch.service.ProcessRestaurantDto;
 import com.rudy.go4lunch.ui.dialog.PermissionDialogFragment;
 import com.rudy.go4lunch.ui.restaurant.DetailRestaurantActivity;
-import com.rudy.go4lunch.ui.workmates.SuggestionAdapter;
 import com.rudy.go4lunch.viewmodel.MainViewModel;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -67,24 +56,17 @@ public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         ProcessRestaurantDto {
 
-    ActivityMainBinding binding;
+    private ActivityMainBinding binding;
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
-    private UserManager userManager = UserManager.getInstance();
+    private final UserManager userManager = UserManager.getInstance();
     private MainViewModel mViewModel;
     private FusedLocationProviderClient locationClient;
-    private FrameLayout container;
-    ;
-    private SuggestionAdapter adapter;
     public int fragmentSelected;
     public MenuItem searchItem;
     private OnSearchListener listener;
-    private RecyclerView recyclerView;
-
     private final static int REQUEST_CODE_UPDATE_LOCATION = 541;
     private final static String DIALOG = "dialog";
-    private final String search = "search";
 
 
     @Override
@@ -172,11 +154,9 @@ public class MainActivity extends AppCompatActivity implements
         inflater.inflate(R.menu.menu, menu);
         searchItem = menu.findItem(R.id.menu_search);
         final SearchView searchView = (SearchView) searchItem.getActionView();
-        container = binding.recyclerViewContainer;
-        if (fragmentSelected == R.layout.fragment_workmates) { //todo marche pas essai avec onAttach ou deplace dans onResume
+        if (fragmentSelected == R.layout.fragment_workmates) {
             searchItem.setVisible(false);
         }
-//        return super.onCreateOptionsMenu(menu);
         searchView.setBackgroundColor(getResources().getColor(R.color.black));
         searchView.setGravity(Gravity.START);
         searchView.setIconifiedByDefault(false);
@@ -185,64 +165,23 @@ public class MainActivity extends AppCompatActivity implements
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // Effectuez une action lorsque l'utilisateur soumet sa recherche
-                if (listener != null) {
-                    listener.onSearch(query); //todo probleme requete api plus de credit
-                }
-//                searchItem.collapseActionView();
-                return false;
-            }
-
-            //todo ajouter la SearchView a la toolbar et l'enlever du menu (ou pas)
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public boolean onQueryTextChange(String query) {
-                if (query.isEmpty()) {
-                    container.removeAllViews();
-                } else {
-                    if (container.getChildCount() == 0 && listener != null) {
-                        initPredictionRecyclerView(listener.onRequestList());
-//                        recyclerView = new RecyclerView(getApplicationContext());
-//                        Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();//todo modif faite a tester
-                    }
-                }
-
-//                if (!query.isEmpty()) {
-//                newText = query;
-//                } else {
-//                    newText = null;
-//                }
-
                 if (listener != null) {
                     listener.onSearch(query);
                 }
+                return false;
+            }
 
-//                if (fragmentSelected == R.layout.fragment_workmates) {
-//                    searchItem.setVisible(false);
-//                }
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public boolean onQueryTextChange(String query) {
+                if (listener != null) {
+                    listener.onSearch(query);
+                }
                 return true;
             }
         });
         return true;
     }
-
-    @SuppressLint({"NotifyDataSetChanged", "MissingPermission"})
-    private void initPredictionRecyclerView(List<RestaurantDto> restaurants) {
-        userManager.getUserData().addOnSuccessListener(user -> {
-                locationClient.getLastLocation()
-                        .addOnSuccessListener(this, location -> {
-                            if (location != null) {
-                                adapter = new SuggestionAdapter(restaurants, location);
-                                recyclerView = new RecyclerView(this);
-                                recyclerView.setLayoutManager(new LinearLayoutManager(this));
-                                recyclerView.setAdapter(adapter);
-                                container.addView(recyclerView);
-                                Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
-                            }
-                        });
-        });
-    }
-
 
     private void setUpLogin() {
         if (!userManager.isCurrentUserLogged()) {
@@ -264,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void initMenuNavigationView() {
-        this.navigationView = binding.navigationView;
+        NavigationView navigationView = binding.navigationView;
         navigationView.setNavigationItemSelectedListener(this);
     }
 

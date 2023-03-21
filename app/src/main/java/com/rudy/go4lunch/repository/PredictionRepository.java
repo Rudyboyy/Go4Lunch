@@ -4,24 +4,23 @@ import android.annotation.SuppressLint;
 import android.location.Location;
 import android.util.Log;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-
+import com.google.gson.Gson;
 import com.rudy.go4lunch.BuildConfig;
-import com.rudy.go4lunch.model.PredictionsDto;
+import com.rudy.go4lunch.model.RestaurantDto;
+import com.rudy.go4lunch.model.dto.RestaurantWrapperDto;
 import com.rudy.go4lunch.model.dto.predictions.AutoCompleteDto;
 import com.rudy.go4lunch.service.GooglePlacesRestaurantsApi;
-import com.rudy.go4lunch.service.OnSearchListener;
+import com.rudy.go4lunch.service.ProcessDetailsRestaurant;
 import com.rudy.go4lunch.service.ProcessPredictionsDto;
 import com.rudy.go4lunch.service.ProcessRestaurantDto;
-import com.rudy.go4lunch.ui.MainActivity;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Single;
-import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -31,22 +30,26 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PredictionRepository {
 
-    private Retrofit retrofit;
-
     private GooglePlacesRestaurantsApi PREDICTIONS_SERVICE;
     private static final int RADIUS = 1500;
     private static final String PLACES_API_KEY = BuildConfig.PLACES_API_KEY;
-
-    private final MutableLiveData<List<PredictionsDto>> predictionsListLiveData = new MutableLiveData<>();
+    private final String country = Locale.getDefault().getCountry();
+    private final String COMPONENTS = "country:" + country;
 
     public Single<AutoCompleteDto> getAutoComplete(Location location, String newText) {
-        return PREDICTIONS_SERVICE.getAutocomplete(
-                newText,
+        return PREDICTIONS_SERVICE.getAutocomplete(newText,
                 PLACES_API_KEY,
                 location.getLatitude() + "," + location.getLongitude(),
                 RADIUS,
-                "restaurant"
-        );
+                "restaurant",
+                COMPONENTS);
+    }
+
+    public Single<RestaurantWrapperDto> getDetails(String placeId) {
+        return PREDICTIONS_SERVICE.getDetails(placeId,
+                        "geometry,opening_hours,name,rating,vicinity,place_id,photos,website,formatted_phone_number",
+                        PLACES_API_KEY)
+                .doOnSuccess(response -> Log.d("JSON Detail", new Gson().toJson(response)));
     }
 
     public PredictionRepository() {
@@ -55,69 +58,39 @@ public class PredictionRepository {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        OkHttpClient okHttpClient = new OkHttpClient
-                .Builder()
-                .addInterceptor(httpLoggingInterceptor).build();
+        OkHttpClient okHttpClient = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).readTimeout(10, TimeUnit.SECONDS).writeTimeout(10, TimeUnit.SECONDS).addInterceptor(httpLoggingInterceptor).build();
 
-        retrofit = new Retrofit.Builder()
-                .baseUrl(GOOGLE_PLACE_URL)
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(GOOGLE_PLACE_URL).client(okHttpClient).addConverterFactory(GsonConverterFactory.create()).addCallAdapterFactory(RxJava2CallAdapterFactory.create()).build();
 
         PREDICTIONS_SERVICE = retrofit.create(GooglePlacesRestaurantsApi.class);
     }
 
     @SuppressLint("CheckResult")
     public void getPredictions(Location location, String newText, ProcessPredictionsDto processPredictionsDto) {
-        getAutoComplete(location, newText)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((autoCompleteDto, throwable) -> {
-                    for (PredictionsDto predictionsDto : autoCompleteDto.getPredictions()) {
-                    processPredictionsDto.processPredictionsDto(predictionsDto.getPlaceId());
-                    }
-                    if (throwable != null) {
-                        Log.v("throwable", throwable.toString());
-                    }
-                });
-
-        getAutoComplete(location, newText)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<AutoCompleteDto>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        // Optionnel: effectuez des actions avant que la requête ne soit lancée
-                    }
-
-                    @Override
-                    public void onSuccess(AutoCompleteDto dto) {
-                        // Récupérez les suggestions de l'API et affichez-les dans le RecyclerView
-                        List<PredictionsDto> suggestions = dto.getPredictions();
-//                        adapter.setData(suggestions); todo faire une interface
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-                });
+        getAutoComplete(location, newText).timeout(30, TimeUnit.SECONDS).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(autoCompleteDto -> {
+            processPredictionsDto.processPredictionsDto(autoCompleteDto.getPredictions());
+        }, throwable -> {
+            Log.v("MyProbleme", throwable.toString());
+        });
     }
 
     @SuppressLint("CheckResult")
-    public LiveData<List<PredictionsDto>> getPredictionsList(Location location, String newText) {
-        getAutoComplete(location, newText)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((autoCompleteDto, throwable) -> {
-                    predictionsListLiveData.setValue(autoCompleteDto.getPredictions());
-
-                    if (throwable != null) {
-                        Log.v("throwable", throwable.toString());
-                    }
-                });
-        return predictionsListLiveData;
+    public void getDetailsPrediction(ProcessDetailsRestaurant processDetailsRestaurant, ProcessRestaurantDto processRestaurantDto) {
+        List<RestaurantDto> restaurantDtoListMutableLiveData = new ArrayList<>();
+        for (String placeId : processDetailsRestaurant.processDetailsRestaurant()) {
+            getDetails(placeId)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(restaurantWrapperDto -> {
+                        if (restaurantWrapperDto.getResult() != null) {
+                            restaurantDtoListMutableLiveData.add(restaurantWrapperDto.getResult());
+                            restaurantDtoListMutableLiveData.get(0).setWebsite(restaurantWrapperDto.getResult().getWebsite());
+                            Log.d("RESTAURANT", restaurantWrapperDto.getResult().getName());
+                            processRestaurantDto.processRestaurantDto(restaurantDtoListMutableLiveData);
+                        }
+                    }, throwable -> {
+                        Log.v("MyProbleme", throwable.toString());
+                    });
+        }
     }
 }

@@ -76,9 +76,6 @@ public class Utils {
                         openCalendar.set(openDay, calendar.get(Calendar.DAY_OF_WEEK));
                         closeCalendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH));
                         openCalendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH));
-                        Log.d("Debug", "closeTime: " + closeCalendar.getTime());
-                        Log.d("Debug", "openTime: " + openCalendar.getTime());
-                        Log.d("Debug", "calendar.getTime(): " + calendar.getTime());
                         periodFound = true;
 
                         if (openDay == today && !firstLoopExecuted) {
@@ -97,7 +94,7 @@ public class Utils {
                             }
                         } else if (firstLoopExecuted) {
                             for (int i = 1; i <= 7; i++) {
-                                if (openDay == today + 1 || i == openDay) {
+                                if (openDay == tomorrow || i == openDay && i > today) {
                                     if (isOpen) {
                                         openCloseStatus = context.getString(R.string.open_until) + getDayOfWeek(context, openDay);
                                         time = outputFormat.format(closeTime);
@@ -114,8 +111,10 @@ public class Utils {
                                     break;
                                 }
                             }
+                            if (!openCloseStatus.isEmpty()) {
+                                break;
+                            }
                             loopCount++;
-                            break;
                         }
                         if (periodsDtoList.indexOf(period) + 1 == periodsDtoList.size()) {
                             firstLoopExecuted = true;

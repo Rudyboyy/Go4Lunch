@@ -18,10 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.rudy.go4lunch.R;
-import com.rudy.go4lunch.manager.UserManager;
+import com.rudy.go4lunch.model.PredictionsDto;
 import com.rudy.go4lunch.model.RestaurantDto;
 import com.rudy.go4lunch.model.User;
 import com.rudy.go4lunch.service.OnSearchListener;
+import com.rudy.go4lunch.service.ProcessDetailsRestaurant;
 import com.rudy.go4lunch.service.ProcessPredictionsDto;
 import com.rudy.go4lunch.service.ProcessRestaurantDto;
 import com.rudy.go4lunch.ui.MainActivity;
@@ -34,16 +35,17 @@ import java.util.Objects;
 public class RestaurantsFragment extends Fragment implements
         ProcessRestaurantDto,
         OnSearchListener,
-        ProcessPredictionsDto {
+        ProcessPredictionsDto,
+        ProcessDetailsRestaurant {
 
     private RecyclerView mRecyclerView;
     private List<RestaurantDto> mRestaurants = new ArrayList<>();
     private List<RestaurantDto> mPredictionRestaurants = new ArrayList<>();
     public static final String RESTAURANT_INFO = "restaurantInfo";
-    MainViewModel mViewModel;
+    private MainViewModel mViewModel;
     private FusedLocationProviderClient locationClient;
-    private UserManager userManager = UserManager.getInstance();
-    private List<User> mUsers = new ArrayList<>();
+    private final List<User> mUsers = new ArrayList<>();
+    private final List<String> predictionsPlaceId = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -112,12 +114,12 @@ public class RestaurantsFragment extends Fragment implements
     public void onSearch(String query) {
         locationClient.getLastLocation()
                 .addOnSuccessListener(requireActivity(), location -> {
-                    if (location != null) {
+                    if (location != null && !query.isEmpty()) {
                         mViewModel.getPredictionLocation(this, location, query);
                     }
-//                    if (query.isEmpty()) {
-//                        mRecyclerView.setVisibility(View.VISIBLE);
-//                    }
+                    if (query.isEmpty()) {
+                        initList();
+                    }
                 });
     }
 
@@ -135,14 +137,17 @@ public class RestaurantsFragment extends Fragment implements
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
-    public void processPredictionsDto(String placeId) {
-        for (RestaurantDto restaurantDto : mRestaurants) {
-            if (restaurantDto.getPlaceId().contains(placeId)) {
-                mRestaurants.clear();
-                mRestaurants.add(restaurantDto);
-                Objects.requireNonNull(mRecyclerView.getAdapter()).notifyDataSetChanged();
-            }
-//            mRecyclerView.setVisibility(View.INVISIBLE);
+    public void processPredictionsDto(List<PredictionsDto> predictionsDtoList) {
+        predictionsPlaceId.clear();
+        for (PredictionsDto predictionsDto : predictionsDtoList) {
+            predictionsPlaceId.add(predictionsDto.getPlaceId());
         }
+        mViewModel.getPrediction(this, this);
+        Objects.requireNonNull(mRecyclerView.getAdapter()).notifyDataSetChanged();
+    }
+
+    @Override
+    public List<String> processDetailsRestaurant() {
+        return predictionsPlaceId;
     }
 }
