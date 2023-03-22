@@ -1,14 +1,12 @@
 package com.rudy.go4lunch.ui.restaurant;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -77,7 +75,7 @@ public class RestaurantsFragment extends Fragment implements
     }
 
     @SuppressLint({"MissingPermission", "CheckResult"})
-    public void getLocation(View root) { //todo faire une interface pour la location
+    public void getLocation(View root) {
         locationClient.getLastLocation()
                 .addOnSuccessListener(requireActivity(), location -> {
                     if (location != null) {
@@ -128,13 +126,6 @@ public class RestaurantsFragment extends Fragment implements
         return mRestaurants;
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        MainActivity mainActivity = (MainActivity) requireActivity();
-        mainActivity.setOnSearchListener(this);
-    }
-
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void processPredictionsDto(List<PredictionsDto> predictionsDtoList) {
@@ -149,5 +140,11 @@ public class RestaurantsFragment extends Fragment implements
     @Override
     public List<String> processDetailsRestaurant() {
         return predictionsPlaceId;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) requireActivity()).setOnSearchListener(this);
     }
 }

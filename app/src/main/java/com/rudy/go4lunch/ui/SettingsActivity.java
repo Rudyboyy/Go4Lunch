@@ -67,8 +67,8 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
-    private void updateUIWithUserData(){
-        if(userManager.isCurrentUserLogged()){
+    private void updateUIWithUserData() {
+        if (userManager.isCurrentUserLogged()) {
             FirebaseUser user = userManager.getCurrentUser();
             setTextUserData(user);
             getUserData();

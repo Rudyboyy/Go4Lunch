@@ -14,22 +14,16 @@ import com.rudy.go4lunch.model.RestaurantDto;
 import com.rudy.go4lunch.model.dto.OpeningHoursDto;
 import com.rudy.go4lunch.model.dto.RestaurantWrapperDto;
 import com.rudy.go4lunch.model.dto.RestaurantsWrapperDto;
-import com.rudy.go4lunch.model.dto.predictions.AutoCompleteDto;
 import com.rudy.go4lunch.service.GooglePlacesRestaurantsApi;
 import com.rudy.go4lunch.service.GooglePlacesRestaurantsApiMock;
 import com.rudy.go4lunch.service.ProcessRestaurantDto;
 
 import java.util.List;
-import java.util.Objects;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestaurantRepository {
 
@@ -49,7 +43,7 @@ public class RestaurantRepository {
                 PLACES_API_KEY,
                 RADIUS,
                 RESTAURANT
-        ) .doOnSuccess(response -> Log.d("JSON NearbySearch", new Gson().toJson(response)));
+        ).doOnSuccess(response -> Log.d("JSON NearbySearch", new Gson().toJson(response)));
     }
 
     public Single<RestaurantWrapperDto> getDetails(String placeId) {
@@ -57,7 +51,7 @@ public class RestaurantRepository {
                 placeId,
                 "formatted_phone_number,website,opening_hours",
                 PLACES_API_KEY
-        ) .doOnSuccess(response -> Log.d("JSON Detail", new Gson().toJson(response)));
+        ).doOnSuccess(response -> Log.d("JSON Detail", new Gson().toJson(response)));
     }
 
     public RestaurantRepository(Context context) {
@@ -94,10 +88,10 @@ public class RestaurantRepository {
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(restaurantWrapperDto -> {
                                     if (restaurantWrapperDto.getResult().getFormattedPhoneNumber() != null) {
-                                    restaurantDto.setFormattedPhoneNumber(restaurantWrapperDto.getResult().getFormattedPhoneNumber());
+                                        restaurantDto.setFormattedPhoneNumber(restaurantWrapperDto.getResult().getFormattedPhoneNumber());
                                     }
                                     if (restaurantWrapperDto.getResult().getWebsite() != null) {
-                                    restaurantDto.setWebsite(restaurantWrapperDto.getResult().getWebsite());
+                                        restaurantDto.setWebsite(restaurantWrapperDto.getResult().getWebsite());
                                     }
                                     if (restaurantWrapperDto.getResult().getOpeningHours().getPeriods() != null) {
                                         OpeningHoursDto openingHoursDto = new OpeningHoursDto(restaurantWrapperDto.getResult().getOpeningHours().isOpenNow(),

@@ -3,35 +3,25 @@ package com.rudy.go4lunch.viewmodel;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.location.Location;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.rudy.go4lunch.model.PredictionsDto;
-import com.rudy.go4lunch.model.RestaurantDto;
 import com.rudy.go4lunch.model.User;
 import com.rudy.go4lunch.repository.PredictionRepository;
 import com.rudy.go4lunch.repository.RestaurantRepository;
 import com.rudy.go4lunch.repository.UserRepository;
-import com.rudy.go4lunch.service.OnSearchListener;
 import com.rudy.go4lunch.service.ProcessDetailsRestaurant;
 import com.rudy.go4lunch.service.ProcessPredictionsDto;
 import com.rudy.go4lunch.service.ProcessRestaurantDto;
 
 import java.util.List;
-import java.util.Objects;
-
-import javax.inject.Inject;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 public class MainViewModel extends ViewModel {
 
     RestaurantRepository restaurantRepository;// = new RestaurantRepository();
     private UserRepository userRepository = new UserRepository();
-//        private LiveData<List<RestaurantDto>> restaurant = restaurantRepository.getNearBySearchRestaurantList();
+    //        private LiveData<List<RestaurantDto>> restaurant = restaurantRepository.getNearBySearchRestaurantList();
     PredictionRepository predictionRepository = new PredictionRepository();
 
     @SuppressLint("CheckResult")
@@ -60,7 +50,7 @@ public class MainViewModel extends ViewModel {
         predictionRepository.getPredictions(location, newText, processPredictionsDto);
     }
 
-    public  void getPrediction(ProcessDetailsRestaurant processDetailsRestaurant, ProcessRestaurantDto processRestaurantDto) {
+    public void getPrediction(ProcessDetailsRestaurant processDetailsRestaurant, ProcessRestaurantDto processRestaurantDto) {
         predictionRepository.getDetailsPrediction(processDetailsRestaurant, processRestaurantDto);
     }
 

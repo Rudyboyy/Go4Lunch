@@ -1,7 +1,6 @@
 package com.rudy.go4lunch.ui.map;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +35,6 @@ import com.rudy.go4lunch.viewmodel.MainViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class MapFragment extends Fragment implements
         OnMapReadyCallback,
@@ -97,7 +95,8 @@ public class MapFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
-//        onMapReady(mMap);
+        onMapReady(mMap);
+        ((MainActivity) requireActivity()).setOnSearchListener(this);
     }
 
     @Override
@@ -110,18 +109,15 @@ public class MapFragment extends Fragment implements
                 for (RestaurantDto result : mRestaurants) {
                     if (result.getPlaceId().equals(user.getBookedRestaurantPlaceId())) {
                         setMarker(BitmapDescriptorFactory.HUE_GREEN, result);// todo pb couleur marker
+                    } else if (onSearch) {
+                        setMarker(BitmapDescriptorFactory.HUE_YELLOW, result);
+                        LocationDto firstLocation = mRestaurants.get(0).getGeometry().getLocationDto();
+                        mMap.moveCamera(CameraUpdateFactory
+                                .newLatLngZoom(new LatLng(firstLocation.getLatitude(), firstLocation.getLongitude()), 18));
                     } else {
                         setMarker(BitmapDescriptorFactory.HUE_RED, result);
                     }
                 }
-            }
-            if (onSearch) {
-                for (RestaurantDto result : mRestaurants) {
-                    setMarker(BitmapDescriptorFactory.HUE_YELLOW, result);
-                }
-                LocationDto firstLocation = mRestaurants.get(0).getGeometry().getLocationDto();
-                mMap.moveCamera(CameraUpdateFactory
-                        .newLatLngZoom(new LatLng(firstLocation.getLatitude(), firstLocation.getLongitude()), 18));
             }
         });
     }
@@ -154,13 +150,6 @@ public class MapFragment extends Fragment implements
     @Override
     public List<RestaurantDto> onRequestList() {
         return mRestaurants;
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        MainActivity mainActivity = (MainActivity) requireActivity();
-        mainActivity.setOnSearchListener(this);
     }
 
     @Override

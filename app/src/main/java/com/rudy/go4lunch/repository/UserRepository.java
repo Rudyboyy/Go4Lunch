@@ -16,7 +16,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.Source;
 import com.rudy.go4lunch.model.User;
 
 import java.util.ArrayList;
@@ -32,9 +31,7 @@ public class UserRepository {
     private static final String BOOKED_RESTAURANT_PLACE_ID = "bookedRestaurantPlaceId";
     private static final String FAVORITE_RESTAURANTS = "favoriteRestaurants";
 
-    private FirebaseFirestore database;
     private final MutableLiveData<List<User>> allUsers = new MutableLiveData<>();
-    private final MutableLiveData<User> user = new MutableLiveData<>();
 
     public UserRepository() {
     }
@@ -62,13 +59,6 @@ public class UserRepository {
         return (user != null) ? user.getUid() : null;
     }
 
-    public String getUserUIDOnfocus(String UserUID) {
-        for (int i = 0; i > getUsersCollection().count().hashCode(); i++) {
-
-        }
-        return null;
-    }
-
     public Task<Void> signOut(Context context) {
         return AuthUI.getInstance().signOut(context);
     }
@@ -91,20 +81,13 @@ public class UserRepository {
 
             Task<DocumentSnapshot> userData = getUserData();
 
-            User finalUserToCreate = userToCreate;
             userData.addOnSuccessListener(documentSnapshot -> {
                 if (documentSnapshot.contains(BOOKED_RESTAURANT)) {
-                    finalUserToCreate.setBookedRestaurant((String) documentSnapshot.get(BOOKED_RESTAURANT));
+                    userToCreate.setBookedRestaurant((String) documentSnapshot.get(BOOKED_RESTAURANT));
                 } else if (documentSnapshot.contains(BOOKED_RESTAURANT_PLACE_ID)) {
-                    finalUserToCreate.setBookedRestaurantPlaceId((String) documentSnapshot.get(BOOKED_RESTAURANT_PLACE_ID));
-                    //                } else if (documentSnapshot.contains(FAVORITE_RESTAURANTS)) {//todo useless ?
-//                    userToCreate.setFavoriteRestaurants(Collections.singletonList((String) documentSnapshot.get(FAVORITE_RESTAURANTS)));
-//                    restaurantDto.setPlaceId((String) documentSnapshot.get(PLACE_ID));
-//                    restaurantDto.setName((String) documentSnapshot.get(NAME));
-//                    this.getFavoriteCollection().document(uid).set(restaurantDto);
-//                    userToCreate.setFavoriteRestaurants((List<RestaurantDto>) documentSnapshot.get(FAVORITE_RESTAURANTS));
+                    userToCreate.setBookedRestaurantPlaceId((String) documentSnapshot.get(BOOKED_RESTAURANT_PLACE_ID));
                 }
-                this.getUsersCollection().document(uid).set(finalUserToCreate);
+                this.getUsersCollection().document(uid).set(userToCreate);
             });
         }
     }
@@ -151,7 +134,7 @@ public class UserRepository {
     }
 
     public void getDataBaseInstance() {
-        database = FirebaseFirestore.getInstance();
+        FirebaseFirestore.getInstance();
     }
 
     public LiveData<List<User>> getAllUsers() {
@@ -168,7 +151,7 @@ public class UserRepository {
         return allUsers;
     }
 
-    public void addFavorite(String userId, String placeId, String restaurantName) {
+    public void addFavorite(String userId, String placeId) {
         String uid = this.getCurrentUserUID();
         if (uid != null) {
             getUsersCollection().document(userId)

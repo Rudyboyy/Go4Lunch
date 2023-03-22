@@ -52,7 +52,7 @@ public class WorkmatesFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_workmates, container, false);
-        ((MainActivity) requireContext()).searchItem.setVisible(false);//todo fonctionne que depuis la vue map
+        ((MainActivity) requireContext()).fragmentSelected = R.layout.fragment_workmates;
         initData();
         initRecyclerView(root);
         return root;
@@ -76,6 +76,8 @@ public class WorkmatesFragment extends Fragment implements
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         MainActivity mainActivity = (MainActivity) requireActivity();
-        mainActivity.searchItem.setVisible(false);//todo a tester
+        if (mainActivity.searchItem != null) {
+            mainActivity.searchItem.setVisible(false);
+        }
     }
 }
