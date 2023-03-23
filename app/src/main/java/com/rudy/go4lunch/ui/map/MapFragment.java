@@ -1,6 +1,9 @@
 package com.rudy.go4lunch.ui.map;
 
+import static com.rudy.go4lunch.ui.restaurant.RestaurantsFragment.RESTAURANT_INFO;
+
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +22,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.databinding.FragmentMapBinding;
@@ -31,6 +35,7 @@ import com.rudy.go4lunch.service.ProcessDetailsRestaurant;
 import com.rudy.go4lunch.service.ProcessPredictionsDto;
 import com.rudy.go4lunch.service.ProcessRestaurantDto;
 import com.rudy.go4lunch.ui.MainActivity;
+import com.rudy.go4lunch.ui.restaurant.DetailRestaurantActivity;
 import com.rudy.go4lunch.viewmodel.MainViewModel;
 
 import java.util.ArrayList;
@@ -122,13 +127,29 @@ public class MapFragment extends Fragment implements
         });
     }
 
-    private void setMarker(float bitmap, RestaurantDto result) { //todo fait une navigation vers details depuis le marker ?
-        mMap.addMarker(
+    private void setMarker(float bitmap, RestaurantDto result) {
+        Marker marker = mMap.addMarker(
                 new MarkerOptions()
                         .position(new LatLng(result.getGeometry().getLocationDto().getLatitude(), result.getGeometry().getLocationDto().getLongitude()))
                         .title(result.getName())
                         .alpha(0.8f)
                         .icon(BitmapDescriptorFactory.defaultMarker(bitmap)));
+        if (marker != null) {
+        marker.setTag(result);
+        mMap.setOnMarkerClickListener(this::onMarkerClick);
+        }
+    }
+
+    public boolean onMarkerClick(Marker marker) {
+        Object tag = marker.getTag();
+        if (tag instanceof RestaurantDto) {
+            RestaurantDto restaurantDto = (RestaurantDto) tag;
+            Intent detailRestaurantActivityIntent = new Intent(getContext(), DetailRestaurantActivity.class);
+            detailRestaurantActivityIntent.putExtra(RESTAURANT_INFO, restaurantDto);
+            startActivity(detailRestaurantActivityIntent);
+            return true;
+        }
+        return false;
     }
 
     @SuppressLint("MissingPermission")
