@@ -5,7 +5,6 @@ import static com.rudy.go4lunch.ui.restaurant.RestaurantsFragment.RESTAURANT_INF
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,15 +22,9 @@ import com.rudy.go4lunch.BuildConfig;
 import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.model.RestaurantDto;
 import com.rudy.go4lunch.model.User;
-import com.rudy.go4lunch.model.dto.PeriodsDto;
 import com.rudy.go4lunch.utils.Utils;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.ViewHolder> {
 
@@ -130,7 +123,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
         }
 
         private String getNumberOfWorkmates(List<User> users, String restaurantPlaceId) {
-           return Utils.getNumberOfWorkmates(users, restaurantPlaceId);
+            return Utils.getNumberOfWorkmates(users, restaurantPlaceId);
         }
     }
 }

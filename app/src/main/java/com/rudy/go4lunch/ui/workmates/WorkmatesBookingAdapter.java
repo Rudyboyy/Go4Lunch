@@ -1,7 +1,5 @@
 package com.rudy.go4lunch.ui.workmates;
 
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +17,7 @@ import com.rudy.go4lunch.model.User;
 
 import java.util.List;
 
-public class WorkmatesBookingAdapter extends RecyclerView.Adapter<WorkmatesBookingAdapter.ViewHolder>{
+public class WorkmatesBookingAdapter extends RecyclerView.Adapter<WorkmatesBookingAdapter.ViewHolder> {
 
     private List<User> mUsers;
 
@@ -46,6 +44,7 @@ public class WorkmatesBookingAdapter extends RecyclerView.Adapter<WorkmatesBooki
     public int getItemCount() {
         return mUsers.size();
     }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public final ImageView avatar;
@@ -57,8 +56,9 @@ public class WorkmatesBookingAdapter extends RecyclerView.Adapter<WorkmatesBooki
             this.avatar = itemView.findViewById(R.id.item_list_avatar);
             this.workmate = itemView.findViewById(R.id.workmate_text_view);
         }
+
         public void displayWorkmates(User user) {
-                workmate.setText(user.getUsername());
+            workmate.setText(user.getUsername());
 
             if (user.getUrlPicture() != null) {
                 Glide.with(avatar.getContext())

@@ -16,12 +16,9 @@ import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.databinding.ActivityWelcomeScreenBinding;
 import com.rudy.go4lunch.manager.UserManager;
-import com.rudy.go4lunch.repository.UserRepository;
 
 import java.util.Collections;
 import java.util.List;

@@ -4,14 +4,13 @@ import android.content.Context;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
-import com.rudy.go4lunch.model.RestaurantDto;
 import com.rudy.go4lunch.model.User;
 import com.rudy.go4lunch.repository.UserRepository;
 
 public class UserManager {
 
     private static volatile UserManager instance;
-    private  UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public UserManager() {
         userRepository = UserRepository.getInstance();
@@ -22,7 +21,7 @@ public class UserManager {
         if (result != null) {
             return result;
         }
-        synchronized(UserRepository.class) {
+        synchronized (UserRepository.class) {
             if (instance == null) {
                 instance = new UserManager();
             }
@@ -30,15 +29,15 @@ public class UserManager {
         }
     }
 
-    public FirebaseUser getCurrentUser(){
+    public FirebaseUser getCurrentUser() {
         return userRepository.getCurrentUser();
     }
 
-    public Boolean isCurrentUserLogged(){
+    public Boolean isCurrentUserLogged() {
         return (this.getCurrentUser() != null);
     }
 
-    public Task<Void> signOut(Context context){
+    public Task<Void> signOut(Context context) {
         return userRepository.signOut(context);
     }
 
@@ -66,11 +65,11 @@ public class UserManager {
         userRepository.cancelBooking();
     }
 
-    public void addFavorite(String userID, String restaurantID, String restaurantName) {
-        userRepository.addFavorite(userID, restaurantID, restaurantName);
+    public void addFavorite(String userID, String restaurantID) {
+        userRepository.addFavorite(userID, restaurantID);
     }
 
-    public void removeFavoriteRestaurant(String userID, String restaurantID, String restaurantName) {
+    public void removeFavoriteRestaurant(String userID, String restaurantID) {
         userRepository.removeFavouriteRestaurant(userID, restaurantID);
     }
 

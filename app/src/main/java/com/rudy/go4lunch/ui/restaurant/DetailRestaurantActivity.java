@@ -129,7 +129,7 @@ public class DetailRestaurantActivity extends AppCompatActivity {
         }
     }
 
-    public void setBooking() { //todo need optimization
+    public void setBooking() {
         if (userManager.isCurrentUserLogged()) {
             userManager.getUserData().addOnSuccessListener(user -> {
                 if (Objects.equals(user.getBookedRestaurantPlaceId(), mRestaurant.getPlaceId())) {
@@ -162,9 +162,9 @@ public class DetailRestaurantActivity extends AppCompatActivity {
         if (userManager.isCurrentUserLogged()) {
             userManager.getUserData().addOnSuccessListener(user -> {
                 if (user.getFavoriteRestaurants() != null && user.getFavoriteRestaurants().contains(mRestaurant.getPlaceId())) {
-                    userManager.removeFavoriteRestaurant(user.getUid(), mRestaurant.getPlaceId(), mRestaurant.getName());
+                    userManager.removeFavoriteRestaurant(user.getUid(), mRestaurant.getPlaceId());
                 } else {
-                    userManager.addFavorite(user.getUid(), mRestaurant.getPlaceId(), mRestaurant.getName());
+                    userManager.addFavorite(user.getUid(), mRestaurant.getPlaceId());
                 }
                 setLikeButton();
             });

@@ -3,7 +3,6 @@ package com.rudy.go4lunch.utils;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 
 import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.model.RestaurantDto;

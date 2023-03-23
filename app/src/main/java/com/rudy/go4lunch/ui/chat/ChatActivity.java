@@ -33,7 +33,6 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.Liste
     private ChatAdapter chatAdapter;
     private String currentChatName;
     private UserManager userManager = UserManager.getInstance();
-    //private ChatViewModel mChatViewModel = ChatViewModel.getInstance();
     private ChatManager chatManager = ChatManager.getInstance();
 
     @Override
@@ -74,7 +73,7 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.Liste
     private void configureRecyclerView() {
         String currentUid = getIntent().getStringExtra(KEY_USER_ID);
         String workmateUid = getIntent().getStringExtra(KEY_WORKMATE_ID);
-        //todo init avec un viewmodel
+
         if (currentUid.compareTo(workmateUid) < 0) {
             this.currentChatName = currentUid + workmateUid;
         } else {
