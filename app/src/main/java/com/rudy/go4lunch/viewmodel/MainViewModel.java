@@ -29,6 +29,12 @@ public class MainViewModel extends ViewModel {
         restaurantRepository = new RestaurantRepository(context);
         restaurantRepository.getRestaurantLocation(location, processRestaurantDto);
     }
+    @SuppressLint("CheckResult")
+    public void getRestaurantOnFocus(String placeId, ProcessRestaurantDto processRestaurantDto, Context context) {
+        restaurantRepository = new RestaurantRepository(context);
+        restaurantRepository.getRestaurantOnFocus(placeId, processRestaurantDto);
+    }
+
 
 //    public LiveData<List<RestaurantDto>> getRestaurant() {
 //        return restaurant;

@@ -70,7 +70,7 @@ public class PredictionRepository {
         getAutoComplete(location, newText).timeout(30, TimeUnit.SECONDS).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(autoCompleteDto -> {
             processPredictionsDto.processPredictionsDto(autoCompleteDto.getPredictions());
         }, throwable -> {
-            Log.v("MyProbleme", throwable.toString());
+            Log.v("throwable", throwable.toString());
         });
     }
 
@@ -89,7 +89,7 @@ public class PredictionRepository {
                             processRestaurantDto.processRestaurantDto(restaurantDtoListMutableLiveData);
                         }
                     }, throwable -> {
-                        Log.v("MyProbleme", throwable.toString());
+                        Log.v("throwable", throwable.toString());
                     });
         }
     }

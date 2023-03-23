@@ -3,6 +3,19 @@
    "result" : {
       "formatted_phone_number" : "02 38 53 44 09",
       "website" : "https://www.lesfilsamaman.com/restaurants/orleans/?utm_source=google&utm_medium=organic&utm_campaign=mybusiness-website",
+      "rating": 4,
+      "name" : "Hotel Escale Oceania Orléans",
+      "vicinity" : "16 Quai Saint-Laurent, Orléans",
+      "photos" : [
+         {
+            "height" : 2362,
+            "html_attributions" : [
+               "\u003ca href=\"https://maps.google.com/maps/contrib/105427838689864508660\"\u003eHôtel Escale Oceania Orléans\u003c/a\u003e"
+            ],
+            "photo_reference" : "AW30NDxZj7v8-fKTDJ39IVsNrGSknjaMmEkYWVK0BbFwKxQ381j3w0xhnffKU3qVn5Jz6f-Op5DnYEar64A-c9VRLlLfwJRIgiTKEEpv5xlZz5J5-gXTTtMwPmI5VxY03cyPqxd2PHFSlboy2Eu1A1PxPUnNp0SumqUfet_nrgln6EXe0jwm",
+            "width" : 3543
+         }
+      ],
       "opening_hours":
       {
          "open_now": false,

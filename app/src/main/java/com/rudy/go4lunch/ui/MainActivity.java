@@ -236,7 +236,7 @@ public class MainActivity extends AppCompatActivity implements
                 locationClient.getLastLocation()
                         .addOnSuccessListener(this, location -> {
                             if (location != null) {
-                                mViewModel.getRestaurantLocation(this, location, this);
+                                mViewModel.getRestaurantOnFocus(user.getBookedRestaurantPlaceId(), this, this);
                             }
                         });
             } else {
@@ -303,13 +303,12 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void processRestaurantDto(List<RestaurantDto> restaurantDtoList) {
         userManager.getUserData().addOnSuccessListener(user -> {
-            for (RestaurantDto restaurantDto : restaurantDtoList) {
-                if (Objects.equals(restaurantDto.getPlaceId(), user.getBookedRestaurantPlaceId())) {
-                    Intent detailRestaurantActivityIntent = new Intent(this, DetailRestaurantActivity.class);
-                    detailRestaurantActivityIntent.putExtra(RESTAURANT_INFO, restaurantDto);
-                    detailRestaurantActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    this.startActivity(detailRestaurantActivityIntent);
-                }
+            if (restaurantDtoList != null) {
+                RestaurantDto restaurantOnFocus = restaurantDtoList.get(0);
+                Intent detailRestaurantActivityIntent = new Intent(this, DetailRestaurantActivity.class);
+                detailRestaurantActivityIntent.putExtra(RESTAURANT_INFO, restaurantOnFocus);
+                detailRestaurantActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                this.startActivity(detailRestaurantActivityIntent);
             }
         });
     }
