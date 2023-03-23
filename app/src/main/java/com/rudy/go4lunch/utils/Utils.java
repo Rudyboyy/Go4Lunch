@@ -52,7 +52,11 @@ public class Utils {
         boolean periodFound = false;
         boolean firstLoopExecuted = false;
         @SuppressLint("SimpleDateFormat") SimpleDateFormat inputFormat = new SimpleDateFormat("HHmm");
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat outputFormat = new SimpleDateFormat("h:mm a", Locale.ENGLISH);
+        String language = Locale.getDefault().getLanguage();
+        if (language.equals("fr")) {
+            outputFormat = new SimpleDateFormat("HH:mm", Locale.FRENCH);
+        }
         OpeningHoursDto openingHoursDto = restaurantDto.getOpeningHours();
 
         if (openingHoursDto.getPeriods() != null && !openingHoursDto.getPeriods().isEmpty()) {
