@@ -16,8 +16,10 @@ import com.rudy.go4lunch.model.dto.RestaurantWrapperDto;
 import com.rudy.go4lunch.model.dto.RestaurantsWrapperDto;
 import com.rudy.go4lunch.service.GooglePlacesRestaurantsApi;
 import com.rudy.go4lunch.service.GooglePlacesRestaurantsApiMock;
+import com.rudy.go4lunch.service.ProcessDetailsRestaurant;
 import com.rudy.go4lunch.service.ProcessRestaurantDto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Single;
@@ -49,7 +51,7 @@ public class RestaurantRepository {
     public Single<RestaurantWrapperDto> getDetails(String placeId) {
         return RESTAURANTS_SERVICE.getDetails(
                 placeId,
-                "formatted_phone_number,website,opening_hours",
+                "formatted_phone_number,website,opening_hours,name,rating,vicinity,photos",
                 PLACES_API_KEY
         ).doOnSuccess(response -> Log.d("JSON Detail", new Gson().toJson(response)));
     }
@@ -107,6 +109,23 @@ public class RestaurantRepository {
                     }
                     Log.v("nearbySearch", restaurantDtos.getResults().toString());
                 });
+    }
+
+    @SuppressLint("CheckResult")
+    public void getRestaurantOnFocus(String placeId, ProcessRestaurantDto processRestaurantDto) {
+        List<RestaurantDto> restaurantDtoList = new ArrayList<>();
+            getDetails(placeId)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(restaurantWrapperDto -> {
+                        if (restaurantWrapperDto.getResult() != null) {
+                            restaurantWrapperDto.getResult().setPlaceId(placeId);
+                            restaurantDtoList.add(restaurantWrapperDto.getResult());
+                            processRestaurantDto.processRestaurantDto(restaurantDtoList);
+                        }
+                    }, throwable -> {
+                        Log.v("throwable", throwable.toString());
+                    });
     }
 
     @SuppressLint("CheckResult")

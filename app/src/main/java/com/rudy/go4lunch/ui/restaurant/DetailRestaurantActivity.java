@@ -47,6 +47,7 @@ public class DetailRestaurantActivity extends AppCompatActivity {
         initData();
         initRecyclerView();
         setRestaurant();
+        setFab();
         binding.backButton.setOnClickListener(view -> finish());
     }
 
