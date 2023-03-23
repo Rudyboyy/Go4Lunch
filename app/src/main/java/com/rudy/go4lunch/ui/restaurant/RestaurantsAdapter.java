@@ -90,7 +90,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             this.mContext = context;
         }
 
-        @SuppressLint({"CheckResult", "SetTextI18n"})
+        @SuppressLint({"CheckResult", "SetTextI18n", "DefaultLocale"})
         public void displayRestaurants(RestaurantDto restaurantDto, Location location, List<User> users) {
             Location myLoc = new Location("my loc");
             myLoc.setLatitude(location.getLatitude());
@@ -99,11 +99,17 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             locJson.setLatitude(restaurantDto.getGeometry().getLocationDto().getLatitude());
             locJson.setLongitude(restaurantDto.getGeometry().getLocationDto().getLongitude());
             int mDistance = (int) myLoc.distanceTo(locJson);
+            String mConvertedDistance;
+            if (mDistance < 1000) {
+                mConvertedDistance = mDistance + " m";
+            } else {
+                mConvertedDistance = String.format("%.1f", mDistance / 1000.0) + " km";
+            }
 
             name.setText(restaurantDto.getName());
             address.setText(restaurantDto.getAddress());
             ratingBar.setRating(restaurantDto.getCollapseRating());
-            distance.setText(mDistance + "m");
+            distance.setText(mConvertedDistance);
             attendees.setText(getNumberOfWorkmates(users, restaurantDto.getPlaceId()));
 
             if (restaurantDto.getOpeningHours() != null) {
