@@ -29,6 +29,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -46,11 +48,13 @@ import com.rudy.go4lunch.model.RestaurantDto;
 import com.rudy.go4lunch.service.OnSearchListener;
 import com.rudy.go4lunch.service.ProcessRestaurantDto;
 import com.rudy.go4lunch.ui.dialog.PermissionDialogFragment;
+import com.rudy.go4lunch.ui.notification.NotificationWorker;
 import com.rudy.go4lunch.ui.restaurant.DetailRestaurantActivity;
 import com.rudy.go4lunch.viewmodel.MainViewModel;
 
+import java.util.Calendar;
 import java.util.List;
-import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
@@ -77,10 +81,31 @@ public class MainActivity extends AppCompatActivity implements
         requestLocationPermission();
         setUpLogin();
         initUi();
+        scheduleNotificationWork();
     }
 
     public void setOnSearchListener(OnSearchListener listener) {
         this.listener = listener;
+    }
+
+    private void scheduleNotificationWork() {
+        PeriodicWorkRequest notificationWork = new PeriodicWorkRequest.Builder(NotificationWorker.class, 1, TimeUnit.DAYS)
+                .setInitialDelay(calculateInitialDelay(), TimeUnit.MILLISECONDS)
+                .build();
+        WorkManager.getInstance(this).enqueue(notificationWork);
+    }
+
+    public long calculateInitialDelay() {
+        Calendar now = Calendar.getInstance();
+        Calendar noonToday = Calendar.getInstance();
+        noonToday.set(Calendar.HOUR_OF_DAY, 12);
+        noonToday.set(Calendar.MINUTE, 0);
+        noonToday.set(Calendar.SECOND, 0);
+        noonToday.set(Calendar.MILLISECOND, 0);
+        if (now.after(noonToday)) {
+            noonToday.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        return noonToday.getTimeInMillis() - now.getTimeInMillis();
     }
 
     @Override

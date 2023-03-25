@@ -27,7 +27,7 @@
     <string name="settings">Settings</string>
     <string name="unlike">UNLIKE</string>
     <string name="like">LIKE</string>
-    <string name="with">with </string>
+    <string name="with">\ with\ </string>
     <string name="channel_id">com.go4lunch</string>
     <string name="channel_name">Firebase Messaging</string>
     <string name="receive_notification">notifications activates</string>
@@ -53,5 +53,5 @@
     <string name="sunday">sunday at\ </string>
     <string name="tomorrow_at">"tomorrow at\ "</string>
     <string name="tomorrow">"tomorrow\ "</string>
-    at\
+    <string name="you_are_eating_at">It\'s time to go to\ "</string>
 </resources>
