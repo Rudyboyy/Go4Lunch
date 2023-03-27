@@ -28,6 +28,8 @@
     <string name="settings">Parramètre</string>
     <string name="unlike">NE PAS AIMER</string>
     <string name="like">AIMER</string>
+    <string name="website">SITE WEB</string>
+    <string name="call">APPELER</string>
     <string name="with">\ avec\ </string>
     <string name="channel_id">com.go4lunch</string>
     <string name="channel_name">Firebase Messaging</string>

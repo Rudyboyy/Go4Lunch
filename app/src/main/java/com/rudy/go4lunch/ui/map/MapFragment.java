@@ -94,20 +94,11 @@ public class MapFragment extends Fragment implements
                             mViewModel.getRestaurantLocation(this, location, getContext());
                         }
                     });
+            setRestaurantMarkerColor();
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        onMapReady(mMap);
-        ((MainActivity) requireActivity()).setOnSearchListener(this);
-    }
-
-    @Override
-    public void processRestaurantDto(List<RestaurantDto> restaurantDtoList) {
-        mRestaurants.clear();
-        mRestaurants.addAll(restaurantDtoList);
+    public void setRestaurantMarkerColor() {
         mViewModel.getDataBaseInstanceUser();
         mViewModel.getAllUsers().observe(getViewLifecycleOwner(), users -> { //todo remplacement getViewLifecycleOwner() par requireActivity car pb dans test
             for (User user : users) {
@@ -127,6 +118,19 @@ public class MapFragment extends Fragment implements
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        onMapReady(mMap);
+        ((MainActivity) requireActivity()).setOnSearchListener(this);
+    }
+
+    @Override
+    public void processRestaurantDto(List<RestaurantDto> restaurantDtoList) {
+        mRestaurants.clear();
+        mRestaurants.addAll(restaurantDtoList);
+    }
+
     private void setMarker(float bitmap, RestaurantDto result) {
         Marker marker = mMap.addMarker(
                 new MarkerOptions()
@@ -135,8 +139,8 @@ public class MapFragment extends Fragment implements
                         .alpha(0.8f)
                         .icon(BitmapDescriptorFactory.defaultMarker(bitmap)));
         if (marker != null) {
-        marker.setTag(result);
-        mMap.setOnMarkerClickListener(this::onMarkerClick);
+            marker.setTag(result);
+            mMap.setOnMarkerClickListener(this::onMarkerClick);
         }
     }
 
