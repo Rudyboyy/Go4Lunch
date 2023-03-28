@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ProcessPredictionsDto {
 
-    void processPredictionsDto(List<PredictionsDto> placeId);
+    void processPredictionsDto(List<PredictionsDto> predictionsDtoList);
 }

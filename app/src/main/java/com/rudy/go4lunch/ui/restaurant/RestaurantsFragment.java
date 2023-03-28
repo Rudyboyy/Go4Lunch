@@ -16,40 +16,31 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.rudy.go4lunch.R;
-import com.rudy.go4lunch.model.PredictionsDto;
 import com.rudy.go4lunch.model.RestaurantDto;
 import com.rudy.go4lunch.model.User;
 import com.rudy.go4lunch.service.OnSearchListener;
-import com.rudy.go4lunch.service.ProcessDetailsRestaurant;
-import com.rudy.go4lunch.service.ProcessPredictionsDto;
-import com.rudy.go4lunch.service.ProcessRestaurantDto;
 import com.rudy.go4lunch.ui.MainActivity;
 import com.rudy.go4lunch.viewmodel.MainViewModel;
+import com.rudy.go4lunch.viewmodel.ViewModelFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class RestaurantsFragment extends Fragment implements
-        ProcessRestaurantDto,
-        OnSearchListener,
-        ProcessPredictionsDto,
-        ProcessDetailsRestaurant {
+public class RestaurantsFragment extends Fragment implements OnSearchListener {
 
     private RecyclerView mRecyclerView;
-    private List<RestaurantDto> mRestaurants = new ArrayList<>();
-    private List<RestaurantDto> mPredictionRestaurants = new ArrayList<>();
+    private final List<RestaurantDto> mRestaurants = new ArrayList<>();
     public static final String RESTAURANT_INFO = "restaurantInfo";
     private MainViewModel mViewModel;
     private FusedLocationProviderClient locationClient;
     private final List<User> mUsers = new ArrayList<>();
-    private final List<String> predictionsPlaceId = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         locationClient = LocationServices.getFusedLocationProviderClient(requireContext());
-        mViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+        mViewModel = new ViewModelProvider(requireActivity(), ViewModelFactory.getInstance(requireActivity())).get(MainViewModel.class);
         initList();
     }
 
@@ -57,12 +48,13 @@ public class RestaurantsFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_restaurants, container, false);
-        initList();
         getLocation(root);
+        initList();
         ((MainActivity) requireContext()).fragmentSelected = R.layout.fragment_restaurants;
         return root;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void initRecyclerView(View root, Location location) {
         mRecyclerView = root.findViewById(R.id.recyclerview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -72,6 +64,7 @@ public class RestaurantsFragment extends Fragment implements
                 layoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
         mRecyclerView.setAdapter(mAdapter);
+        Objects.requireNonNull(mRecyclerView.getAdapter()).notifyDataSetChanged();
     }
 
     @SuppressLint({"MissingPermission", "CheckResult"})
@@ -84,12 +77,16 @@ public class RestaurantsFragment extends Fragment implements
                 });
     }
 
-    @SuppressLint({"MissingPermission", "CheckResult"})
+    @SuppressLint({"MissingPermission", "CheckResult", "NotifyDataSetChanged"})
     public void initList() {
         locationClient.getLastLocation()
                 .addOnSuccessListener(requireActivity(), location -> {
                     if (location != null) {
-                        mViewModel.getRestaurantLocation(this, location, getContext());
+                        mViewModel.getRestaurantLocation(location, getContext());
+                        mViewModel.getRestaurantListLiveData().observe(getViewLifecycleOwner(), restaurantDtos -> {
+                            mRestaurants.clear();
+                            mRestaurants.addAll(restaurantDtos);
+                        });
                     }
                 });
         mViewModel.getDataBaseInstanceUser();
@@ -99,24 +96,24 @@ public class RestaurantsFragment extends Fragment implements
         });
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    @Override
-    public void processRestaurantDto(List<RestaurantDto> restaurantDtoList) {
-        mRestaurants.clear();
-        mRestaurants.addAll(restaurantDtoList);
-        Objects.requireNonNull(mRecyclerView.getAdapter()).notifyDataSetChanged();
-    }
-
-    @SuppressLint("MissingPermission")
+    @SuppressLint({"MissingPermission", "NotifyDataSetChanged"})
     @Override
     public void onSearch(String query) {
         locationClient.getLastLocation()
                 .addOnSuccessListener(requireActivity(), location -> {
                     if (location != null && !query.isEmpty()) {
-                        mViewModel.getPredictionLocation(this, location, query);
+                        mViewModel.getPredictionLocation(location, query).observe(getViewLifecycleOwner(), restaurantDtos -> {
+                            mRestaurants.clear();
+                            mRestaurants.addAll(restaurantDtos);
+                            Objects.requireNonNull(mRecyclerView.getAdapter()).notifyDataSetChanged();
+                        });
                     }
                     if (query.isEmpty()) {
-                        initList();
+                        mViewModel.getRestaurantListLiveData().observe(getViewLifecycleOwner(), restaurantDtos -> {
+                            mRestaurants.clear();
+                            mRestaurants.addAll(restaurantDtos);
+                            Objects.requireNonNull(mRecyclerView.getAdapter()).notifyDataSetChanged();
+                        });
                     }
                 });
     }
@@ -124,22 +121,6 @@ public class RestaurantsFragment extends Fragment implements
     @Override
     public List<RestaurantDto> onRequestList() {
         return mRestaurants;
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    @Override
-    public void processPredictionsDto(List<PredictionsDto> predictionsDtoList) {
-        predictionsPlaceId.clear();
-        for (PredictionsDto predictionsDto : predictionsDtoList) {
-            predictionsPlaceId.add(predictionsDto.getPlaceId());
-        }
-        mViewModel.getPrediction(this, this);
-        Objects.requireNonNull(mRecyclerView.getAdapter()).notifyDataSetChanged();
-    }
-
-    @Override
-    public List<String> processDetailsRestaurant() {
-        return predictionsPlaceId;
     }
 
     @Override
