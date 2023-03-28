@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace 'com.rudy.go4lunch'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.rudy.go4lunch"
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
         testInstrumentationRunnerArguments clearPackageData: 'true'
@@ -114,4 +114,7 @@ dependencies {
 
     //Lifecycle
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+
+    //Worker
+    implementation "androidx.work:work-runtime:2.8.1"
 }

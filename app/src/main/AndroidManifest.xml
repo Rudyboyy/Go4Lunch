@@ -23,14 +23,9 @@
         android:theme="@style/Theme.Go4Lunch"
         tools:targetApi="31">
 
-        <!-- NOTIFICATION SERVICE -->
         <service
-            android:name=".ui.notification.NotificationsService"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-            </intent-filter>
-        </service>
+            android:name=".ui.notification.NotificationWorker"
+            android:exported="false" />
 
         <activity
             android:name=".ui.chat.ChatActivity"

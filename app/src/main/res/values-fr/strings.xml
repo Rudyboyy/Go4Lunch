@@ -28,7 +28,7 @@
     <string name="settings">Parramètre</string>
     <string name="unlike">NE PAS AIMER</string>
     <string name="like">AIMER</string>
-    <string name="with">avec </string>
+    <string name="with">\ avec\ </string>
     <string name="channel_id">com.go4lunch</string>
     <string name="channel_name">Firebase Messaging</string>
     <string name="receive_notification">notifications activées</string>
@@ -54,4 +54,5 @@
     <string name="sunday">dimanche à\ </string>
     <string name="tomorrow_at">"demain à\ "</string>
     <string name="tomorrow">"demain\ "</string>
+    <string name="you_are_eating_at">Il est l\'heure d\'aller à\ "</string>
 </resources>
