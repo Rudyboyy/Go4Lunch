@@ -24,9 +24,9 @@ import java.util.List;
 
 public class MainViewModel extends ViewModel {
 
-    RestaurantRepository restaurantRepository;// = new RestaurantRepository();
+    RestaurantRepository restaurantRepository;
     private final UserRepository userRepository = new UserRepository();
-    PredictionRepository predictionRepository;// = new PredictionRepository();
+    PredictionRepository predictionRepository;
     UserManager mUserManager = UserManager.getInstance();
 
     private final MutableLiveData<List<RestaurantDto>> restaurantListLiveData = new MutableLiveData<>();
@@ -42,15 +42,12 @@ public class MainViewModel extends ViewModel {
     }
 
     @SuppressLint("CheckResult")
-    public void getRestaurantLocation(Location location, Context context) {
-//        restaurantRepository = new RestaurantRepository(context);
+    public void getRestaurantLocation(Location location) {
         restaurantRepository.getRestaurantLocation(location, restaurantListLiveData::setValue);
-        //todo faire une interface pour retrofit
-        //todo faire un viewModelFactory ?
     }
+
     @SuppressLint("CheckResult")
     public void getRestaurantOnFocus(String placeId, Context context) {
-//        restaurantRepository = new RestaurantRepository(context);
         restaurantRepository.getRestaurantOnFocus(placeId, restaurantDtoList -> mUserManager.getUserData().addOnSuccessListener(user -> {
             if (restaurantDtoList != null) {
                 RestaurantDto restaurantOnFocus = restaurantDtoList.get(0);

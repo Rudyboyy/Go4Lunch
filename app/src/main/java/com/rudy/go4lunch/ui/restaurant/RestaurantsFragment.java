@@ -82,7 +82,7 @@ public class RestaurantsFragment extends Fragment implements OnSearchListener {
         locationClient.getLastLocation()
                 .addOnSuccessListener(requireActivity(), location -> {
                     if (location != null) {
-                        mViewModel.getRestaurantLocation(location, getContext());
+                        mViewModel.getRestaurantLocation(location);
                         mViewModel.getRestaurantListLiveData().observe(getViewLifecycleOwner(), restaurantDtos -> {
                             mRestaurants.clear();
                             mRestaurants.addAll(restaurantDtos);

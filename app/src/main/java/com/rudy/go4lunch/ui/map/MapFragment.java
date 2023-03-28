@@ -84,7 +84,7 @@ public class MapFragment extends Fragment implements
                     .addOnSuccessListener(requireActivity(), location -> {
                         if (location != null) {
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18));
-                            mViewModel.getRestaurantLocation(location, getContext());
+                            mViewModel.getRestaurantLocation(location);
                         }
                     });
             mViewModel.getRestaurantListLiveData().observe(getViewLifecycleOwner(), restaurantDtos -> {
