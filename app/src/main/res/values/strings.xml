@@ -55,5 +55,5 @@
     <string name="sunday">sunday at\ </string>
     <string name="tomorrow_at">"tomorrow at\ "</string>
     <string name="tomorrow">"tomorrow\ "</string>
-    <string name="you_are_eating_at">It\'s time to go to\ "</string>
+    <string name="you_are_eating_at">You are lunching at\ "</string>
 </resources>

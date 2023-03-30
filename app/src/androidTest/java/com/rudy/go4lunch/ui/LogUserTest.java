@@ -32,6 +32,7 @@ import androidx.test.rule.GrantPermissionRule;
 import androidx.test.uiautomator.UiDevice;
 
 import com.rudy.go4lunch.R;
+import com.rudy.go4lunch.RepeatRule;
 import com.rudy.go4lunch.manager.UserManager;
 
 import org.junit.Assert;
@@ -45,6 +46,7 @@ import java.util.Objects;
 
 @RunWith(AndroidJUnit4.class)
 public class LogUserTest {
+
     @Rule
     public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(MainActivity.class);
@@ -55,6 +57,8 @@ public class LogUserTest {
                     "android.permission.ACCESS_FINE_LOCATION",
                     "android.permission.ACCESS_COARSE_LOCATION");
 
+    @Rule
+    public RepeatRule repeatRule = new RepeatRule(2);
 
     UiDevice mDevice;
     UserManager userManager;
@@ -65,10 +69,9 @@ public class LogUserTest {
     public void setUp() {
         mDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
         userManager = UserManager.getInstance();
-        if (!userManager.isCurrentUserLogged()) { //todo PB si not logged lance le onCreate avant la methode signWithTestUserAccount() et detruit la mainActivity
+        if (!userManager.isCurrentUserLogged()) {
             signWithTestUserAccount();
         }
-
     }
 
     @Test
@@ -127,21 +130,18 @@ public class LogUserTest {
     }
 
     @Test
-    public void bookRestaurantTest() throws InterruptedException {
-        Thread.sleep(1000);
+    public void bookRestaurantTest() {
 
         onView(withId(R.id.navigation_restaurant)).perform(click());
         onView(withId(R.id.recyclerview)).perform(actionOnItemAtPosition(0, click()));
         onView(withId(R.id.floatingActionButton)).perform(click());
         pressBack();
-        Thread.sleep(1000);
 
         onView(withId(R.id.main_drawer_layout)).perform(DrawerActions.open());
         onView(withId(R.id.activity_main_drawer_lunch)).perform(click());
         onView(withId(R.id.detailRestaurantActivity)).check(matches(isDisplayed()));
         onView(withId(R.id.floatingActionButton)).perform(click());
         pressBack();
-        Thread.sleep(1000);
 
         onView(withId(R.id.main_drawer_layout)).perform(DrawerActions.open());
         onView(withId(R.id.activity_main_drawer_lunch)).perform(click());
@@ -150,16 +150,13 @@ public class LogUserTest {
     }
 
     @Test
-    public void favoriteRestaurantTest() throws InterruptedException {
-        Thread.sleep(1000);
+    public void favoriteRestaurantTest() {
         onView(withId(R.id.navigation_restaurant)).perform(click());
-        Thread.sleep(1000);
         onView(withId(R.id.recyclerview)).perform(actionOnItemAtPosition(0, click()));
         onView(withId(R.id.like)).check(matches(withText(R.string.like)));
         onView(withId(R.id.likeButton)).perform(click());
         onView(withId(R.id.like)).check(matches(withText(R.string.unlike)));
         pressBack();
-        Thread.sleep(1000);
 
         onView(withId(R.id.navigation_restaurant)).perform(click());
         onView(withId(R.id.recyclerview)).perform(actionOnItemAtPosition(0, click()));
@@ -169,21 +166,16 @@ public class LogUserTest {
     }
 
     @Test
-    public void shouldShowDetailRestaurant() throws InterruptedException {
-        Thread.sleep(1000);
+    public void shouldShowDetailRestaurant() {
         onView(withId(R.id.navigation_restaurant)).perform(click());
-        Thread.sleep(1000);
         onView(withId(R.id.recyclerview)).perform(actionOnItemAtPosition(0, click()));
         onView(withId(R.id.detailRestaurantActivity)).check(matches(isDisplayed()));
     }
 
     @Test
-    public void shouldShowChat() throws InterruptedException {
-        Thread.sleep(1000);
+    public void shouldShowChat() {
         onView(withId(R.id.navigation_workmate)).perform(click());
-        Thread.sleep(1000);
         onView(withId(R.id.recyclerview)).perform(actionOnItemAtPosition(0, click()));
         onView(withId(R.id.chatActivity)).check(ViewAssertions.matches(isDisplayed()));
     }
-    //test les viewmodels avec mockito
 }
