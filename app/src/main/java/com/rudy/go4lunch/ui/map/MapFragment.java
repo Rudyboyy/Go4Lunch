@@ -26,34 +26,27 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.databinding.FragmentMapBinding;
-import com.rudy.go4lunch.model.PredictionsDto;
 import com.rudy.go4lunch.model.RestaurantDto;
 import com.rudy.go4lunch.model.User;
 import com.rudy.go4lunch.model.dto.LocationDto;
 import com.rudy.go4lunch.service.OnSearchListener;
-import com.rudy.go4lunch.service.ProcessDetailsRestaurant;
-import com.rudy.go4lunch.service.ProcessPredictionsDto;
-import com.rudy.go4lunch.service.ProcessRestaurantDto;
 import com.rudy.go4lunch.ui.MainActivity;
 import com.rudy.go4lunch.ui.restaurant.DetailRestaurantActivity;
 import com.rudy.go4lunch.viewmodel.MainViewModel;
+import com.rudy.go4lunch.viewmodel.ViewModelFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MapFragment extends Fragment implements
         OnMapReadyCallback,
-        ProcessRestaurantDto,
-        OnSearchListener,
-        ProcessPredictionsDto,
-        ProcessDetailsRestaurant {
+        OnSearchListener {
 
     private GoogleMap mMap;
     private FragmentMapBinding binding;
     private FusedLocationProviderClient locationClient;
     private MainViewModel mViewModel;
     private final List<RestaurantDto> mRestaurants = new ArrayList<>();
-    private final List<String> predictionsPlaceId = new ArrayList<>();
     private boolean onSearch = false;
 
     @SuppressLint("CheckResult")
@@ -61,7 +54,7 @@ public class MapFragment extends Fragment implements
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         locationClient = LocationServices.getFusedLocationProviderClient(requireContext());
-        mViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+        mViewModel = new ViewModelProvider(requireActivity(), ViewModelFactory.getInstance(requireActivity())).get(MainViewModel.class);
     }
 
     @Override
@@ -91,9 +84,13 @@ public class MapFragment extends Fragment implements
                     .addOnSuccessListener(requireActivity(), location -> {
                         if (location != null) {
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18));
-                            mViewModel.getRestaurantLocation(this, location, getContext());
+                            mViewModel.getRestaurantLocation(location);
                         }
                     });
+            mViewModel.getRestaurantListLiveData().observe(getViewLifecycleOwner(), restaurantDtos -> {
+                mRestaurants.clear();
+                mRestaurants.addAll(restaurantDtos);
+            });
             setRestaurantMarkerColor();
         }
     }
@@ -125,12 +122,6 @@ public class MapFragment extends Fragment implements
         ((MainActivity) requireActivity()).setOnSearchListener(this);
     }
 
-    @Override
-    public void processRestaurantDto(List<RestaurantDto> restaurantDtoList) {
-        mRestaurants.clear();
-        mRestaurants.addAll(restaurantDtoList);
-    }
-
     private void setMarker(float bitmap, RestaurantDto result) {
         Marker marker = mMap.addMarker(
                 new MarkerOptions()
@@ -140,20 +131,18 @@ public class MapFragment extends Fragment implements
                         .icon(BitmapDescriptorFactory.defaultMarker(bitmap)));
         if (marker != null) {
             marker.setTag(result);
-            mMap.setOnMarkerClickListener(this::onMarkerClick);
+            mMap.setOnInfoWindowClickListener(this::onMarkerClick);
         }
     }
 
-    public boolean onMarkerClick(Marker marker) {
+    public void onMarkerClick(Marker marker) {
         Object tag = marker.getTag();
         if (tag instanceof RestaurantDto) {
             RestaurantDto restaurantDto = (RestaurantDto) tag;
             Intent detailRestaurantActivityIntent = new Intent(getContext(), DetailRestaurantActivity.class);
             detailRestaurantActivityIntent.putExtra(RESTAURANT_INFO, restaurantDto);
             startActivity(detailRestaurantActivityIntent);
-            return true;
         }
-        return false;
     }
 
     @SuppressLint("MissingPermission")
@@ -162,32 +151,23 @@ public class MapFragment extends Fragment implements
         locationClient.getLastLocation()
                 .addOnSuccessListener(requireActivity(), location -> {
                     if (location != null && !query.isEmpty()) {
-                        mViewModel.getPredictionLocation(this, location, query);
-                        onSearch = true;
+                        mViewModel.getPredictionLocation(location, query).observe(getViewLifecycleOwner(), restaurantDtos -> {
+                            mRestaurants.clear();
+                            mRestaurants.add(restaurantDtos.get(0));
+//                            mRestaurants.addAll(restaurantDtos);
+                            onSearch = true;
+                        });
                     }
                     if (query.isEmpty()) {
                         onSearch = false;
                         onMapReady(mMap);
                     }
                 });
+        setRestaurantMarkerColor();
     }
 
     @Override
     public List<RestaurantDto> onRequestList() {
         return mRestaurants;
-    }
-
-    @Override
-    public void processPredictionsDto(List<PredictionsDto> predictionsDtoList) {
-        predictionsPlaceId.clear();
-        for (PredictionsDto predictionsDto : predictionsDtoList) {
-            predictionsPlaceId.add(predictionsDto.getPlaceId());
-        }
-        mViewModel.getPrediction(this, this);
-    }
-
-    @Override
-    public List<String> processDetailsRestaurant() {
-        return predictionsPlaceId;
     }
 }

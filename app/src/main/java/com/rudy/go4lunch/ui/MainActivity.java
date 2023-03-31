@@ -1,7 +1,5 @@
 package com.rudy.go4lunch.ui;
 
-import static com.rudy.go4lunch.ui.restaurant.RestaurantsFragment.RESTAURANT_INFO;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -44,21 +42,16 @@ import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.databinding.ActivityMainBinding;
 import com.rudy.go4lunch.databinding.NavHeaderBinding;
 import com.rudy.go4lunch.manager.UserManager;
-import com.rudy.go4lunch.model.RestaurantDto;
 import com.rudy.go4lunch.service.OnSearchListener;
-import com.rudy.go4lunch.service.ProcessRestaurantDto;
 import com.rudy.go4lunch.ui.dialog.PermissionDialogFragment;
 import com.rudy.go4lunch.ui.notification.NotificationWorker;
-import com.rudy.go4lunch.ui.restaurant.DetailRestaurantActivity;
 import com.rudy.go4lunch.viewmodel.MainViewModel;
+import com.rudy.go4lunch.viewmodel.ViewModelFactory;
 
 import java.util.Calendar;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener,
-        ProcessRestaurantDto {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ActivityMainBinding binding;
     private Toolbar toolbar;
@@ -77,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         locationClient = LocationServices.getFusedLocationProviderClient(this);
-        mViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        mViewModel = new ViewModelProvider(this, ViewModelFactory.getInstance(this)).get(MainViewModel.class);
         requestLocationPermission();
         setUpLogin();
         initUi();
@@ -261,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements
                 locationClient.getLastLocation()
                         .addOnSuccessListener(this, location -> {
                             if (location != null) {
-                                mViewModel.getRestaurantOnFocus(user.getBookedRestaurantPlaceId(), this, this);
+                                mViewModel.getRestaurantOnFocus(user.getBookedRestaurantPlaceId(), this);
                             }
                         });
             } else {
@@ -321,19 +314,6 @@ public class MainActivity extends AppCompatActivity implements
 
                 String username = TextUtils.isEmpty(user.getUsername()) ? getString(R.string.info_no_username_found) : user.getUsername();
                 headerBinding.name.setText(username);
-            }
-        });
-    }
-
-    @Override
-    public void processRestaurantDto(List<RestaurantDto> restaurantDtoList) {
-        userManager.getUserData().addOnSuccessListener(user -> {
-            if (restaurantDtoList != null) {
-                RestaurantDto restaurantOnFocus = restaurantDtoList.get(0);
-                Intent detailRestaurantActivityIntent = new Intent(this, DetailRestaurantActivity.class);
-                detailRestaurantActivityIntent.putExtra(RESTAURANT_INFO, restaurantOnFocus);
-                detailRestaurantActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                this.startActivity(detailRestaurantActivityIntent);
             }
         });
     }
