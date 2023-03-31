@@ -84,11 +84,6 @@ public class DetailRestaurantActivity extends AppCompatActivity {
     public void setRestaurant() {
         mRestaurant = (RestaurantDto) getIntent().getSerializableExtra(RESTAURANT_INFO);
 
-        binding.call.setVisibility(View.INVISIBLE);//todo metre invisible par default
-        binding.callButton.setVisibility(View.INVISIBLE);
-        binding.website.setVisibility(View.INVISIBLE);
-        binding.websiteButton.setVisibility(View.INVISIBLE);
-
         String phoneNumber = mRestaurant.getFormattedPhoneNumber();
         String website = mRestaurant.getWebsite();
 

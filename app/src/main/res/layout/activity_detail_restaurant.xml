@@ -92,6 +92,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:src="@drawable/ic_baseline_call_24"
+        android:visibility="invisible"
         app:layout_constraintTop_toBottomOf="@id/view"
         app:layout_constraintStart_toStartOf="parent"
         app:tint="@color/orange"
@@ -114,6 +115,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"
         android:src="@drawable/ic_baseline_webhook_24"
+        android:visibility="invisible"
         app:layout_constraintTop_toBottomOf="@id/view"
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="@color/orange"
@@ -126,6 +128,7 @@
         android:text="@string/call"
         android:textColor="@color/orange"
         android:textStyle="bold"
+        android:visibility="invisible"
         app:layout_constraintTop_toBottomOf="@id/callButton"
         app:layout_constraintStart_toStartOf="@id/callButton"
         app:layout_constraintEnd_toEndOf="@id/callButton"/>
@@ -148,6 +151,7 @@
         android:text="@string/website"
         android:textColor="@color/orange"
         android:textStyle="bold"
+        android:visibility="invisible"
         app:layout_constraintTop_toBottomOf="@id/websiteButton"
         app:layout_constraintStart_toStartOf="@id/websiteButton"
         app:layout_constraintEnd_toEndOf="@id/websiteButton" />
