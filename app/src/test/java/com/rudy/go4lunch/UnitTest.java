@@ -1,16 +1,12 @@
 package com.rudy.go4lunch;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 
 import android.content.Context;
 import android.graphics.Color;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.rudy.go4lunch.model.RestaurantDto;
 import com.rudy.go4lunch.model.User;
@@ -18,13 +14,10 @@ import com.rudy.go4lunch.model.dto.CloseDto;
 import com.rudy.go4lunch.model.dto.OpenDto;
 import com.rudy.go4lunch.model.dto.OpeningHoursDto;
 import com.rudy.go4lunch.model.dto.PeriodsDto;
-import com.rudy.go4lunch.ui.MainActivity;
 import com.rudy.go4lunch.utils.Utils;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.annotation.Config;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -38,14 +31,7 @@ import java.util.List;
 @RunWith(AndroidJUnit4.class)
 public class UnitTest {
 
-//    Context context = mock(Context.class);
-    Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-
-//    @Before
-//    public void setUp() {
-//        context = ApplicationProvider.getApplicationContext();
-//       // ou ApplicationProvider.getApplicationContext()
-//    }
+    Context context = ApplicationProvider.getApplicationContext();//InstrumentationRegistry.getInstrumentation().getTargetContext();//mock(MainActivity.class);//todo PB avec le context
 
     @Test
     public void testGetNumberOfWorkmates() {
@@ -64,14 +50,15 @@ public class UnitTest {
 
     @Test
     public void testGetOpeningHours() throws Exception {
+        String d = context.getString(R.string.app_name); //todo context null
         List<PeriodsDto> periods = new ArrayList<>();
-        periods.add(new PeriodsDto(new CloseDto(1, "23:59"), new OpenDto(1, "19:00")));
-        periods.add(new PeriodsDto(new CloseDto(2, "23:59"), new OpenDto(2, "19:00")));
-        periods.add(new PeriodsDto(new CloseDto(3, "23:59"), new OpenDto(3, "19:00")));
-        periods.add(new PeriodsDto(new CloseDto(4, "23:59"), new OpenDto(4, "19:00")));
-        periods.add(new PeriodsDto(new CloseDto(5, "23:59"), new OpenDto(5, "19:00")));
-        periods.add(new PeriodsDto(new CloseDto(6, "23:59"), new OpenDto(6, "19:00")));
-        periods.add(new PeriodsDto(new CloseDto(7, "23:59"), new OpenDto(7, "19:00")));
+        periods.add(new PeriodsDto(new CloseDto(1, "2359"), new OpenDto(1, "1900")));
+        periods.add(new PeriodsDto(new CloseDto(2, "2359"), new OpenDto(2, "1900")));
+        periods.add(new PeriodsDto(new CloseDto(3, "2359"), new OpenDto(3, "1900")));
+        periods.add(new PeriodsDto(new CloseDto(4, "2359"), new OpenDto(4, "1900")));
+        periods.add(new PeriodsDto(new CloseDto(5, "2359"), new OpenDto(5, "1900")));
+        periods.add(new PeriodsDto(new CloseDto(6, "2359"), new OpenDto(6, "1900")));
+        periods.add(new PeriodsDto(new CloseDto(7, "2359"), new OpenDto(7, "1900")));
         OpeningHoursDto openingHoursDto = new OpeningHoursDto(true);
         LocalTime now = LocalTime.now();
         if (now.isAfter(LocalTime.parse("23:59")) || now.isBefore(LocalTime.parse("19:00"))) {
@@ -85,7 +72,7 @@ public class UnitTest {
         if (fakeRestaurantDto.getOpeningHours().isOpenNow()) {
             assertEquals(R.string.open_until + "23:59", stringExpected);
         } else {
-            assertEquals(R.string.close_open_at + "19:00", stringExpected);
+            assertEquals(R.string.closed_open_at + "19:00", stringExpected);
         }
     }
 
