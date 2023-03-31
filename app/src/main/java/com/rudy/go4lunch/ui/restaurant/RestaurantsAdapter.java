@@ -22,6 +22,7 @@ import com.rudy.go4lunch.BuildConfig;
 import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.model.RestaurantDto;
 import com.rudy.go4lunch.model.User;
+import com.rudy.go4lunch.utils.ProcessStringUtils;
 import com.rudy.go4lunch.utils.Utils;
 
 import java.util.List;
@@ -113,7 +114,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             attendees.setText(getNumberOfWorkmates(users, restaurantDto.getPlaceId()));
 
             if (restaurantDto.getOpeningHours() != null) {
-                schedule.setText(Utils.getOpeningHours(restaurantDto, mContext));
+                schedule.setText(Utils.getOpeningHours(restaurantDto, mContext::getString));
                 schedule.setTextColor(Utils.getRestaurantStatus(restaurantDto.getOpeningHours().isOpenNow()));
             }
 

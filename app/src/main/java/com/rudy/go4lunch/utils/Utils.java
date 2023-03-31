@@ -1,7 +1,6 @@
 package com.rudy.go4lunch.utils;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.graphics.Color;
 
 import com.rudy.go4lunch.R;
@@ -32,7 +31,7 @@ public class Utils {
         return String.format(Locale.getDefault(), "(%d)", numberOfBookings);
     }
 
-    public static String getOpeningHours(RestaurantDto restaurantDto, Context context) {
+    public static String getOpeningHours(RestaurantDto restaurantDto, ProcessStringUtils processStringUtils) {
         String status;
         String openCloseStatus = "";
         String time = "";
@@ -83,13 +82,13 @@ public class Utils {
 
                         if (openDay == today && !firstLoopExecuted) {
                             if (isOpen && closeCalendar.getTime().after(calendar.getTime())) {
-                                openCloseStatus = context.getString(R.string.open_until);
+                                openCloseStatus = processStringUtils.getString(R.string.open_until);
                                 time = outputFormat.format(closeTime);
                                 loopCount++;
                                 break;
                             } else if (!isOpen && openCalendar.getTime().after(calendar.getTime())) {
                                 if (closeCalendar.getTime().after(calendar.getTime()) || openCalendar.getTime().after(calendar.getTime())) {
-                                    openCloseStatus = context.getString(R.string.closed_open_at);
+                                    openCloseStatus = processStringUtils.getString(R.string.closed_open_at);
                                     time = outputFormat.format(openTime);
                                     loopCount++;
                                     break;
@@ -99,16 +98,16 @@ public class Utils {
                             for (int i = 1; i <= 7; i++) {
                                 if (openDay == tomorrow || i == openDay && i > today) {
                                     if (isOpen) {
-                                        openCloseStatus = context.getString(R.string.open_until) + getDayOfWeek(context, openDay);
+                                        openCloseStatus = processStringUtils.getString(R.string.open_until) + getDayOfWeek(processStringUtils, openDay);
                                         time = outputFormat.format(closeTime);
                                         if (openDay == tomorrow) {
-                                            openCloseStatus = context.getString(R.string.open_until) + context.getString(R.string.tomorrow);
+                                            openCloseStatus = processStringUtils.getString(R.string.open_until) + processStringUtils.getString(R.string.tomorrow);
                                         }
                                     } else {
-                                        openCloseStatus = context.getString(R.string.closed_open) + getDayOfWeek(context, openDay);
+                                        openCloseStatus = processStringUtils.getString(R.string.closed_open) + getDayOfWeek(processStringUtils, openDay);
                                         time = outputFormat.format(openTime);
                                         if (openDay == tomorrow) {
-                                            openCloseStatus = context.getString(R.string.closed_open) + context.getString(R.string.tomorrow_at);
+                                            openCloseStatus = processStringUtils.getString(R.string.closed_open) + processStringUtils.getString(R.string.tomorrow_at);
                                         }
                                     }
                                     break;
@@ -135,9 +134,9 @@ public class Utils {
         }
         if (!periodFound || time.isEmpty() || openCloseStatus.isEmpty()) {
             if (openingHoursDto.isOpenNow()) {
-                status = context.getString(R.string.open);
+                status = processStringUtils.getString(R.string.open);
             } else {
-                status = context.getString(R.string.close);
+                status = processStringUtils.getString(R.string.close);
             }
         } else {
             status = openCloseStatus + time;
@@ -145,22 +144,22 @@ public class Utils {
         return status;
     }
 
-    private static String getDayOfWeek(Context context, int day) {
+    private static String getDayOfWeek(ProcessStringUtils processStringUtils, int day) {
         switch (day) {
             case Calendar.MONDAY:
-                return context.getString(R.string.monday);
+                return processStringUtils.getString(R.string.monday);
             case Calendar.TUESDAY:
-                return context.getString(R.string.tuesday);
+                return processStringUtils.getString(R.string.tuesday);
             case Calendar.WEDNESDAY:
-                return context.getString(R.string.wednesday);
+                return processStringUtils.getString(R.string.wednesday);
             case Calendar.THURSDAY:
-                return context.getString(R.string.thursday);
+                return processStringUtils.getString(R.string.thursday);
             case Calendar.FRIDAY:
-                return context.getString(R.string.friday);
+                return processStringUtils.getString(R.string.friday);
             case Calendar.SATURDAY:
-                return context.getString(R.string.saturday);
+                return processStringUtils.getString(R.string.saturday);
             case Calendar.SUNDAY:
-                return context.getString(R.string.sunday);
+                return processStringUtils.getString(R.string.sunday);
         }
         return "";
     }
