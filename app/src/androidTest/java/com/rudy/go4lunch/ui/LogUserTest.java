@@ -57,6 +57,11 @@ public class LogUserTest {
                     "android.permission.ACCESS_FINE_LOCATION",
                     "android.permission.ACCESS_COARSE_LOCATION");
 
+    /**
+     * The RepeatRule is used to repeat the test up to twice if it fails due to the absence of current user's connection.
+     * The goal is to ensure that the test is executed with a logged-in user to ensure its validity.
+     * The rule works by repeating the test a second time if the first attempt failed due to the lack of user's connection.
+     */
     @Rule
     public RepeatRule repeatRule = new RepeatRule(2);
 
