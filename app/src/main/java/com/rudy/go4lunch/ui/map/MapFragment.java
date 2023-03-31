@@ -96,20 +96,24 @@ public class MapFragment extends Fragment implements
     }
 
     public void setRestaurantMarkerColor() {
+        List<String> pId = new ArrayList<>();
         mViewModel.getDataBaseInstanceUser();
-        mViewModel.getAllUsers().observe(getViewLifecycleOwner(), users -> { //todo remplacement getViewLifecycleOwner() par requireActivity car pb dans test
+        mViewModel.getAllUsers().observe(getViewLifecycleOwner(), users -> {
             for (User user : users) {
-                for (RestaurantDto result : mRestaurants) {
-                    if (result.getPlaceId().equals(user.getBookedRestaurantPlaceId())) {
-                        setMarker(BitmapDescriptorFactory.HUE_GREEN, result);// todo pb couleur marker
-                    } else if (onSearch) {
-                        setMarker(BitmapDescriptorFactory.HUE_YELLOW, result);
-                        LocationDto firstLocation = mRestaurants.get(0).getGeometry().getLocationDto();
-                        mMap.moveCamera(CameraUpdateFactory
-                                .newLatLngZoom(new LatLng(firstLocation.getLatitude(), firstLocation.getLongitude()), 18));
-                    } else {
-                        setMarker(BitmapDescriptorFactory.HUE_RED, result);
-                    }
+                if (user.getBookedRestaurantPlaceId() != null) {
+                    pId.add(user.getBookedRestaurantPlaceId());
+                }
+            }
+            for (RestaurantDto result : mRestaurants) {
+                if (pId.contains(result.getPlaceId())) {
+                    setMarker(BitmapDescriptorFactory.HUE_GREEN, result);
+                } else if (onSearch) {
+                    setMarker(BitmapDescriptorFactory.HUE_YELLOW, mRestaurants.get(0));
+                    LocationDto firstLocation = mRestaurants.get(0).getGeometry().getLocationDto();
+                    mMap.moveCamera(CameraUpdateFactory
+                            .newLatLngZoom(new LatLng(firstLocation.getLatitude(), firstLocation.getLongitude()), 18));
+                } else {
+                    setMarker(BitmapDescriptorFactory.HUE_RED, result);
                 }
             }
         });

@@ -258,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             }
                         });
             } else {
-                Snackbar.make(binding.getRoot(), "You didn't choose a restaurant yet!", Snackbar.LENGTH_SHORT).show();//todo string fr
+                Snackbar.make(binding.getRoot(), R.string.no_booked_restaurant, Snackbar.LENGTH_SHORT).show();
             }
         });
     }
