@@ -2,10 +2,8 @@ package com.rudy.go4lunch;
 
 import static org.junit.Assert.assertEquals;
 
-import android.content.Context;
 import android.graphics.Color;
 
-import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.rudy.go4lunch.model.RestaurantDto;
@@ -23,15 +21,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
 @RunWith(AndroidJUnit4.class)
 public class UnitTest {
-
-    Context context = ApplicationProvider.getApplicationContext();//InstrumentationRegistry.getInstrumentation().getTargetContext();//mock(MainActivity.class);//todo PB avec le context
 
     @Test
     public void testGetNumberOfWorkmates() {
@@ -49,8 +40,7 @@ public class UnitTest {
     }
 
     @Test
-    public void testGetOpeningHours() throws Exception {
-        String d = context.getString(R.string.app_name); //todo context null
+    public void testGetOpeningHours() {
         List<PeriodsDto> periods = new ArrayList<>();
         periods.add(new PeriodsDto(new CloseDto(1, "2359"), new OpenDto(1, "1900")));
         periods.add(new PeriodsDto(new CloseDto(2, "2359"), new OpenDto(2, "1900")));
@@ -67,12 +57,12 @@ public class UnitTest {
         openingHoursDto.setPeriods(periods);
         RestaurantDto fakeRestaurantDto = new RestaurantDto(null, openingHoursDto, "My Restaurant", 4.5, "Paris, France", "12345", null, "123-456-7890", "https://www.example.com");
 
-        String stringExpected = Utils.getOpeningHours(fakeRestaurantDto, context);
+        String stringExpected = Utils.getOpeningHours(fakeRestaurantDto, StringUtils::getString);
 
         if (fakeRestaurantDto.getOpeningHours().isOpenNow()) {
-            assertEquals(R.string.open_until + "23:59", stringExpected);
+            assertEquals(R.string.open_until + "9:59 PM", stringExpected);
         } else {
-            assertEquals(R.string.closed_open_at + "19:00", stringExpected);
+            assertEquals(R.string.closed_open_at + "7:00 PM", stringExpected);
         }
     }
 
@@ -86,6 +76,4 @@ public class UnitTest {
         assertEquals(expectedColorOpen, resultColorOpen);
         assertEquals(expectedColorClose, resultColorClose);
     }
-
-    //test les viewmodels avec mockito
 }
