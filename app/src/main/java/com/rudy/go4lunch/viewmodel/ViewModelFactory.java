@@ -13,7 +13,6 @@ import com.rudy.go4lunch.service.RetrofitService;
 public class ViewModelFactory implements ViewModelProvider.Factory {
 
     private static ViewModelFactory factory;
-    private final Context context;
     private final RestaurantRepository mRestaurantRepository;
     private final PredictionRepository mPredictionRepository;
 
@@ -29,9 +28,9 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     }
 
     private ViewModelFactory(Context context) {
-        this.context = context;
         this.mRestaurantRepository = new RestaurantRepository(
-                RetrofitService.getGooglePlacesRestaurantsApiMock(context)
+                RetrofitService.getGooglePlacesRestaurantsApi()
+                // Use RetrofitService.getGooglePlacesRestaurantsApiMock(context) if you do not want to call api
         );
         this.mPredictionRepository = new PredictionRepository(
                 RetrofitService.getGooglePlacesRestaurantsApi()

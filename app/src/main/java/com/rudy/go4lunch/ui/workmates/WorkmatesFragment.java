@@ -28,14 +28,14 @@ public class WorkmatesFragment extends Fragment implements
         WorkmatesAdapter.WorkmateClickListener {
 
     private RecyclerView mRecyclerView;
-    private List<User> users = new ArrayList<>();
+    private final List<User> users = new ArrayList<>();
     private MainViewModel mViewModel;
-    private UserManager userManager = UserManager.getInstance();
+    private final UserManager userManager = UserManager.getInstance();
 
     @SuppressLint("NotifyDataSetChanged")
     private void initData() {
         mViewModel.getDataBaseInstanceUser();
-        mViewModel.getAllUsers().observe(getViewLifecycleOwner(), users1 -> {
+        mViewModel.getAllUsers().observe(requireActivity(), users1 -> {
             users.clear();
             users.addAll(users1);
             Objects.requireNonNull(mRecyclerView.getAdapter()).notifyDataSetChanged();
@@ -53,8 +53,8 @@ public class WorkmatesFragment extends Fragment implements
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_workmates, container, false);
         ((MainActivity) requireContext()).fragmentSelected = R.layout.fragment_workmates;
-        initData();
         initRecyclerView(root);
+        initData();
         return root;
     }
 

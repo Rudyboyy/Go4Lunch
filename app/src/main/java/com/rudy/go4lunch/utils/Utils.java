@@ -63,7 +63,7 @@ public class Utils {
             while (loopCount < 2) {
                 for (PeriodsDto period : periodsDtoList) {
                     try {
-                        int openDay = period.getOpen().getDay();
+                        int openDay = period.getOpen().getDay() + 1;
                         Date openTime = inputFormat.parse(period.getOpen().getTime());
                         Date closeTime = inputFormat.parse(period.getClose().getTime());
                         assert openTime != null;
@@ -74,8 +74,8 @@ public class Utils {
                         openCalendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR));
                         closeCalendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
                         openCalendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
-                        closeCalendar.set(openDay, calendar.get(Calendar.DAY_OF_WEEK));
-                        openCalendar.set(openDay, calendar.get(Calendar.DAY_OF_WEEK));
+                        closeCalendar.set(Calendar.DAY_OF_WEEK, calendar.get(Calendar.DAY_OF_WEEK));
+                        openCalendar.set(Calendar.DAY_OF_WEEK, calendar.get(Calendar.DAY_OF_WEEK));
                         closeCalendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH));
                         openCalendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH));
                         periodFound = true;
@@ -96,7 +96,7 @@ public class Utils {
                             }
                         } else if (firstLoopExecuted) {
                             for (int i = 1; i <= 7; i++) {
-                                if (openDay == tomorrow || i == openDay && i > today) {
+                                if (openDay == tomorrow || i == openDay && i > today || i == openDay && i > tomorrow) {
                                     if (isOpen) {
                                         openCloseStatus = processStringUtils.getString(R.string.open_until) + getDayOfWeek(processStringUtils, openDay);
                                         time = outputFormat.format(closeTime);
@@ -114,6 +114,7 @@ public class Utils {
                                 }
                             }
                             if (!openCloseStatus.isEmpty()) {
+                                loopCount++;
                                 break;
                             }
                             loopCount++;

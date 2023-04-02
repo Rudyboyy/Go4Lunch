@@ -37,7 +37,7 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Message, ChatAdapter.M
     private static final int SENDER_TYPE = 1;
     private static final int RECEIVER_TYPE = 2;
 
-    private Listener callback;
+    private final Listener callback;
 
     public ChatAdapter(@NonNull FirestoreRecyclerOptions<Message> options, Listener callback) {
         super(options);
@@ -58,6 +58,7 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Message, ChatAdapter.M
         holder.updateWithMessage(model);
     }
 
+    @NonNull
     @Override
     public MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new MessageViewHolder(LayoutInflater.from(parent.getContext())
@@ -72,12 +73,12 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Message, ChatAdapter.M
 
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
 
-        private ItemChatBinding binding;
+        private final ItemChatBinding binding;
 
         private final int colorCurrentUser;
         private final int colorRemoteUser;
 
-        private boolean isSender;
+        private final boolean isSender;
 
         public MessageViewHolder(@NonNull View itemView, boolean isSender) {
             super(itemView);
@@ -120,11 +121,9 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Message, ChatAdapter.M
             Drawable drawable = binding.messageTextContainer.getBackground();
             if (drawable instanceof GradientDrawable) {
                 GradientDrawable gradientDrawable = (GradientDrawable) drawable;
-                // Fais quelque chose avec le GradientDrawable ici
                 gradientDrawable.setColor(isSender ? colorCurrentUser : colorRemoteUser);
             } else if (drawable instanceof ColorDrawable) {
                 ColorDrawable colorDrawable = (ColorDrawable) drawable;
-                // Fais quelque chose avec le ColorDrawable ici
                 colorDrawable.setColor(isSender ? colorCurrentUser : colorRemoteUser);
             }
             binding.messageTextContainer.requestLayout();

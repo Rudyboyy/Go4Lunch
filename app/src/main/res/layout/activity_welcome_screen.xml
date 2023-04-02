@@ -63,7 +63,7 @@
         android:padding="15dp"
         android:text="Sign in with Facebook   "
         android:textAllCaps="false"
-        app:icon="@drawable/ic_baseline_lunch_dining_24"
+        app:icon="@drawable/facebook_f"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/slogan" />
@@ -79,7 +79,7 @@
         android:padding="15dp"
         android:text="Sign in with Google    "
         android:textAllCaps="false"
-        app:icon="@drawable/ic_baseline_lunch_dining_24"
+        app:icon="@drawable/google_plus"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fcbButton" />

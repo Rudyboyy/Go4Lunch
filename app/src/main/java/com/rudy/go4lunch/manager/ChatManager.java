@@ -6,7 +6,7 @@ import com.rudy.go4lunch.repository.ChatRepository;
 public class ChatManager {
 
     private static volatile ChatManager instance;
-    private ChatRepository chatRepository;
+    private final ChatRepository chatRepository;
 
     private ChatManager() {
         chatRepository = ChatRepository.getInstance();

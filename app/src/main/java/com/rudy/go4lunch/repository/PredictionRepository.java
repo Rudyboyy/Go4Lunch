@@ -56,11 +56,7 @@ public class PredictionRepository {
         getAutoComplete(location, newText).timeout(30, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(autoCompleteDto -> {
-                    processPredictionsDto.processPredictionsDto(autoCompleteDto.getPredictions());
-                }, throwable -> {
-                    Log.v("throwable", throwable.toString());
-                });
+                .subscribe(autoCompleteDto -> processPredictionsDto.processPredictionsDto(autoCompleteDto.getPredictions()), throwable -> Log.v("throwable", throwable.toString()));
     }
 
     @SuppressLint("CheckResult")
@@ -77,9 +73,7 @@ public class PredictionRepository {
                                 processRestaurantDto.processRestaurantDto(restaurantDtoList);
                             }
                         }
-                    }, throwable -> {
-                        Log.v("throwable", throwable.toString());
-                    });
+                    }, throwable -> Log.v("throwable", throwable.toString()));
         }
     }
 }

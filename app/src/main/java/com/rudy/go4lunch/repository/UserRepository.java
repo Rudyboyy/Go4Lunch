@@ -1,7 +1,6 @@
 package com.rudy.go4lunch.repository;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -165,28 +164,5 @@ public class UserRepository {
             getUsersCollection().document(userId)
                     .update(FAVORITE_RESTAURANTS, FieldValue.arrayRemove(placeId));
         }
-    }
-
-    public void fetchAllUsersDocuments() {
-        this.getUsersCollection().get().addOnSuccessListener(queryDocumentSnapshots -> {
-
-            if (queryDocumentSnapshots == null) {
-                Log.w(UserRepository.class.getSimpleName(), "No users found in FireStore.");
-                return;
-            }
-
-            List<User> users = new ArrayList<>();
-
-            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-
-                users.add(document.toObject(User.class));
-            }
-
-            allUsers.setValue(users);
-        });
-    }
-
-    public LiveData<List<User>> getAllUserLiveData() {
-        return allUsers;
     }
 }

@@ -53,10 +53,6 @@ public class UserManager {
         return userRepository.updateUsername(username);
     }
 
-//    public void updateBooking(Boolean booking) {
-//        userRepository.updateBooking(booking);
-//    }
-
     public void updateBookedRestaurant(String bookedRestaurant, String placeId) {
         userRepository.UpdateBookedRestaurant(bookedRestaurant, placeId);
     }

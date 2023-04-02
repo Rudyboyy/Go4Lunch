@@ -18,36 +18,48 @@
       ],
       "opening_hours":
       {
-         "open_now": false,
+         "open_now": true,
          "periods":
          [
             {
-               "close": { "day": 1, "time": "1700" },
-               "open": { "day": 1, "time": "0900" }
+               "close" : {
+                  "day" : 1,
+                  "time" : "1900"
+               },
+               "open" : {
+                  "day" : 1,
+                  "time" : "0700"
+               }
             },
             {
-               "close": { "day": 2, "time": "1700" },
-               "open": { "day": 2, "time": "0900" }
+               "close" : {
+                  "day" : 2,
+                  "time" : "1900"
+               },
+               "open" : {
+                  "day" : 2,
+                  "time" : "0700"
+               }
             },
             {
-               "close": { "day": 3, "time": "1700" },
-               "open": { "day": 3, "time": "0900" }
+               "close" : {
+                  "day" : 3,
+                  "time" : "1900"
+               },
+               "open" : {
+                  "day" : 3,
+                  "time" : "0700"
+               }
             },
             {
-               "close": { "day": 4, "time": "1700" },
-               "open": { "day": 4, "time": "0900" }
-            },
-            {
-               "close": { "day": 5, "time": "1700" },
-               "open": { "day": 5, "time": "0900" }
-            },
-            {
-               "close": { "day": 6, "time": "1340" },
-               "open": { "day": 6, "time": "1600" }
-            },
-            {
-               "close": { "day": 7, "time": "1840" },
-               "open": { "day": 7, "time": "1230" }
+               "close" : {
+                  "day" : 4,
+                  "time" : "1900"
+               },
+               "open" : {
+                  "day" : 4,
+                  "time" : "0700"
+               }
             }
          ],
          "weekday_text":

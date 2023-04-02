@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mViewModel = new ViewModelProvider(this, ViewModelFactory.getInstance(this)).get(MainViewModel.class);
         requestLocationPermission();
         setUpLogin();
+        initList();
         initUi();
         scheduleNotificationWork();
     }
@@ -136,6 +137,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    @SuppressLint("MissingPermission")
+    public void initList() {
+        locationClient.getLastLocation()
+                .addOnSuccessListener(this, location -> mViewModel.getRestaurantLocation(location));
+    }
+
     private void initUi() {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
@@ -152,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onResume();
         setUpLogin();
         getUserData();
+        initList();
     }
 
     private void initBottomNavigationView() {

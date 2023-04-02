@@ -84,10 +84,9 @@ public class MapFragment extends Fragment implements
                     .addOnSuccessListener(requireActivity(), location -> {
                         if (location != null) {
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18));
-                            mViewModel.getRestaurantLocation(location);
                         }
                     });
-            mViewModel.getRestaurantListLiveData().observe(getViewLifecycleOwner(), restaurantDtos -> {
+            mViewModel.getRestaurantListLiveData().observe(requireActivity(), restaurantDtos -> {
                 mRestaurants.clear();
                 mRestaurants.addAll(restaurantDtos);
             });
@@ -98,7 +97,7 @@ public class MapFragment extends Fragment implements
     public void setRestaurantMarkerColor() {
         List<String> pId = new ArrayList<>();
         mViewModel.getDataBaseInstanceUser();
-        mViewModel.getAllUsers().observe(getViewLifecycleOwner(), users -> {
+        mViewModel.getAllUsers().observe(requireActivity(), users -> {
             for (User user : users) {
                 if (user.getBookedRestaurantPlaceId() != null) {
                     pId.add(user.getBookedRestaurantPlaceId());
@@ -108,7 +107,7 @@ public class MapFragment extends Fragment implements
                 if (pId.contains(result.getPlaceId())) {
                     setMarker(BitmapDescriptorFactory.HUE_GREEN, result);
                 } else if (onSearch) {
-                    setMarker(BitmapDescriptorFactory.HUE_YELLOW, mRestaurants.get(0));
+                    setMarker(BitmapDescriptorFactory.HUE_RED, result);
                     LocationDto firstLocation = mRestaurants.get(0).getGeometry().getLocationDto();
                     mMap.moveCamera(CameraUpdateFactory
                             .newLatLngZoom(new LatLng(firstLocation.getLatitude(), firstLocation.getLongitude()), 18));
@@ -155,10 +154,9 @@ public class MapFragment extends Fragment implements
         locationClient.getLastLocation()
                 .addOnSuccessListener(requireActivity(), location -> {
                     if (location != null && !query.isEmpty()) {
-                        mViewModel.getPredictionLocation(location, query).observe(getViewLifecycleOwner(), restaurantDtos -> {
+                        mViewModel.getPredictionLocation(location, query).observe(requireActivity(), restaurantDtos -> {
                             mRestaurants.clear();
                             mRestaurants.add(restaurantDtos.get(0));
-//                            mRestaurants.addAll(restaurantDtos);
                             onSearch = true;
                         });
                     }
@@ -168,10 +166,5 @@ public class MapFragment extends Fragment implements
                     }
                 });
         setRestaurantMarkerColor();
-    }
-
-    @Override
-    public List<RestaurantDto> onRequestList() {
-        return mRestaurants;
     }
 }
