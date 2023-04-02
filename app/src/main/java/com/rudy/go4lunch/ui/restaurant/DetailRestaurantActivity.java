@@ -36,9 +36,9 @@ public class DetailRestaurantActivity extends AppCompatActivity {
     ActivityDetailRestaurantBinding binding;
     RestaurantDto mRestaurant;
     private RecyclerView mRecyclerView;
-    private List<User> users = new ArrayList<>();
+    private final List<User> users = new ArrayList<>();
     private MainViewModel mViewModel;
-    private UserManager userManager = UserManager.getInstance();
+    private final UserManager userManager = UserManager.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

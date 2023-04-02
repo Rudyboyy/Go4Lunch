@@ -32,8 +32,8 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.Liste
     public static final String WORKMATE_NAME = "workmate_name";
     private ChatAdapter chatAdapter;
     private String currentChatName;
-    private UserManager userManager = UserManager.getInstance();
-    private ChatManager chatManager = ChatManager.getInstance();
+    private final UserManager userManager = UserManager.getInstance();
+    private final ChatManager chatManager = ChatManager.getInstance();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

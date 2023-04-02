@@ -79,16 +79,10 @@ public class RestaurantsFragment extends Fragment implements OnSearchListener {
 
     @SuppressLint({"MissingPermission", "CheckResult", "NotifyDataSetChanged"})
     public void initList() {
-        locationClient.getLastLocation()
-                .addOnSuccessListener(requireActivity(), location -> {
-                    if (location != null) {
-                        mViewModel.getRestaurantLocation(location);
-                        mViewModel.getRestaurantListLiveData().observe(getViewLifecycleOwner(), restaurantDtos -> {
-                            mRestaurants.clear();
-                            mRestaurants.addAll(restaurantDtos);
-                        });
-                    }
-                });
+        mViewModel.getRestaurantListLiveData().observe(requireActivity(), restaurantDtos -> {
+            mRestaurants.clear();
+            mRestaurants.addAll(restaurantDtos);
+        });
         mViewModel.getDataBaseInstanceUser();
         mViewModel.getAllUsers().observe(requireActivity(), users1 -> {
             mUsers.clear();
@@ -102,25 +96,20 @@ public class RestaurantsFragment extends Fragment implements OnSearchListener {
         locationClient.getLastLocation()
                 .addOnSuccessListener(requireActivity(), location -> {
                     if (location != null && !query.isEmpty()) {
-                        mViewModel.getPredictionLocation(location, query).observe(getViewLifecycleOwner(), restaurantDtos -> {
+                        mViewModel.getPredictionLocation(location, query).observe(requireActivity(), restaurantDtos -> {
                             mRestaurants.clear();
                             mRestaurants.addAll(restaurantDtos);
                             Objects.requireNonNull(mRecyclerView.getAdapter()).notifyDataSetChanged();
                         });
                     }
                     if (query.isEmpty()) {
-                        mViewModel.getRestaurantListLiveData().observe(getViewLifecycleOwner(), restaurantDtos -> {
+                        mViewModel.getRestaurantListLiveData().observe(requireActivity(), restaurantDtos -> {
                             mRestaurants.clear();
                             mRestaurants.addAll(restaurantDtos);
                             Objects.requireNonNull(mRecyclerView.getAdapter()).notifyDataSetChanged();
                         });
                     }
                 });
-    }
-
-    @Override
-    public List<RestaurantDto> onRequestList() {
-        return mRestaurants;
     }
 
     @Override

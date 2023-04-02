@@ -22,7 +22,6 @@ import com.rudy.go4lunch.BuildConfig;
 import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.model.RestaurantDto;
 import com.rudy.go4lunch.model.User;
-import com.rudy.go4lunch.utils.ProcessStringUtils;
 import com.rudy.go4lunch.utils.Utils;
 
 import java.util.List;

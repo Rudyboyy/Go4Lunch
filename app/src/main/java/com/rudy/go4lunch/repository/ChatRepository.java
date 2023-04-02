@@ -13,7 +13,7 @@ public class ChatRepository {
     private static final String MESSAGE_COLLECTION = "messages";
     private static volatile ChatRepository instance;
 
-    private UserManager userManager;
+    private final UserManager userManager;
 
     private ChatRepository() {
         this.userManager = UserManager.getInstance();

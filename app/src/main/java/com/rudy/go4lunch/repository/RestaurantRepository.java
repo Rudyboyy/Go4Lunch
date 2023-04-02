@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.location.Location;
 import android.util.Log;
 
-import androidx.lifecycle.MutableLiveData;
-
 import com.google.gson.Gson;
 import com.rudy.go4lunch.BuildConfig;
 import com.rudy.go4lunch.model.RestaurantDto;
@@ -21,7 +19,6 @@ import java.util.List;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Retrofit;
 
 public class RestaurantRepository {
 
@@ -57,8 +54,8 @@ public class RestaurantRepository {
         getGooglePlacesRestaurants(location)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((restaurantDtos, throwable) -> {
-                    List<RestaurantDto> restaurantDtoList = restaurantDtos.getResults();
+                .subscribe(restaurantsWrapperDto -> {
+                    List<RestaurantDto> restaurantDtoList = restaurantsWrapperDto.getResults();
                     for (RestaurantDto restaurantDto : restaurantDtoList) {
                         String placeId = restaurantDto.getPlaceId();
                         getDetails(placeId).subscribeOn(Schedulers.io())
@@ -80,10 +77,10 @@ public class RestaurantRepository {
                                         processRestaurantDto.processRestaurantDto(restaurantDtoList);
                                     }
                                     Log.v("details", restaurantWrapperDto.getResult().toString());
-                                });
+                                }, throwable1 -> Log.v("throwable", throwable1.toString()));
                     }
-                    Log.v("nearbySearch", restaurantDtos.getResults().toString());
-                });
+                    Log.v("nearbySearch", restaurantsWrapperDto.getResults().toString());
+                }, throwable -> Log.v("throwable", throwable.toString()));
     }
 
     @SuppressLint("CheckResult")
@@ -98,8 +95,6 @@ public class RestaurantRepository {
                         restaurantDtoList.add(restaurantWrapperDto.getResult());
                         processRestaurantDto.processRestaurantDto(restaurantDtoList);
                     }
-                }, throwable -> {
-                    Log.v("throwable", throwable.toString());
-                });
+                }, throwable -> Log.v("throwable", throwable.toString()));
     }
 }

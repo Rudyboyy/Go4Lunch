@@ -22,9 +22,9 @@ import java.util.List;
 
 public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.ViewHolder> {
 
-    private List<User> mUsers;
-    private Context mContext;
-    private WorkmateClickListener mWorkmateClickListener;
+    private final List<User> mUsers;
+    private final Context mContext;
+    private final WorkmateClickListener mWorkmateClickListener;
 
     public WorkmatesAdapter(List<User> users, Context context, WorkmateClickListener listener) {
         this.mUsers = users;

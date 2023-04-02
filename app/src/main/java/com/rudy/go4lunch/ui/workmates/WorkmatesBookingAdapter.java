@@ -12,14 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.rudy.go4lunch.R;
-import com.rudy.go4lunch.manager.UserManager;
 import com.rudy.go4lunch.model.User;
 
 import java.util.List;
 
 public class WorkmatesBookingAdapter extends RecyclerView.Adapter<WorkmatesBookingAdapter.ViewHolder> {
 
-    private List<User> mUsers;
+    private final List<User> mUsers;
 
     public WorkmatesBookingAdapter(List<User> users) {
         this.mUsers = users;
@@ -49,7 +48,6 @@ public class WorkmatesBookingAdapter extends RecyclerView.Adapter<WorkmatesBooki
 
         public final ImageView avatar;
         public final TextView workmate;
-        private UserManager userManager = UserManager.getInstance();
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
