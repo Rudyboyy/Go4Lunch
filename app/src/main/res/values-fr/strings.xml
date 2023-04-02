@@ -58,4 +58,6 @@
     <string name="tomorrow">"demain\ "</string>
     <string name="you_are_eating_at">Vous déjeunez à\ "</string>
     <string name="no_booked_restaurant">Vous n\'avez pas encore choisi de restaurant !</string>
+    <string name="is_eating">\ mange à\ </string>
+    <string name="not_decided_yet">\ n\'a pas encore choisi</string>
 </resources>

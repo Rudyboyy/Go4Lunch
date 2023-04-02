@@ -4,6 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +16,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.rudy.go4lunch.R;
 import com.rudy.go4lunch.model.User;
+import com.rudy.go4lunch.viewmodel.MainViewModel;
 
 import java.util.List;
 
@@ -25,11 +32,13 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
     private final List<User> mUsers;
     private final Context mContext;
     private final WorkmateClickListener mWorkmateClickListener;
+    private final MainViewModel mViewModel;
 
-    public WorkmatesAdapter(List<User> users, Context context, WorkmateClickListener listener) {
+    public WorkmatesAdapter(List<User> users, Context context, WorkmateClickListener listener, MainViewModel viewModel) {
         this.mUsers = users;
         this.mContext = context;
         this.mWorkmateClickListener = listener;
+        this.mViewModel = viewModel;
     }
 
     @NonNull
@@ -43,7 +52,7 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
     @Override
     public void onBindViewHolder(@NonNull WorkmatesAdapter.ViewHolder holder, int position) {
         User user = mUsers.get(position);
-        holder.displayWorkmates(user);
+        holder.displayWorkmates(user, mContext, mViewModel);
         holder.itemView.setOnClickListener(v -> mWorkmateClickListener.onWorkmateClick(user.getUid(), user.getUsername()));
     }
 
@@ -64,11 +73,31 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
         }
 
         @SuppressLint({"SetTextI18n", "ResourceAsColor"})
-        public void displayWorkmates(User user) {
+        public void displayWorkmates(User user, Context context, MainViewModel viewModel) {
             if (user.getBookedRestaurant() != null) {
-                workmate.setText(user.getUsername() + " is eating " + " (" + user.getBookedRestaurant() + ")");
+                workmate.setText(user.getUsername() + context.getString(R.string.is_eating) + "(");
+                workmate.setMovementMethod(LinkMovementMethod.getInstance());
+
+                SpannableString spannableString = new SpannableString(user.getBookedRestaurant());
+                ClickableSpan clickableSpan = new ClickableSpan() {
+                    @Override
+                    public void onClick(@NonNull View widget) {
+                        viewModel.getRestaurantOnFocus(user.getBookedRestaurantPlaceId(), context);
+                    }
+
+                    @Override
+                    public void updateDrawState(@NonNull TextPaint ds) {
+                        super.updateDrawState(ds);
+                        ds.setUnderlineText(true);
+                        ds.setColor(ContextCompat.getColor(context, R.color.orange));
+                    }
+                };
+
+                spannableString.setSpan(clickableSpan, 0, spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                workmate.append(spannableString);
+                workmate.append(")");
             } else {
-                workmate.setText(user.getUsername() + " hasn't decided yet");
+                workmate.setText(user.getUsername() + context.getString(R.string.not_decided_yet));
                 workmate.setTextColor(Color.GRAY);
                 workmate.setTypeface(workmate.getTypeface(), Typeface.ITALIC);
             }
