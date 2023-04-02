@@ -12,6 +12,7 @@ import com.rudy.go4lunch.model.dto.CloseDto;
 import com.rudy.go4lunch.model.dto.OpenDto;
 import com.rudy.go4lunch.model.dto.OpeningHoursDto;
 import com.rudy.go4lunch.model.dto.PeriodsDto;
+import com.rudy.go4lunch.utils.StringUtils;
 import com.rudy.go4lunch.utils.Utils;
 
 import org.junit.Test;

@@ -1,4 +1,6 @@
-package com.rudy.go4lunch;
+package com.rudy.go4lunch.utils;
+
+import com.rudy.go4lunch.R;
 
 public class StringUtils {
 
