@@ -62,7 +62,7 @@ public class WorkmatesFragment extends Fragment implements
         mRecyclerView = root.findViewById(R.id.recyclerview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(layoutManager);
-        WorkmatesAdapter mAdapter = new WorkmatesAdapter(users, requireActivity(), this);
+        WorkmatesAdapter mAdapter = new WorkmatesAdapter(users, requireActivity(), this, mViewModel);
         mRecyclerView.setAdapter(mAdapter);
     }
 
