@@ -108,7 +108,7 @@ public class MapFragment extends Fragment implements
                 if (pId.contains(result.getPlaceId())) {
                     setMarker(BitmapDescriptorFactory.HUE_GREEN, result);
                 } else if (onSearch) {
-                    setMarker(BitmapDescriptorFactory.HUE_YELLOW, mRestaurants.get(0));
+                    setMarker(BitmapDescriptorFactory.HUE_RED, result);
                     LocationDto firstLocation = mRestaurants.get(0).getGeometry().getLocationDto();
                     mMap.moveCamera(CameraUpdateFactory
                             .newLatLngZoom(new LatLng(firstLocation.getLatitude(), firstLocation.getLongitude()), 18));
@@ -158,7 +158,6 @@ public class MapFragment extends Fragment implements
                         mViewModel.getPredictionLocation(location, query).observe(getViewLifecycleOwner(), restaurantDtos -> {
                             mRestaurants.clear();
                             mRestaurants.add(restaurantDtos.get(0));
-//                            mRestaurants.addAll(restaurantDtos);
                             onSearch = true;
                         });
                     }
