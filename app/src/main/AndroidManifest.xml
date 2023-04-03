@@ -23,10 +23,6 @@
         android:theme="@style/Theme.Go4Lunch"
         tools:targetApi="31">
 
-        <service
-            android:name=".ui.notification.NotificationWorker"
-            android:exported="false" />
-
         <activity
             android:name=".ui.chat.ChatActivity"
             android:exported="false">
@@ -50,13 +46,6 @@
             android:name=".ui.restaurant.DetailRestaurantActivity"
             android:exported="false"
             android:parentActivityName=".ui.MainActivity">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".ui.restaurant.RestaurantsAdapter"
-            android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
